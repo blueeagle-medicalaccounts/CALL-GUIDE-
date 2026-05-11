@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Blue Eagle — Live Call Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03080f;
+  --bg2: #071220;
+  --card: #0a1a2e;
+  --card2: #0d2040;
+  --border: rgba(255,255,255,0.07);
+  --blue: #1565c0;
+  --blue2: #1976d2;
+  --blue3: #42a5f5;
+  --blue4: #90caf9;
+  --gold: #f5a623;
+  --gold2: #ffd07a;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --red2: #ff6b6b;
+  --purple: #9b59b6;
+  --white: #e8f0fe;
+  --muted: #3d5a80;
+  --silver: #7b9cc2;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(180deg,#071a30 0%,#05121f 100%);
+  border-bottom:1px solid rgba(21,101,192,0.3);
+  padding:12px 18px;
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  box-shadow:0 2px 20px rgba(0,0,0,0.4);
+}
+
+.header-left{display:flex;align-items:center;gap:12px;}
+
+.logo-img{
+  width:42px;height:42px;
+  border-radius:8px;
+  object-fit:contain;
+  background:#fff;
+  padding:3px;
+  flex-shrink:0;
+}
+
+.header-text .brand{
+  font-size:13px;font-weight:800;
+  color:#fff;letter-spacing:0.3px;
+  line-height:1;
+}
+.header-text .tagline{
+  font-size:10px;color:var(--silver);
+  letter-spacing:1.5px;text-transform:uppercase;
+  margin-top:2px;
+}
+
+.step-pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--blue4);
+  background:rgba(21,101,192,0.15);
+  border:1px solid rgba(21,101,192,0.3);
+  padding:4px 12px;border-radius:20px;
+  white-space:nowrap;
+}
+
+/* ── PROGRESS ── */
+.prog-wrap{height:3px;background:rgba(255,255,255,0.05);position:sticky;top:66px;z-index:99;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue2),var(--blue3));transition:width 0.4s ease;width:0%;}
+
+/* ── SCREENS ── */
+.screen{display:none;padding:18px 16px 110px;max-width:460px;margin:0 auto;}
+.screen.active{display:block;animation:fadeUp 0.22s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PILLS ── */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;margin-bottom:14px;
+}
+.p-blue{background:rgba(21,101,192,0.2);color:var(--blue3);border:1px solid rgba(21,101,192,0.4);}
+.p-gold{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.35);}
+.p-green{background:rgba(46,204,113,0.15);color:var(--green);border:1px solid rgba(46,204,113,0.35);}
+.p-red{background:rgba(231,76,60,0.15);color:var(--red2);border:1px solid rgba(231,76,60,0.35);}
+.p-purple{background:rgba(155,89,182,0.15);color:#c39bd3;border:1px solid rgba(155,89,182,0.35);}
+
+.screen-title{font-size:22px;font-weight:800;line-height:1.2;margin-bottom:4px;}
+.screen-sub{font-size:13px;color:var(--silver);margin-bottom:20px;font-weight:300;}
+
+/* ── SCRIPT BOX ── */
+.script-box{
+  background:linear-gradient(135deg,rgba(21,101,192,0.1),rgba(7,18,32,0.8));
+  border:1px solid rgba(21,101,192,0.3);
+  border-left:3px solid var(--blue2);
+  border-radius:12px;padding:18px;margin-bottom:14px;
+}
+.script-lbl{font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--blue3);margin-bottom:10px;display:block;}
+.script-text{font-size:15px;color:var(--white);line-height:1.8;}
+.script-text .b{font-weight:700;color:#fff;}
+.pause{
+  display:inline-block;
+  background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);
+  color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:2px 9px;border-radius:4px;margin:2px 0;
+}
+
+/* ── VOSS TIP ── */
+.voss{
+  background:rgba(46,204,113,0.05);
+  border:1px solid rgba(46,204,113,0.2);
+  border-left:3px solid var(--green);
+  border-radius:0 10px 10px 0;
+  padding:12px 16px;margin-bottom:16px;
+}
+.voss-lbl{font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--green);margin-bottom:5px;display:block;}
+.voss-text{font-size:12px;color:#a0e8b8;line-height:1.65;}
+
+/* ── FIELDS ── */
+.fg{margin-bottom:13px;}
+.fl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--silver);margin-bottom:7px;display:block;}
+.fi{
+  width:100%;background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;padding:13px 16px;
+  font-size:15px;color:var(--white);
+  font-family:'Outfit',sans-serif;outline:none;
+  transition:border-color 0.2s;-webkit-appearance:none;
+}
+.fi:focus{border-color:var(--blue2);}
+.fi::placeholder{color:var(--muted);}
+select.fi{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%233d5a80' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;
+}
+select.fi option{background:#0a1a2e;color:#e8f0fe;}
+textarea.fi{resize:none;min-height:85px;line-height:1.6;}
+
+/* ── CHOICES ── */
+.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.cb{
+  width:100%;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;
+  padding:15px 16px;text-align:left;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  display:flex;align-items:center;gap:13px;
+  transition:all 0.18s;
+}
+.cb:active{transform:scale(0.98);}
+.ci{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cc{flex:1;}
+.ct{font-size:14px;font-weight:700;margin-bottom:2px;}
+.cs{font-size:12px;color:var(--muted);}
+.ca{color:var(--muted);font-size:14px;}
+
+.cb.cg{border-color:rgba(46,204,113,0.3);}
+.cb.cg .ci{background:rgba(46,204,113,0.1);}
+.cb.cg .ct{color:var(--green);}
+.cb.cg:hover{background:rgba(46,204,113,0.05);border-color:rgba(46,204,113,0.5);}
+
+.cb.cy{border-color:rgba(245,166,35,0.3);}
+.cb.cy .ci{background:rgba(245,166,35,0.1);}
+.cb.cy .ct{color:var(--gold);}
+.cb.cy:hover{background:rgba(245,166,35,0.05);border-color:rgba(245,166,35,0.5);}
+
+.cb.cr{border-color:rgba(231,76,60,0.3);}
+.cb.cr .ci{background:rgba(231,76,60,0.1);}
+.cb.cr .ct{color:var(--red2);}
+.cb.cr:hover{background:rgba(231,76,60,0.05);border-color:rgba(231,76,60,0.5);}
+
+.cb.cb2{border-color:rgba(21,101,192,0.3);}
+.cb.cb2 .ci{background:rgba(21,101,192,0.1);}
+.cb.cb2 .ct{color:var(--blue3);}
+.cb.cb2:hover{background:rgba(21,101,192,0.05);border-color:rgba(21,101,192,0.5);}
+
+.cb.cp{border-color:rgba(155,89,182,0.3);}
+.cb.cp .ci{background:rgba(155,89,182,0.1);}
+.cb.cp .ct{color:#c39bd3;}
+.cb.cp:hover{background:rgba(155,89,182,0.05);border-color:rgba(155,89,182,0.5);}
+
+/* ── NAV ── */
+.nav-row{
+  display:flex;gap:10px;
+  position:fixed;bottom:0;left:0;right:0;
+  padding:12px 16px 26px;
+  background:linear-gradient(0deg,var(--bg) 60%,transparent);
+  max-width:460px;margin:0 auto;
+}
+.btn-back{
+  flex:1;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:14px;font-size:14px;font-weight:600;
+  color:var(--silver);cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:all 0.2s;
+}
+.btn-next{
+  flex:2;background:var(--blue2);border:none;
+  border-radius:12px;padding:14px;font-size:15px;font-weight:700;
+  color:#fff;cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:all 0.2s;
+}
+.btn-next:active,.btn-back:active{transform:scale(0.97);}
+.btn-submit{
+  flex:2;background:var(--green);border:none;
+  border-radius:12px;padding:14px;font-size:15px;font-weight:700;
+  color:#fff;cursor:pointer;font-family:'Outfit',sans-serif;
+}
+.btn-full{
+  width:100%;background:var(--blue2);border:none;
+  border-radius:12px;padding:14px;font-size:15px;font-weight:700;
+  color:#fff;cursor:pointer;font-family:'Outfit',sans-serif;
+  margin-bottom:10px;
+}
+
+/* ── CALLOUT ── */
+.callout{border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.7;}
+.ca-gold{background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.25);color:var(--gold2);}
+.ca-blue{background:rgba(21,101,192,0.08);border:1px solid rgba(21,101,192,0.25);color:var(--blue4);}
+.ca-green{background:rgba(46,204,113,0.07);border:1px solid rgba(46,204,113,0.25);color:#a0e8b8;}
+.ca-red{background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.25);color:var(--red2);}
+.callout strong{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;opacity:0.8;}
+
+hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
+
+/* ── SUCCESS ── */
+.success-wrap{text-align:center;padding:20px 0;}
+.success-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:rgba(46,204,113,0.12);border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 16px;
+}
+.success-title{font-size:24px;font-weight:800;color:var(--green);margin-bottom:6px;}
+.success-sub{font-size:13px;color:var(--silver);margin-bottom:24px;line-height:1.6;}
+
+/* ── SUMMARY ── */
+.sum-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.sum-row{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;
+}
+.sum-row:last-child{border-bottom:none;}
+.sum-k{color:var(--muted);font-weight:500;flex-shrink:0;font-size:12px;}
+.sum-v{color:var(--white);text-align:right;font-weight:600;font-size:13px;}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin:8px 0;}
+.b-hot{background:rgba(231,76,60,0.2);color:var(--red2);border:1px solid rgba(231,76,60,0.4);}
+.b-warm{background:rgba(245,166,35,0.2);color:var(--gold);border:1px solid rgba(245,166,35,0.4);}
+.b-cold{background:rgba(61,90,128,0.3);color:var(--silver);border:1px solid rgba(61,90,128,0.4);}
+.b-meet{background:rgba(46,204,113,0.2);color:var(--green);border:1px solid rgba(46,204,113,0.4);}
+.b-future{background:rgba(21,101,192,0.2);color:var(--blue3);border:1px solid rgba(21,101,192,0.4);}
+
+/* ── SHEETS MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.75);z-index:200;
+  align-items:flex-end;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--bg2);border:1px solid rgba(21,101,192,0.3);
+  border-radius:20px 20px 0 0;padding:24px 20px 40px;
+  width:100%;max-width:460px;
+  animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px;}
+.modal-sub{font-size:13px;color:var(--silver);margin-bottom:20px;line-height:1.6;}
+.modal-close{float:right;background:none;border:none;color:var(--silver);font-size:20px;cursor:pointer;margin-top:-4px;}
+
+/* ── SPINNER ── */
+.spinner{display:none;text-align:center;padding:20px;}
+.spinner.show{display:block;}
+.spin{
+  width:32px;height:32px;border:3px solid rgba(21,101,192,0.2);
+  border-top-color:var(--blue2);border-radius:50%;
+  animation:spin 0.8s linear infinite;display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.new-call-btn{
+  width:100%;background:var(--card2);border:1px solid rgba(21,101,192,0.3);
+  border-radius:12px;padding:15px;font-size:15px;font-weight:700;
+  color:var(--blue3);cursor:pointer;font-family:'Outfit',sans-serif;margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <img class="logo-img" src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+    <div class="header-text">
+      <div class="brand">Blue Eagle Medical Accounts</div>
+      <div class="tagline">Live Call Guide</div>
+    </div>
+  </div>
+  <div class="step-pill" id="stepPill">Contact</div>
+</div>
+<div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+
+<!-- ═══════════ SCREEN 0: CONTACT ═══════════ -->
+<div class="screen active" id="s0">
+  <div class="pill p-blue">📋 Before You Dial</div>
+  <div class="screen-title">Contact Details</div>
+  <div class="screen-sub">Complete before calling</div>
+
+  <div class="fg"><label class="fl">Practice Name *</label>
+    <input class="fi" id="f-practice" type="text" placeholder="e.g. Sandton Family Practice"></div>
+  <div class="fg"><label class="fl">Doctor Name *</label>
+    <input class="fi" id="f-doctor" type="text" placeholder="e.g. Dr Naidoo"></div>
+  <div class="fg"><label class="fl">Phone Number</label>
+    <input class="fi" id="f-phone" type="tel" placeholder="011 555 0000"></div>
+  <div class="fg"><label class="fl">Email Address</label>
+    <input class="fi" id="f-email" type="email" placeholder="doctor@practice.co.za"></div>
+  <div class="fg"><label class="fl">Type of Practice</label>
+    <select class="fi" id="f-type">
+      <option value="">Select specialty</option>
+      <option>General Practitioner (GP)</option>
+      <option>Specialist — Physician</option>
+      <option>Specialist — Surgeon</option>
+      <option>Specialist — Gynaecologist</option>
+      <option>Specialist — Paediatrician</option>
+      <option>Allied Health — Physiotherapy</option>
+      <option>Allied Health — Occupational Therapy</option>
+      <option>Allied Health — Speech Therapy</option>
+      <option>Dentist / Dental Specialist</option>
+      <option>Psychiatrist / Psychologist</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Area / Province</label>
+    <select class="fi" id="f-area">
+      <option value="">Select area</option>
+      <option>Gauteng — Pretoria</option>
+      <option>Gauteng — Johannesburg</option>
+      <option>Gauteng — Other</option>
+      <option>Western Cape</option>
+      <option>KwaZulu-Natal</option>
+      <option>Eastern Cape</option>
+      <option>Limpopo</option>
+      <option>Mpumalanga</option>
+      <option>North West</option>
+      <option>Free State</option>
+      <option>Northern Cape</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-next" onclick="goTo(1)" style="flex:1;">Start Call →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 1: OPENING ═══════════ -->
+<div class="screen" id="s1">
+  <div class="pill p-blue">🎙 Opening</div>
+  <div class="screen-title">First 30 Seconds</div>
+  <div class="screen-sub">Calm, confident, unhurried</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Your Script</span>
+    <div class="script-text">
+      Good morning — this is <span class="b">[your name]</span> from <span class="b">Blue Eagle Medical Accounts</span>.<br><br>
+      We're a specialist medical billing and credit control bureau based in Pretoria, working with practices on <span class="b">Elixir Live</span> across South Africa.<br><br>
+      I'll keep it brief — I just wanted to ask quickly: how are you currently managing your billing and credit control — <span class="b">in-house, outsourced, or a mix of both?</span><br><br>
+      <span class="pause">⏸ STOP — Wait for their answer</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Why It Works</span>
+    <div class="voss-text">End with a question, not a pitch. The listener controls the conversation. Stay silent after asking — whatever they say next tells you everything. Calm tone = credibility.</div>
+  </div>
+
+  <div class="screen-title" style="font-size:17px;margin-bottom:12px;">What did they say?</div>
+  <div class="choices">
+    <button class="cb cg" onclick="setD('billing','Outsourced'); goTo(2)">
+      <div class="ci">🏢</div><div class="cc"><div class="ct">Outsourced</div><div class="cs">They use a billing bureau already</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="setD('billing','Mix of Both'); goTo(4)">
+      <div class="ci">🔀</div><div class="cc"><div class="ct">Mix of Both</div><div class="cs">Part outsourced, part in-house</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cb2" onclick="setD('billing','In-House'); goTo(10)">
+      <div class="ci">🏠</div><div class="cc"><div class="ct">In-House</div><div class="cs">Managing billing internally</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="setD('billing','No Answer'); goTo(20)">
+      <div class="ci">📵</div><div class="cc"><div class="ct">Couldn't Reach</div><div class="cs">No answer or hung up</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 2: SYSTEM ═══════════ -->
+<div class="screen" id="s2">
+  <div class="pill p-blue">🖥 System</div>
+  <div class="screen-title">Which Billing System?</div>
+  <div class="screen-sub">Ask before anything else</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Understood — good to know.<br><br>
+      Out of curiosity, <span class="b">which billing system are you currently on</span> — Elixir Live, GoodX, Healthbridge, or something else?<br><br>
+      <span class="pause">⏸ Listen</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Black Swan Probe</span>
+    <div class="voss-text">"Out of curiosity" removes the interrogation feel. If they're on Elixir Live — you're their specialist. If not — you handle migration. Either way, you have an answer ready.</div>
+  </div>
+
+  <div class="fg"><label class="fl">Their Current System</label>
+    <select class="fi" id="f-system">
+      <option value="">Select system</option>
+      <option>Elixir Live ✓</option>
+      <option>GoodX</option>
+      <option>Healthbridge</option>
+      <option>Solumed</option>
+      <option>Panacea</option>
+      <option>Other / Unknown</option>
+    </select>
+  </div>
+
+  <div class="callout ca-blue">
+    <strong>If They Say GoodX / Healthbridge</strong>
+    "That's fine — we handle the migration completely. No disruption to the practice. The reason we specialise in Elixir Live is we know every feature and rejection pattern at a deep level."
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="saveF('system','f-system'); goTo(3)">Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 3: SATISFACTION ═══════════ -->
+<div class="screen" id="s3">
+  <div class="pill p-blue">💬 Probe</div>
+  <div class="screen-title">How Happy Are They?</div>
+  <div class="screen-sub">The most important question in the call</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      How would you describe your experience with your current billing setup?<br><br>
+      <span class="b">Are things running the way you'd want them to — or are there areas where there's room for improvement?</span><br><br>
+      <span class="pause">⏸ Listen — don't interrupt or fill the silence</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Mirror Any Hesitation</span>
+    <div class="voss-text">If they say "it's fine I suppose" — mirror: "Fine, you suppose?" then wait. The hesitation IS the crack. Don't rush past it. That pause contains your opportunity.</div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('satisfaction','Very Happy'); goTo(5)">
+      <div class="ci">😊</div><div class="cc"><div class="ct">Very Happy</div><div class="cs">Fully satisfied with current bureau</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="setD('satisfaction','Works Fine'); goTo(5)">
+      <div class="ci">😐</div><div class="cc"><div class="ct">Works Fine</div><div class="cs">No big complaints but not enthused</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="setD('satisfaction','Some Issues'); goTo(6)">
+      <div class="ci">⚠️</div><div class="cc"><div class="ct">Some Issues</div><div class="cs">Communication, follow-up, or reporting gaps</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cp" onclick="setD('satisfaction','Not Happy'); goTo(6)">
+      <div class="ci">😤</div><div class="cc"><div class="ct">Not Happy at All</div><div class="cs">Frustrated — this is a hot lead</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 4: MIX ═══════════ -->
+<div class="screen" id="s4">
+  <div class="pill p-gold">🔀 Mix</div>
+  <div class="screen-title">Find the Weak Side</div>
+  <div class="screen-sub">Which part is done internally?</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Interesting — a mix is actually very common.<br><br>
+      <span class="b">Which part is handled externally — the billing and claims submission, or the credit control and collections side?</span><br><br>
+      <span class="pause">⏸ Listen</span>
+    </div>
+  </div>
+  <div class="choices">
+    <button class="cb cy" onclick="setD('mix_gap','Credit Control Weak'); goTo(6)">
+      <div class="ci">💰</div><div class="cc"><div class="ct">Credit Control Is In-House</div><div class="cs">Collections and follow-up not being done properly</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cb2" onclick="setD('mix_gap','Billing Weak'); goTo(6)">
+      <div class="ci">📋</div><div class="cc"><div class="ct">Billing Is In-House</div><div class="cs">Claims causing issues</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cg" onclick="setD('mix_gap','Both Fine'); goTo(5)">
+      <div class="ci">✅</div><div class="cc"><div class="ct">Both Seem Fine</div><div class="cs">No obvious gap identified</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 5: HAPPY — SEED ═══════════ -->
+<div class="screen" id="s5">
+  <div class="pill p-green">🌱 Seed</div>
+  <div class="screen-title">They're Happy — Plant a Seed</div>
+  <div class="screen-sub">Don't push. Ask one probing question, then get permission.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      That's great — sounds like they're doing something right.<br><br>
+      <span class="pause">⏸ 2 second pause</span><br><br>
+      Out of curiosity — do you currently receive a <span class="b">monthly report showing your total rejected claims, outstanding debtor balance, and collections for the month?</span><br><br>
+      <span class="pause">⏸ Listen to their answer</span><br><br>
+      <em style="color:var(--silver);font-size:13px;">IF YES: "That's great — sounds like they're on top of reporting. Would it still be alright if I sent through our details as a second option for future reference — no obligation?"</em><br><br>
+      <em style="color:var(--silver);font-size:13px;">IF NO or HESITATION: "That's actually where most of the money gets missed — we build that reporting into every client from day one."</em>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Black Swan Probe</span>
+    <div class="voss-text">Most practices don't receive proper monthly reports. If they hesitate — that's your crack. Don't celebrate and move on. Stay there. Ask what the report would look like if they did get one.</div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('outcome','WARM — Send Details'); goTo(13)">
+      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Happy to Receive Info</div><div class="cs">Agreed to overview email</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="setD('satisfaction','Reporting Gap Found'); goTo(6)">
+      <div class="ci">🔍</div><div class="cc"><div class="ct">Hesitated on Reporting</div><div class="cs">Don't get proper reports — pivot to pain</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="setD('outcome','COLD — Not Interested'); goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested at All</div><div class="cs">Doesn't want information</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 6: PAIN — PITCH ═══════════ -->
+<div class="screen" id="s6">
+  <div class="pill p-red">🔥 Lead Found</div>
+  <div class="screen-title">Pain Identified</div>
+  <div class="screen-sub">Label their situation. Offer a low-friction next step.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Got you — <span class="b">it sounds like things aren't quite running the way you'd want them to.</span><br><br>
+      <span class="pause">⏸ Pause — let them agree</span><br><br>
+      That's actually very common — we work with a number of practices in a similar position, where billing or credit control isn't being handled as thoroughly as it should be.<br><br>
+      <span class="b">Would it be a bad idea to spend two minutes hearing what we offer — just so you know there are other options available? No obligation at all.</span><br><br>
+      <span class="pause">⏸ Wait</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Label + No-Oriented</span>
+    <div class="voss-text">"Sounds like things aren't running the way you'd want" names their reality without judging. "Would it be a bad idea" almost never gets "yes, it IS a bad idea." It's the softest possible open door.</div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="goTo(7)">
+      <div class="ci">✅</div><div class="cc"><div class="ct">No — Go Ahead (Interested)</div><div class="cs">They want to hear more</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="goTo(8)">
+      <div class="ci">🤔</div><div class="cc"><div class="ct">Maybe / Unsure</div><div class="cs">Needs more context first</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested</div><div class="cs">Doesn't want to hear more</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 7: PRICING ═══════════ -->
+<div class="screen" id="s7">
+  <div class="pill p-gold">💰 Pricing</div>
+  <div class="screen-title">Explain the Model</div>
+  <div class="screen-sub">Simple. Two options. Tied to their success.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      We keep our pricing very simple.<br><br>
+      <span class="b">Option 1 — percentage-based:</span> we charge 5% on what is actually collected. If nothing is collected, there's no fee. Our performance is tied directly to yours.<br><br>
+      <span class="b">Option 2 — fixed monthly fee:</span> your cost stays consistent regardless of how collections grow, which some practices prefer for budgeting certainty.<br><br>
+      It really depends on what suits your practice best.<br><br>
+      <span class="b">How does that sound to you?</span><br><br>
+      <span class="pause">⏸ Wait for their answer</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Alignment Frame</span>
+    <div class="voss-text">"Our performance is tied directly to yours" turns the fee into a partnership. Two clear options give them control. "How does that sound?" is an open question — not a forced yes. Never say "so shall we get started?"</div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('pricing','Interested'); goTo(9)">
+      <div class="ci">👍</div><div class="cc"><div class="ct">Sounds Good — Interested</div><div class="cs">Ready for proposal or meeting</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="goTo(8)">
+      <div class="ci">🤔</div><div class="cc"><div class="ct">Not Sure Yet</div><div class="cs">Needs to think — send info</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">👎</div><div class="cc"><div class="ct">Not Interested</div><div class="cs">Doesn't want to proceed</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 8: UNSURE — EMAIL ═══════════ -->
+<div class="screen" id="s8">
+  <div class="pill p-gold">📧 Warm</div>
+  <div class="screen-title">Unsure — Send Info</div>
+  <div class="screen-sub">Get the email. Find their priority. Book the follow-up.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      That's completely fair — most practices feel that way at first.<br><br>
+      What I can do is send you something short so you can have a look in your own time and get a better sense of how we work.<br><br>
+      <span class="b">Where can I send that through to?</span><br><br>
+      <span class="pause">⏸ Get email immediately</span><br><br>
+      And just so I send the most relevant information — <span class="b">what would be most useful: the collections and follow-up process, the reporting side, or the rejected claims recovery?</span>
+    </div>
+  </div>
+
+  <div class="fg"><label class="fl">Email Address</label>
+    <input class="fi" id="f-email2" type="email" placeholder="doctor@practice.co.za"></div>
+  <div class="fg"><label class="fl">Their Main Priority</label>
+    <select class="fi" id="f-interest">
+      <option value="">Select their priority</option>
+      <option>Collections & follow-up</option>
+      <option>Rejected claims recovery</option>
+      <option>Monthly reporting</option>
+      <option>Reducing admin pressure</option>
+      <option>Credit control & debtors</option>
+      <option>Not specified</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="setD('outcome','WARM — Email Sent'); goTo(13)">Got Email →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 9: MEETING ═══════════ -->
+<div class="screen" id="s9">
+  <div class="pill p-red">🔥 Hot Lead</div>
+  <div class="screen-title">Book the Meeting</div>
+  <div class="screen-sub">The ageing report review closes deals</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Perfect — what would make the most sense is a short <span class="b">15–20 minute review</span> where we look at your current billing position together on Elixir Live.<br><br>
+      We'll look at your ageing report, identify any obvious collection gaps, and you'll walk away with a clearer picture — <span class="b">no obligation at all.</span><br><br>
+      <span class="b">What works better — earlier in the week, or towards the end of the week?</span><br><br>
+      <span class="pause">⏸ Let them pick. Don't add anything.</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Assumptive Binary Close</span>
+    <div class="voss-text">Never ask "would you like to meet?" — that's an easy no. The binary (early/late week) assumes the meeting is happening and just asks when. This is the most effective close in the form.</div>
+  </div>
+
+  <div class="fg"><label class="fl">Meeting Date</label>
+    <input class="fi" id="f-mdate" type="date"></div>
+  <div class="fg"><label class="fl">Time Preference</label>
+    <select class="fi" id="f-mtime">
+      <option value="">Select</option>
+      <option>Morning (before 12pm)</option>
+      <option>Afternoon (12pm–5pm)</option>
+      <option>After hours (after 5pm)</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Format</label>
+    <select class="fi" id="f-mformat">
+      <option value="">Select</option>
+      <option>Online / Video Call</option>
+      <option>Phone Call</option>
+      <option>In Person</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="setD('outcome','HOT — Meeting Booked'); goTo(15)">Meeting Booked →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 10: IN-HOUSE ═══════════ -->
+<div class="screen" id="s10">
+  <div class="pill p-blue">🏠 In-House</div>
+  <div class="screen-title">Find the Credit Control Gap</div>
+  <div class="screen-sub">They manage billing — but do they manage collections?</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Understood — a lot of practices start out managing billing internally.<br><br>
+      <span class="b">Would you say collecting outstanding balances from medical aids and patients runs smoothly — or is that an area where money sometimes sits longer than it should?</span><br><br>
+      <span class="pause">⏸ Listen — don't fill the silence</span>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Loss Aversion Probe</span>
+    <div class="voss-text">"Money sitting longer than it should" activates loss aversion — they're picturing money already earned but not received. Almost always surfaces a real problem that the doctor hasn't fully quantified yet.</div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('inhouse','Collections Problem'); goTo(11)">
+      <div class="ci">⚠️</div><div class="cc"><div class="ct">Yes — Collections Are a Problem</div><div class="cs">Money in debtors, follow-ups not done</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="setD('inhouse','Maybe Some Issues'); goTo(11)">
+      <div class="ci">🤔</div><div class="cc"><div class="ct">Maybe — Some Issues</div><div class="cs">Uncertain or partial problem</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(12)">
+      <div class="ci">✅</div><div class="cc"><div class="ct">No — Seems Fine</div><div class="cs">They feel on top of it</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 11: IN-HOUSE CC PAIN ═══════════ -->
+<div class="screen" id="s11">
+  <div class="pill p-red">🔥 CC Gap</div>
+  <div class="screen-title">Position Credit Control</div>
+  <div class="screen-sub">This is your wedge for all in-house practices</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      That's exactly where we help most.<br><br>
+      Even when billing is handled well internally, <span class="b">credit control is where the money gets left behind</span> — following up with medical aids, chasing patient balances, resubmitting rejections consistently.<br><br>
+      Most practices find that between <span class="b">R20,000 and R80,000 per month</span> is sitting in debtors that nobody is actively chasing.<br><br>
+      <span class="b">Would it be a bad idea if I sent you a short overview of how we handle that specifically — no obligation at all?</span><br><br>
+      <span class="pause">⏸ Wait</span>
+    </div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('outcome','WARM — In-House CC'); goTo(13)">
+      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Send Overview</div><div class="cs">Agreed to receive info</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="goTo(9)">
+      <div class="ci">📅</div><div class="cc"><div class="ct">Wants to Discuss Further</div><div class="cs">Ready for meeting</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested</div><div class="cs">Doesn't want to proceed</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 12: IN-HOUSE SEED ═══════════ -->
+<div class="screen" id="s12">
+  <div class="pill p-blue">🌱 Seed</div>
+  <div class="screen-title">Seems Fine — Stay in Touch</div>
+  <div class="screen-sub">Get permission to re-contact. Never burn a lead.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      That's great — sounds like the practice is well managed.<br><br>
+      <span class="b">Would it be alright if I sent through our details just as a reference — purely so you have it available if anything changes down the line?</span><br><br>
+      <span class="pause">⏸ Wait</span>
+    </div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('outcome','WARM — Future Reference'); goTo(13)">
+      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Send Details</div><div class="cs">Happy to keep as reference</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">No — Not Interested</div><div class="cs">Doesn't want contact</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 13: EMAIL + FOLLOW-UP ═══════════ -->
+<div class="screen" id="s13">
+  <div class="pill p-green">📧 Follow-Up</div>
+  <div class="screen-title">Lock the Next Step</div>
+  <div class="screen-sub">Always end with a concrete follow-up date</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Perfect — I'll put that together based on what you've shared.<br><br>
+      <span class="b">What's the best email address to send it to?</span><br><br>
+      <span class="pause">⏸ Get email</span><br><br>
+      And <span class="b">would it be a bad idea if I followed up later this week or early next week</span> — just to see if you had a chance to look at it?<br><br>
+      <span class="pause">⏸ Confirm a specific day</span>
+    </div>
+  </div>
+
+  <div class="fg"><label class="fl">Email Address Confirmed</label>
+    <input class="fi" id="f-email3" type="email" placeholder="doctor@practice.co.za"></div>
+  <div class="fg"><label class="fl">Follow-Up Date</label>
+    <input class="fi" id="f-fdate" type="date"></div>
+  <div class="fg"><label class="fl">Best Time to Call Back</label>
+    <select class="fi" id="f-ftime">
+      <option value="">Select preference</option>
+      <option>Morning (before 12pm)</option>
+      <option>Afternoon (12pm–5pm)</option>
+      <option>After hours</option>
+      <option>No preference</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="goTo(15)">Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 15: NOTES ═══════════ -->
+<div class="screen" id="s15">
+  <div class="pill p-blue">📝 Notes</div>
+  <div class="screen-title">Call Notes</div>
+  <div class="screen-sub">Quick notes now = better follow-up later</div>
+
+  <div class="fg"><label class="fl">Main Pain Point Mentioned</label>
+    <textarea class="fi" id="f-pain" placeholder="e.g. Rejected claims not followed up, poor communication from current bureau..."></textarea></div>
+  <div class="fg"><label class="fl">Current Bureau (if applicable)</label>
+    <input class="fi" id="f-bureau" type="text" placeholder="Bureau name, or 'In-house'"></div>
+  <div class="fg"><label class="fl">Tone / Receptiveness</label>
+    <select class="fi" id="f-tone">
+      <option value="">Select</option>
+      <option>Very receptive and engaged</option>
+      <option>Polite but cautious</option>
+      <option>Busy / distracted</option>
+      <option>Resistant initially but opened up</option>
+      <option>Cold throughout</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Any Other Notes</label>
+    <textarea class="fi" id="f-notes" placeholder="Names mentioned, specific concerns, follow-up context..."></textarea></div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-submit" onclick="submitCall()">✓ Submit Call Log</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 19: COLD ═══════════ -->
+<div class="screen" id="s19">
+  <div class="pill p-purple">❄️ Cold</div>
+  <div class="screen-title">Not Interested — Close Well</div>
+  <div class="screen-sub">Always leave the door open. Never burn a contact.</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      No problem at all — I completely understand.<br><br>
+      <span class="b">Would it be alright if I checked back in with you in a few months, just to see if anything has changed on your end?</span><br><br>
+      <span class="pause">⏸ Wait for answer</span><br><br>
+      <em style="color:var(--silver);font-size:13px;">Thank you for your time, Doctor — I really appreciate it. Have a great day.</em>
+    </div>
+  </div>
+  <div class="voss">
+    <span class="voss-lbl">🧠 Voss — Always Plant a Seed</span>
+    <div class="voss-text">A bureau that's "fine" today can fall apart tomorrow. Getting permission to re-contact in 60–90 days costs nothing. Every cold lead on your list is a future warm lead — you just haven't hit the right moment yet.</div>
+  </div>
+
+  <div class="fg"><label class="fl">Re-Contact Permission</label>
+    <select class="fi" id="f-recontact">
+      <option value="">Select</option>
+      <option>Yes — re-contact in 60 days</option>
+      <option>Yes — re-contact in 90 days</option>
+      <option>No — do not contact again</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Reason for Declining</label>
+    <select class="fi" id="f-decline">
+      <option value="">Select reason</option>
+      <option>Happy with current bureau</option>
+      <option>Not looking to change</option>
+      <option>Not the right time</option>
+      <option>Cost concern</option>
+      <option>System not compatible</option>
+      <option>No reason given</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="setD('outcome','COLD'); goTo(15)">Log →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 20: NO ANSWER ═══════════ -->
+<div class="screen" id="s20">
+  <div class="pill p-purple">📵 No Answer</div>
+  <div class="screen-title">Couldn't Reach</div>
+  <div class="screen-sub">Log attempt and plan next touch</div>
+
+  <div class="callout ca-blue">
+    <strong>Protocol</strong>
+    Don't leave a voicemail on attempt 1 or 2. Try at a different time of day. After 3 attempts across different times, send the cold email instead.
+  </div>
+
+  <div class="fg"><label class="fl">Attempt Number</label>
+    <select class="fi" id="f-attempt">
+      <option>1st attempt — try again different time</option>
+      <option>2nd attempt — try again different day</option>
+      <option>3rd attempt — send cold email next</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Next Attempt Date</label>
+    <input class="fi" id="f-nextcall" type="date"></div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+    <button class="btn-next" onclick="setD('outcome','NO ANSWER — Retry'); goTo(15)">Log →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 99: SUCCESS ═══════════ -->
+<div class="screen" id="s99">
+  <div class="success-wrap">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Call Logged</div>
+    <div class="success-sub">Summary below. Your next action is ready.</div>
+    <div id="outcome-badge-display"></div>
+  </div>
+
+  <div class="sum-card" id="sum-display"></div>
+  <div class="callout ca-gold" id="next-action"></div>
+
+  <div class="callout ca-blue" style="margin-top:8px;">
+    <strong>📊 Google Sheets</strong>
+    This call has been logged to your Blue Eagle Sales Tracker sheet automatically. Open the sheet to view your full pipeline.
+    <br><br>
+    <div class="spinner" id="spinner"><div class="spin"></div></div>
+    <div id="sheets-status" style="font-size:12px;margin-top:6px;"></div>
+  </div>
+
+  <button class="new-call-btn" onclick="resetForm()">+ Start New Call</button>
+</div>
+
+<!-- ═══════════ SHEETS SETUP MODAL ═══════════ -->
+<div class="modal-overlay" id="setupModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">⚙️ Google Sheets Setup</div>
+    <div class="modal-sub">Paste your Google Apps Script Web App URL below to enable automatic logging to your Blue Eagle Sales Tracker sheet.</div>
+
+    <div class="fg"><label class="fl">Apps Script Web App URL</label>
+      <input class="fi" id="f-webhook" type="url" placeholder="https://script.google.com/macros/s/...">
+    </div>
+    <div class="fg"><label class="fl">Salesperson Name</label>
+      <input class="fi" id="f-salesperson" placeholder="e.g. Owen">
+    </div>
+
+    <button class="btn-full" onclick="saveSetup()">Save & Enable Logging</button>
+
+    <div class="callout ca-gold" style="margin-top:12px;">
+      <strong>How to set this up (5 minutes)</strong>
+      1. Open the Google Sheet setup guide below<br>
+      2. Copy the Apps Script code into your sheet<br>
+      3. Deploy as Web App → copy the URL here<br>
+      4. Every call will log automatically to your sheet
+    </div>
+  </div>
+</div>
+
+<!-- ⚙️ SETTINGS BUTTON -->
+<div style="position:fixed;bottom:90px;right:16px;z-index:50;" id="settingsBtn">
+  <button onclick="openModal()" style="
+    background:var(--card2);border:1px solid rgba(21,101,192,0.3);
+    width:44px;height:44px;border-radius:50%;
+    font-size:18px;cursor:pointer;color:var(--blue3);
+    display:flex;align-items:center;justify-content:center;
+  ">⚙️</button>
+</div>
+
+<script>
+// ── STATE ──
+let D = {};
+let hist = [];
+let cur = 0;
+let webhookURL = localStorage.getItem('be_webhook') || '';
+let salesperson = localStorage.getItem('be_salesperson') || '';
+
+// Load saved settings
+if (webhookURL) document.getElementById('f-webhook').value = webhookURL;
+if (salesperson) document.getElementById('f-salesperson').value = salesperson;
+
+const STEP_LABELS = {
+  0:'Contact',1:'Opening',2:'System',3:'Satisfaction',
+  4:'Mix',5:'Seed',6:'Pain',7:'Pricing',8:'Warm Lead',
+  9:'Meeting',10:'In-House',11:'CC Gap',12:'Seed',
+  13:'Follow-Up',15:'Notes',19:'Cold',20:'No Answer',99:'Done ✓'
+};
+
+const STEP_ORDER = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,19,20,99];
+
+function setD(k,v){ D[k]=v; }
+function saveF(k,id){ const el=document.getElementById(id); if(el) D[k]=el.value; }
+
+function goTo(n){
+  hist.push(cur);
+  show(n);
+}
+
+function goBack(){
+  if(hist.length>0) show(hist.pop());
+}
+
+function show(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t = document.getElementById('s'+n);
+  if(t){ t.classList.add('active'); cur=n; window.scrollTo(0,0); updateUI(n); }
+}
+
+function updateUI(n){
+  document.getElementById('stepPill').textContent = STEP_LABELS[n]||'Step';
+  const idx = STEP_ORDER.indexOf(n);
+  const pct = idx>=0 ? Math.round((idx/(STEP_ORDER.length-1))*100) : 0;
+  document.getElementById('progFill').style.width = pct+'%';
+}
+
+function openModal(){ document.getElementById('setupModal').classList.add('open'); }
+function closeModal(){ document.getElementById('setupModal').classList.remove('open'); }
+
+function saveSetup(){
+  webhookURL = document.getElementById('f-webhook').value.trim();
+  salesperson = document.getElementById('f-salesperson').value.trim();
+  localStorage.setItem('be_webhook', webhookURL);
+  localStorage.setItem('be_salesperson', salesperson);
+  closeModal();
+}
+
+function collectAllData(){
+  const fields = {
+    practice:'f-practice', doctor:'f-doctor', phone:'f-phone',
+    email:'f-email', practice_type:'f-type', area:'f-area',
+    system:'f-system', interest:'f-interest',
+    email_confirmed: ['f-email3','f-email2','f-email'],
+    followup_date:'f-fdate', followup_time:'f-ftime',
+    meeting_date:'f-mdate', meeting_time:'f-mtime', meeting_format:'f-mformat',
+    pain:'f-pain', bureau:'f-bureau', tone:'f-tone', notes:'f-notes',
+    recontact:'f-recontact', decline_reason:'f-decline',
+    attempt:'f-attempt', next_call:'f-nextcall'
+  };
+
+  Object.entries(fields).forEach(([k,v])=>{
+    if(Array.isArray(v)){
+      for(const id of v){ const el=document.getElementById(id); if(el&&el.value){ D[k]=el.value; break; } }
+    } else {
+      const el=document.getElementById(v); if(el&&el.value) D[k]=el.value;
+    }
+  });
+
+  D.salesperson = salesperson || 'Not set';
+  D.timestamp = new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'});
+  D.date = new Date().toLocaleDateString('en-ZA',{timeZone:'Africa/Johannesburg'});
+  D.time = new Date().toLocaleTimeString('en-ZA',{timeZone:'Africa/Johannesburg'});
+}
+
+function buildSummary(){
+  const o = D.outcome || 'Not logged';
+  let bc='b-cold';
+  if(o.includes('HOT')) bc='b-hot';
+  else if(o.includes('WARM')) bc='b-warm';
+  else if(o.includes('Meeting')) bc='b-meet';
+  else if(o.includes('Future')) bc='b-future';
+
+  document.getElementById('outcome-badge-display').innerHTML =
+    `<span class="badge ${bc}">${o}</span>`;
+
+  const rows = [
+    ['Practice', D.practice],['Doctor', D.doctor],
+    ['Phone', D.phone],['Email', D.email_confirmed||D.email],
+    ['Specialty', D.practice_type],['Area', D.area],
+    ['Billing Setup', D.billing],['System', D.system],
+    ['Satisfaction', D.satisfaction],['Main Pain', D.pain],
+    ['Current Bureau', D.bureau],
+    ['Follow-Up', D.followup_date],['Meeting', D.meeting_date],
+    ['Salesperson', D.salesperson],['Logged', D.timestamp],
+  ].filter(r=>r[1]);
+
+  document.getElementById('sum-display').innerHTML = rows.map(r=>
+    `<div class="sum-row"><span class="sum-k">${r[0]}</span><span class="sum-v">${r[1]}</span></div>`
+  ).join('');
+
+  // Next action
+  let na = '';
+  if(o.includes('HOT')||o.includes('Meeting')){
+    na='🔥 <strong>HOT — Action Required Today:</strong> Send meeting confirmation email within 1 hour. Prepare ageing report. Log in your sheet as HOT.';
+  } else if(o.includes('WARM')){
+    na=`📧 <strong>WARM — Send Email Today:</strong> Use their priority (${D.interest||'as discussed'}) in the subject line. Follow-up call on ${D.followup_date||'agreed date'}.`;
+  } else if(o.includes('COLD')){
+    na='❄️ <strong>COLD — Log and Move On:</strong> Mark as cold in your sheet. Re-engage in 60–90 days with a fresh angle.';
+  } else if(o.includes('NO ANSWER')){
+    na=`📵 <strong>NO ANSWER:</strong> Retry on ${D.next_call||'next scheduled date'} at a different time. After 3 attempts, send cold email.`;
+  } else {
+    na='Log this call in your Google Sheet and set a next action date.';
+  }
+  document.getElementById('next-action').innerHTML = na;
+}
+
+async function logToSheets(){
+  if(!webhookURL){
+    document.getElementById('sheets-status').innerHTML =
+      '⚠️ No Google Sheets URL set. Tap ⚙️ to configure.';
+    return;
+  }
+
+  document.getElementById('spinner').classList.add('show');
+  document.getElementById('sheets-status').textContent = 'Logging to Google Sheets...';
+
+  try {
+    const resp = await fetch(webhookURL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(D)
+    });
+    document.getElementById('spinner').classList.remove('show');
+    document.getElementById('sheets-status').innerHTML =
+      '✅ Successfully logged to your Blue Eagle Sales Tracker.';
+  } catch(e){
+    document.getElementById('spinner').classList.remove('show');
+    document.getElementById('sheets-status').innerHTML =
+      '❌ Could not connect to Google Sheets. Check your URL in ⚙️ settings.';
+  }
+}
+
+function submitCall(){
+  collectAllData();
+  buildSummary();
+  show(99);
+  logToSheets();
+}
+
+function resetForm(){
+  D={}; hist=[];
+  document.querySelectorAll('.fi').forEach(el=>{
+    if(el.tagName==='SELECT') el.selectedIndex=0;
+    else el.value='';
+  });
+  show(0);
+}
+</script>
+</body>
+</html>
