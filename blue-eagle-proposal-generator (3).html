@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Eagle — Proposal Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0d2040;--blue:#1565c0;--blue2:#1976d2;--blue3:#42a5f5;
+  --blue4:#90caf9;--gold:#f5a623;--green:#1a6b4a;--green2:#e8f5ee;
+  --white:#fff;--bg:#f0f4f8;--card:#fff;
+  --border:#dce8f8;--text:#1a2a3a;--muted:#6b8cad;--light:#e8f0fe;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);min-height:100vh;}
+
+/* ── APP LAYOUT ── */
+.app{display:grid;grid-template-columns:380px 1fr;min-height:100vh;max-width:1400px;margin:0 auto;}
+
+/* ── LEFT PANEL ── */
+.panel{
+  background:var(--navy);
+  padding:28px 24px;
+  overflow-y:auto;
+  position:sticky;top:0;height:100vh;
+}
+
+.panel-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.panel-logo img{width:40px;height:40px;border-radius:8px;background:#fff;padding:3px;object-fit:contain;}
+.panel-logo .brand{color:#fff;font-size:14px;font-weight:700;}
+.panel-logo .sub{color:var(--blue4);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;}
+
+.panel h2{color:var(--gold);font-size:16px;font-weight:700;margin-bottom:4px;}
+.panel .desc{color:var(--blue4);font-size:12px;margin-bottom:24px;line-height:1.6;}
+
+.field-group{margin-bottom:16px;}
+.field-label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue4);margin-bottom:6px;}
+.field-input,.field-select,.field-textarea{
+  width:100%;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);border-radius:8px;
+  padding:11px 14px;font-size:13px;color:#fff;
+  font-family:'DM Sans',sans-serif;outline:none;
+  transition:border-color 0.2s;
+}
+.field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--gold);}
+.field-input::placeholder,.field-textarea::placeholder{color:rgba(255,255,255,0.3);}
+.field-textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.field-select{cursor:pointer;-webkit-appearance:none;}
+.field-select option{background:#0d2040;color:#fff;}
+
+.section-divider{
+  border:none;border-top:1px solid rgba(255,255,255,0.08);
+  margin:20px 0;
+}
+
+.section-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,0.4);
+  margin-bottom:14px;display:block;
+}
+
+.pricing-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.price-opt{
+  padding:10px;border:1px solid rgba(255,255,255,0.12);
+  border-radius:8px;cursor:pointer;text-align:center;
+  transition:all 0.2s;
+}
+.price-opt input{display:none;}
+.price-opt .po-title{font-size:12px;font-weight:700;color:var(--blue4);margin-bottom:2px;}
+.price-opt .po-sub{font-size:10px;color:rgba(255,255,255,0.4);}
+.price-opt.selected{background:rgba(245,166,35,0.15);border-color:var(--gold);}
+.price-opt.selected .po-title{color:var(--gold);}
+.price-opt.selected .po-sub{color:rgba(245,166,35,0.7);}
+
+.btn-generate{
+  width:100%;background:var(--gold);border:none;border-radius:10px;
+  padding:14px;font-size:15px;font-weight:700;color:var(--navy);
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.2s;margin-top:8px;
+}
+.btn-generate:hover{background:#ffc044;transform:translateY(-1px);}
+
+.btn-download{
+  width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;padding:13px;font-size:14px;font-weight:600;color:#fff;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.2s;margin-top:8px;
+}
+.btn-download:hover{background:rgba(255,255,255,0.14);}
+
+/* ── RIGHT PANEL — PREVIEW ── */
+.preview-wrap{
+  padding:32px;
+  overflow-y:auto;
+  background:var(--bg);
+}
+
+.preview-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.preview-header h3{font-size:16px;font-weight:700;color:var(--navy);}
+.preview-badge{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--blue);background:var(--light);border:1px solid var(--border);
+  padding:4px 14px;border-radius:100px;
+}
+
+/* ── PROPOSAL PREVIEW ── */
+.proposal{
+  background:#fff;
+  box-shadow:0 4px 40px rgba(0,0,0,0.1);
+  max-width:720px;
+  margin:0 auto;
+}
+
+/* Header */
+.p-header{
+  background:var(--navy);
+  padding:22px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:4px solid var(--gold);
+}
+.p-header-left{display:flex;align-items:center;gap:14px;}
+.p-logo{width:46px;height:46px;background:#fff;border-radius:8px;padding:3px;object-fit:contain;}
+.p-brand{color:#fff;font-size:16px;font-weight:700;}
+.p-brand-sub{color:var(--blue4);font-size:10px;letter-spacing:1px;margin-top:2px;}
+.p-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 18px;border-radius:4px;}
+
+/* Meta */
+.p-meta{
+  background:#f5f7fa;border-bottom:1px solid var(--border);
+  padding:14px 32px;display:flex;gap:32px;
+}
+.p-meta-item .ml{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:2px;}
+.p-meta-item .mv{font-size:13px;font-weight:600;color:var(--navy);}
+
+/* Body */
+.p-body{padding:28px 32px;}
+
+.p-headline{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+.p-headline h1{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);line-height:1.2;margin-bottom:8px;}
+.p-headline h1 span{color:var(--blue);}
+.p-headline p{font-size:13px;color:#4a6a8a;line-height:1.7;}
+
+.p-section{margin-bottom:22px;}
+.p-sec-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.p-sec-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.p-sec-text{font-size:13px;color:#3a5a7a;line-height:1.7;margin-bottom:8px;}
+
+/* Pain box */
+.pain-box{
+  background:#fff8f0;border:1px solid rgba(245,166,35,0.4);
+  border-left:4px solid var(--gold);
+  border-radius:0 8px 8px 0;
+  padding:14px 16px;margin:10px 0;font-size:13px;color:#5a3a00;line-height:1.7;
+}
+
+/* Services */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.svc-item{background:#f5f7fa;border:1px solid var(--border);border-radius:6px;padding:12px 14px;}
+.svc-item .si-title{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.svc-item .si-list{font-size:11px;color:#4a6a8a;line-height:1.7;}
+
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.price-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.price-card.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(245,166,35,0.2);}
+.pc-head{background:var(--blue);color:#fff;padding:10px 14px;}
+.pc-head.recommended{background:var(--navy);}
+.pc-opt{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue4);margin-bottom:2px;}
+.pc-title{font-size:13px;font-weight:700;}
+.pc-body{padding:12px 14px;background:#f5f7fa;}
+.pc-fee{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.pc-desc{font-size:11px;color:#4a6a8a;line-height:1.6;}
+.price-note{background:var(--green2);border:1px solid var(--green);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--green);margin-top:8px;line-height:1.6;}
+
+/* Why us */
+.why-list{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.why-row{display:flex;border-bottom:1px solid var(--border);font-size:12px;}
+.why-row:last-child{border-bottom:none;}
+.why-row:nth-child(odd){background:#f5f7fa;}
+.why-row:nth-child(even){background:#fff;}
+.why-title{background:var(--blue);color:#fff;padding:10px 12px;font-weight:700;min-width:140px;display:flex;align-items:center;font-size:11px;}
+.why-desc{padding:10px 14px;color:#3a5a7a;line-height:1.6;}
+
+/* Next step */
+.next-box{background:var(--light);border:1px solid var(--blue);border-radius:8px;padding:18px 20px;margin:10px 0;}
+.next-box h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.next-box p{font-size:13px;color:#1a3a6a;line-height:1.7;margin-bottom:6px;}
+.next-box ul{list-style:none;padding:0;}
+.next-box ul li{font-size:12px;color:#1a3a6a;padding:3px 0 3px 16px;position:relative;}
+.next-box ul li::before{content:'✓';position:absolute;left:0;color:var(--blue);font-weight:700;}
+
+/* Sign off */
+.signoff{display:flex;gap:16px;background:#f5f7fa;border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-top:18px;align-items:center;}
+.s-avatar{width:44px;height:44px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;font-weight:700;flex-shrink:0;}
+.s-name{font-size:14px;font-weight:700;color:var(--navy);}
+.s-title{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.s-contact{font-size:11px;color:var(--blue);line-height:1.8;}
+.confidential{font-size:10px;color:#9ab0c8;text-align:center;margin-top:12px;font-style:italic;}
+
+hr.pdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
+
+/* Footer */
+.p-footer{background:var(--navy);border-top:3px solid var(--gold);padding:12px 32px;display:flex;justify-content:space-between;}
+.p-footer p{font-size:10px;color:var(--blue4);}
+
+@media print{
+  body{background:#fff;}
+  .panel{display:none;}
+  .preview-wrap{padding:0;}
+  .preview-header{display:none;}
+  .proposal{box-shadow:none;max-width:100%;}
+  .app{grid-template-columns:1fr;}
+}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .panel{position:relative;height:auto;}
+  .preview-wrap{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- ═══ LEFT PANEL — FORM ═══ -->
+<div class="panel">
+  <div class="panel-logo">
+    <img src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+    <div>
+      <div class="brand">Blue Eagle Medical Accounts</div>
+      <div class="sub">Proposal Generator</div>
+    </div>
+  </div>
+
+  <h2>Generate a Proposal</h2>
+  <div class="desc">Fill in the details and the proposal updates live. Download as PDF when ready.</div>
+
+  <span class="section-label">Doctor Details</span>
+
+  <div class="field-group">
+    <label class="field-label">Doctor / Practice Name *</label>
+    <input class="field-input" id="f-doctor" type="text" placeholder="e.g. Dr Naidoo" oninput="update()">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Practice Name</label>
+    <input class="field-input" id="f-practice" type="text" placeholder="e.g. Sandton Family Practice" oninput="update()">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Specialty</label>
+    <select class="field-select" id="f-specialty" onchange="update()">
+      <option value="">Select specialty</option>
+      <option>General Practitioner</option>
+      <option>Specialist — Physician</option>
+      <option>Specialist — Surgeon</option>
+      <option>Specialist — Gynaecologist</option>
+      <option>Specialist — Paediatrician</option>
+      <option>Allied Health — Physiotherapy</option>
+      <option>Allied Health — Occupational Therapy</option>
+      <option>Dentist / Dental Specialist</option>
+      <option>Psychiatrist / Psychologist</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Date</label>
+    <input class="field-input" id="f-date" type="date" oninput="update()">
+  </div>
+
+  <hr class="section-divider">
+  <span class="section-label">Their Pain Point</span>
+
+  <div class="field-group">
+    <label class="field-label">Main Issue They Mentioned</label>
+    <select class="field-select" id="f-pain-type" onchange="updatePain()">
+      <option value="">Select pain point</option>
+      <option value="rejected">Rejected claims not being followed up</option>
+      <option value="collections">Collections and outstanding debt building up</option>
+      <option value="communication">Poor communication with current bureau</option>
+      <option value="reporting">No proper monthly reporting</option>
+      <option value="admin">Admin overload — no time for billing</option>
+      <option value="inhouse">Managing billing in-house — becoming too much</option>
+      <option value="custom">Custom — type your own</option>
+    </select>
+  </div>
+
+  <div class="field-group" id="custom-pain-group" style="display:none;">
+    <label class="field-label">Describe Their Pain</label>
+    <textarea class="field-textarea" id="f-pain-custom" placeholder="Based on your conversation with the doctor..." oninput="update()"></textarea>
+  </div>
+
+  <hr class="section-divider">
+  <span class="section-label">Pricing</span>
+
+  <div class="field-group">
+    <label class="field-label">Percentage Rate</label>
+    <select class="field-select" id="f-pct-rate" onchange="update()">
+      <option value="5">5% of Collections</option>
+      <option value="5.5">5.5% of Collections</option>
+      <option value="6">6% of Collections</option>
+      <option value="6.5">6.5% of Collections</option>
+      <option value="7">7% of Collections</option>
+      <option value="7.5">7.5% of Collections</option>
+      <option value="8">8% of Collections</option>
+    </select>
+  </div>
+
+  <div class="pricing-toggle">
+    <label class="price-opt selected" id="opt-pct">
+      <input type="radio" name="pricing" value="percentage" checked onchange="update()">
+      <div class="po-title">Percentage</div>
+      <div class="po-sub">% of collections</div>
+    </label>
+    <label class="price-opt" id="opt-fixed">
+      <input type="radio" name="pricing" value="fixed" onchange="update()">
+      <div class="po-title">Fixed Monthly</div>
+      <div class="po-sub">Set monthly fee</div>
+    </label>
+    <label class="price-opt" id="opt-both">
+      <input type="radio" name="pricing" value="both" onchange="update()">
+      <div class="po-title">Show Both</div>
+      <div class="po-sub">Let them choose</div>
+    </label>
+  </div>
+
+  <hr class="section-divider">
+  <span class="section-label">Salesperson</span>
+
+  <div class="field-group">
+    <label class="field-label">Your Name</label>
+    <input class="field-input" id="f-sales-name" type="text" placeholder="e.g. Noya Mbulaheni" oninput="update()">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Your Title</label>
+    <input class="field-input" id="f-sales-title" type="text" placeholder="e.g. Sales Executive" oninput="update()">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Reply Email Address</label>
+    <select class="field-select" id="f-email" onchange="update()">
+      <option value="info@blueeagle-medacc.com">info@blueeagle-medacc.com</option>
+      <option value="sales@blueeagle-medacc.com">sales@blueeagle-medacc.com</option>
+    </select>
+  </div>
+
+  <hr class="section-divider">
+
+  <button class="btn-generate" onclick="window.print()">⬇️ Download as PDF</button>
+  <button class="btn-download" onclick="copyLink()">📋 Copy Proposal Text</button>
+
+</div>
+
+<!-- ═══ RIGHT PANEL — PREVIEW ═══ -->
+<div class="preview-wrap">
+  <div class="preview-header">
+    <h3>Live Preview</h3>
+    <div class="preview-badge">Updates as you type</div>
+  </div>
+
+  <!-- PROPOSAL -->
+  <div class="proposal" id="proposal">
+
+    <!-- Header -->
+    <div class="p-header">
+      <div class="p-header-left">
+        <img class="p-logo" src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+        <div>
+          <div class="p-brand">Blue Eagle Medical Accounts</div>
+          <div class="p-brand-sub">Professional Medical Billing &amp; Credit Control</div>
+        </div>
+      </div>
+      <div class="p-badge">Proposal</div>
+    </div>
+
+    <!-- Meta -->
+    <div class="p-meta">
+      <div class="p-meta-item">
+        <div class="ml">Prepared For</div>
+        <div class="mv" id="p-doctor">Dr Ezami</div>
+      </div>
+      <div class="p-meta-item">
+        <div class="ml">Practice</div>
+        <div class="mv" id="p-practice">—</div>
+      </div>
+      <div class="p-meta-item">
+        <div class="ml">Date</div>
+        <div class="mv" id="p-date">—</div>
+      </div>
+      <div class="p-meta-item">
+        <div class="ml">Prepared By</div>
+        <div class="mv" id="p-sales">Noya Mbulaheni</div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-body">
+
+      <!-- Headline -->
+      <div class="p-headline">
+        <h1>Improving Your <span id="p-headline-focus">Collections and Billing</span></h1>
+        <p id="p-intro">Thank you for your time. This proposal outlines how Blue Eagle Medical Accounts can support your practice — improving collections, reducing outstanding accounts, and freeing you to focus on patients.</p>
+      </div>
+
+      <!-- Pain Point -->
+      <div class="p-section" id="pain-section">
+        <div class="p-sec-label">Why We're Speaking</div>
+        <div class="p-sec-title">Based on Our Conversation</div>
+        <div class="pain-box" id="p-pain-box">
+          Based on our conversation, we understand that your practice is currently experiencing challenges with outstanding accounts and billing follow-up. This is one of the most common issues we help practices resolve.
+        </div>
+      </div>
+
+      <hr class="pdiv">
+
+      <!-- Services -->
+      <div class="p-section">
+        <div class="p-sec-label">What We Provide</div>
+        <div class="p-sec-title">Our Services</div>
+        <div class="svc-grid">
+          <div class="svc-item">
+            <div class="si-title">🔵 Medical Billing</div>
+            <div class="si-list">Claim submissions, rejection handling, resubmissions, payment allocations</div>
+          </div>
+          <div class="svc-item">
+            <div class="si-title">🟢 Credit Control</div>
+            <div class="si-list">Outstanding claim follow-up, patient collections, ageing debt reduction</div>
+          </div>
+          <div class="svc-item">
+            <div class="si-title">🟡 Authorisations</div>
+            <div class="si-list">Treatment authorisation requests, scheme follow-up and approvals</div>
+          </div>
+          <div class="svc-item">
+            <div class="si-title">🔷 Monthly Reporting</div>
+            <div class="si-list">Full billing summary, collections update, ageing report every month</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="pdiv">
+
+      <!-- Pricing -->
+      <div class="p-section">
+        <div class="p-sec-label">Investment</div>
+        <div class="p-sec-title">Pricing Options</div>
+        <div class="pricing-grid" id="pricing-display">
+          <!-- Populated by JS -->
+        </div>
+        <div class="price-note">No setup fees. No lock-in contracts. Pricing structure agreed before any commitment is made.</div>
+      </div>
+
+      <hr class="pdiv">
+
+      <!-- Why Blue Eagle -->
+      <div class="p-section">
+        <div class="p-sec-label">Our Commitment</div>
+        <div class="p-sec-title">Why Practices Choose Blue Eagle</div>
+        <div class="why-list">
+          <div class="why-row"><div class="why-title">Dedicated Contact</div><div class="why-desc">A direct person to call — not a call centre. We operate as part of your practice.</div></div>
+          <div class="why-row"><div class="why-title">Monthly Reports</div><div class="why-desc">Full billing summary, collections update, and ageing report every single month.</div></div>
+          <div class="why-row"><div class="why-title">Aggressive Follow-Up</div><div class="why-desc">We chase every rejected claim and outstanding balance consistently.</div></div>
+          <div class="why-row"><div class="why-title">Elixir Live Experts</div><div class="why-desc">We specialise exclusively in Elixir Live — deeper expertise, better results.</div></div>
+          <div class="why-row"><div class="why-title">Quick Onboarding</div><div class="why-desc">Fully set up within 5–7 working days. No disruption to your workflow.</div></div>
+        </div>
+      </div>
+
+      <hr class="pdiv">
+
+      <!-- Next Step -->
+      <div class="p-section">
+        <div class="p-sec-label">Moving Forward</div>
+        <div class="p-sec-title">Proposed Next Step</div>
+        <div class="next-box">
+          <h3>Free 15-Minute Billing Review — No Obligation</h3>
+          <p>We would like to arrange a short review of your current billing position at no cost. During this review we will:</p>
+          <ul>
+            <li>Review your ageing report and outstanding balances</li>
+            <li>Identify collection gaps and rejected claims</li>
+            <li>Propose a fee structure that works for your practice</li>
+          </ul>
+          <p style="margin-top:10px;font-weight:600;color:#0d2040;">You walk away with clarity — regardless of whether we work together.</p>
+        </div>
+
+        <div class="signoff">
+          <div class="s-avatar" id="p-avatar">NM</div>
+          <div>
+            <div class="s-name" id="p-sname">Noya Mbulaheni</div>
+            <div class="s-title" id="p-stitle">Sales Executive — Blue Eagle Medical Accounts</div>
+            <div class="s-contact">📞 010 110 9889 &nbsp;·&nbsp; ✉️ <span id="p-contact-email">info@blueeagle-medacc.com</span> &nbsp;·&nbsp; 🌐 www.blueeaglemedicalaccounts.com</div>
+          </div>
+        </div>
+
+        <div class="confidential" id="p-confidential">This proposal is confidential and prepared exclusively for Dr Ezami.</div>
+      </div>
+
+    </div><!-- end p-body -->
+
+    <!-- Footer -->
+    <div class="p-footer">
+      <p>Blue Eagle Medical Accounts · Pretoria, South Africa</p>
+      <p>010 110 9889 · <span id="p-footer-email">info@blueeagle-medacc.com</span></p>
+    </div>
+
+  </div><!-- end proposal -->
+</div><!-- end preview-wrap -->
+
+</div><!-- end app -->
+
+<script>
+// ── PAIN COPY ──
+const PAIN_COPY = {
+  rejected: {
+    headline: 'Rejected Claims Recovery',
+    box: 'Based on our conversation, your practice is experiencing challenges with rejected claims that are not being followed up and resubmitted. Every unresolved rejection is revenue your practice has already earned but is not receiving. We specialise in recovering exactly these accounts.'
+  },
+  collections: {
+    headline: 'Collections and Debt Recovery',
+    box: 'Based on our conversation, outstanding debt is building up in your practice and collections are not being managed as consistently as they should be. We take over the entire collections process — chasing every outstanding account until it is resolved.'
+  },
+  communication: {
+    headline: 'Billing and Communication',
+    box: 'Based on our conversation, communication with your current billing provider has been a challenge. At Blue Eagle, every client has a dedicated contact — you can always reach us directly. We also provide a full monthly report so you always know exactly where your accounts stand.'
+  },
+  reporting: {
+    headline: 'Billing Visibility and Reporting',
+    box: 'Based on our conversation, your practice currently does not receive detailed monthly reporting on billing and collections performance. We provide a complete monthly report covering all claims submitted, rejections, collections, and your full ageing debtor position.'
+  },
+  admin: {
+    headline: 'Reducing Admin and Billing Pressure',
+    box: 'Based on our conversation, billing admin has become a significant burden on your practice — taking time and focus away from patients. We take over the entire billing and collections process, functioning as your external accounts department.'
+  },
+  inhouse: {
+    headline: 'Transitioning from In-House Billing',
+    box: 'Based on our conversation, billing is currently managed in-house but it is becoming increasingly difficult to manage alongside the demands of running a busy practice. We handle the full transition — with no disruption to your workflow — and take billing off your plate entirely.'
+  },
+  custom: {
+    headline: 'Billing and Collections Support',
+    box: ''
+  }
+};
+
+// ── PRICING HTML ──
+function pricingHTML(type, pct) {
+  const pctCard = `
+    <div class="price-card ${type !== 'fixed' ? 'active' : ''}">
+      <div class="pc-head ${type === 'both' ? '' : 'recommended'}">
+        <div class="pc-opt">Option ${type === 'both' ? '1' : ''}</div>
+        <div class="pc-title">Percentage-Based</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-fee">${pct}% of Collections</div>
+        <div class="pc-desc">You only pay based on what we actually collect. If nothing is collected — no fee. Our success is tied directly to yours.</div>
+      </div>
+    </div>`;
+
+  const fixedCard = `
+    <div class="price-card ${type === 'fixed' ? 'active' : ''}">
+      <div class="pc-head">
+        <div class="pc-opt">Option ${type === 'both' ? '2' : ''}</div>
+        <div class="pc-title">Fixed Monthly Fee</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-fee">Fixed Monthly Amount</div>
+        <div class="pc-desc">A predictable, consistent fee throughout the year. Easy to budget and plan around regardless of collection volumes.</div>
+      </div>
+    </div>`;
+
+  if (type === 'percentage') return pctCard;
+  if (type === 'fixed') return fixedCard;
+  return pctCard + fixedCard;
+}
+
+// ── UPDATE ──
+function update() {
+  const doctor   = document.getElementById('f-doctor').value || 'Doctor';
+  const practice = document.getElementById('f-practice').value;
+  const dateRaw  = document.getElementById('f-date').value;
+  const salesName= document.getElementById('f-sales-name').value || 'Noya Mbulaheni';
+  const salesTitle=document.getElementById('f-sales-title').value || 'Sales Executive';
+  const pricing  = document.querySelector('input[name="pricing"]:checked')?.value || 'both';
+  const pctRate  = document.getElementById('f-pct-rate').value || '5';
+  const email    = document.getElementById('f-email').value || 'info@blueeagle-medacc.com';
+
+  // Date format
+  let dateStr = '—';
+  if (dateRaw) {
+    const d = new Date(dateRaw + 'T00:00:00');
+    dateStr = d.toLocaleDateString('en-ZA', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  // Update meta
+  document.getElementById('p-doctor').textContent = doctor;
+  document.getElementById('p-practice').textContent = practice || '—';
+  document.getElementById('p-date').textContent = dateStr;
+  document.getElementById('p-sales').textContent = salesName;
+
+  // Signoff
+  const initials = salesName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('p-avatar').textContent = initials || 'BE';
+  document.getElementById('p-sname').textContent = salesName;
+  document.getElementById('p-stitle').textContent = salesTitle + ' — Blue Eagle Medical Accounts';
+  document.getElementById('p-confidential').textContent =
+    `This proposal is confidential and prepared exclusively for ${doctor}.`;
+
+  // Pricing
+  document.getElementById('pricing-display').innerHTML = pricingHTML(pricing, pctRate);
+
+  // Email in signoff and footer
+  document.getElementById('p-contact-email').textContent = email;
+  document.getElementById('p-footer-email').textContent = email;
+
+  // Pain
+  const painType = document.getElementById('f-pain-type').value;
+  if (painType && painType !== 'custom') {
+    const p = PAIN_COPY[painType];
+    document.getElementById('p-headline-focus').textContent = p.headline;
+    document.getElementById('p-pain-box').textContent = p.box;
+    document.getElementById('p-intro').textContent =
+      `Thank you for taking the time to speak with us. This proposal has been prepared specifically for ${doctor} based on our recent conversation.`;
+  } else if (painType === 'custom') {
+    const custom = document.getElementById('f-pain-custom').value;
+    document.getElementById('p-pain-box').textContent = custom ||
+      'Based on our conversation, we understand your practice has specific billing and collections needs that we can address.';
+    document.getElementById('p-intro').textContent =
+      `Thank you for taking the time to speak with us. This proposal has been prepared specifically for ${doctor} based on our recent conversation.`;
+  }
+
+  // Pricing toggles visual
+  document.getElementById('opt-pct').className = 'price-opt' + (pricing==='percentage'?' selected':'');
+  document.getElementById('opt-fixed').className = 'price-opt' + (pricing==='fixed'?' selected':'');
+  document.getElementById('opt-both').className = 'price-opt' + (pricing==='both'?' selected':'');
+}
+
+function updatePain() {
+  const val = document.getElementById('f-pain-type').value;
+  document.getElementById('custom-pain-group').style.display = val === 'custom' ? 'block' : 'none';
+  update();
+}
+
+// ── PRICING RADIO CLICK ──
+document.querySelectorAll('.price-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    opt.querySelector('input').checked = true;
+    update();
+  });
+});
+
+// ── COPY TEXT ──
+function copyLink() {
+  const text = document.getElementById('proposal').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Proposal text copied to clipboard. Paste into an email or document.');
+  });
+}
+
+// ── INIT ──
+document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+document.getElementById('f-doctor').value = 'Dr Ezami';
+document.getElementById('f-sales-name').value = 'Noya Mbulaheni';
+document.getElementById('f-sales-title').value = 'Sales Executive';
+document.getElementById('f-pain-type').value = 'collections';
+update();
+</script>
+</body>
+</html>
