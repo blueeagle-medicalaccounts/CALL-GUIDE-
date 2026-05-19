@@ -299,11 +299,24 @@ hr.pdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
   <hr class="section-divider">
   <span class="section-label">Pricing</span>
 
+  <div class="field-group">
+    <label class="field-label">Percentage Rate</label>
+    <select class="field-select" id="f-pct-rate" onchange="update()">
+      <option value="5">5% of Collections</option>
+      <option value="5.5">5.5% of Collections</option>
+      <option value="6">6% of Collections</option>
+      <option value="6.5">6.5% of Collections</option>
+      <option value="7">7% of Collections</option>
+      <option value="7.5">7.5% of Collections</option>
+      <option value="8">8% of Collections</option>
+    </select>
+  </div>
+
   <div class="pricing-toggle">
     <label class="price-opt selected" id="opt-pct">
       <input type="radio" name="pricing" value="percentage" checked onchange="update()">
-      <div class="po-title">5% of Collections</div>
-      <div class="po-sub">Percentage based</div>
+      <div class="po-title">Percentage</div>
+      <div class="po-sub">% of collections</div>
     </label>
     <label class="price-opt" id="opt-fixed">
       <input type="radio" name="pricing" value="fixed" onchange="update()">
@@ -328,6 +341,14 @@ hr.pdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
   <div class="field-group">
     <label class="field-label">Your Title</label>
     <input class="field-input" id="f-sales-title" type="text" placeholder="e.g. Sales Executive" oninput="update()">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Reply Email Address</label>
+    <select class="field-select" id="f-email" onchange="update()">
+      <option value="info@blueeagle-medacc.com">info@blueeagle-medacc.com</option>
+      <option value="sales@blueeagle-medacc.com">sales@blueeagle-medacc.com</option>
+    </select>
   </div>
 
   <hr class="section-divider">
@@ -472,7 +493,7 @@ hr.pdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
           <div>
             <div class="s-name" id="p-sname">Noya Mbulaheni</div>
             <div class="s-title" id="p-stitle">Sales Executive — Blue Eagle Medical Accounts</div>
-            <div class="s-contact">📞 010 110 9889 &nbsp;·&nbsp; ✉️ info@blueeagle-medacc.com &nbsp;·&nbsp; 🌐 www.blueeaglemedicalaccounts.com</div>
+            <div class="s-contact">📞 010 110 9889 &nbsp;·&nbsp; ✉️ <span id="p-contact-email">info@blueeagle-medacc.com</span> &nbsp;·&nbsp; 🌐 www.blueeaglemedicalaccounts.com</div>
           </div>
         </div>
 
@@ -484,7 +505,7 @@ hr.pdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
     <!-- Footer -->
     <div class="p-footer">
       <p>Blue Eagle Medical Accounts · Pretoria, South Africa</p>
-      <p>010 110 9889 · info@blueeagle-medacc.com</p>
+      <p>010 110 9889 · <span id="p-footer-email">info@blueeagle-medacc.com</span></p>
     </div>
 
   </div><!-- end proposal -->
@@ -526,20 +547,20 @@ const PAIN_COPY = {
 };
 
 // ── PRICING HTML ──
-function pricingHTML(type) {
-  const pct = `
+function pricingHTML(type, pct) {
+  const pctCard = `
     <div class="price-card ${type !== 'fixed' ? 'active' : ''}">
       <div class="pc-head ${type === 'both' ? '' : 'recommended'}">
         <div class="pc-opt">Option ${type === 'both' ? '1' : ''}</div>
         <div class="pc-title">Percentage-Based</div>
       </div>
       <div class="pc-body">
-        <div class="pc-fee">5% of Collections</div>
+        <div class="pc-fee">${pct}% of Collections</div>
         <div class="pc-desc">You only pay based on what we actually collect. If nothing is collected — no fee. Our success is tied directly to yours.</div>
       </div>
     </div>`;
 
-  const fixed = `
+  const fixedCard = `
     <div class="price-card ${type === 'fixed' ? 'active' : ''}">
       <div class="pc-head">
         <div class="pc-opt">Option ${type === 'both' ? '2' : ''}</div>
@@ -551,9 +572,9 @@ function pricingHTML(type) {
       </div>
     </div>`;
 
-  if (type === 'percentage') return pct;
-  if (type === 'fixed') return fixed;
-  return pct + fixed;
+  if (type === 'percentage') return pctCard;
+  if (type === 'fixed') return fixedCard;
+  return pctCard + fixedCard;
 }
 
 // ── UPDATE ──
@@ -564,6 +585,8 @@ function update() {
   const salesName= document.getElementById('f-sales-name').value || 'Noya Mbulaheni';
   const salesTitle=document.getElementById('f-sales-title').value || 'Sales Executive';
   const pricing  = document.querySelector('input[name="pricing"]:checked')?.value || 'both';
+  const pctRate  = document.getElementById('f-pct-rate').value || '5';
+  const email    = document.getElementById('f-email').value || 'info@blueeagle-medacc.com';
 
   // Date format
   let dateStr = '—';
@@ -587,7 +610,11 @@ function update() {
     `This proposal is confidential and prepared exclusively for ${doctor}.`;
 
   // Pricing
-  document.getElementById('pricing-display').innerHTML = pricingHTML(pricing);
+  document.getElementById('pricing-display').innerHTML = pricingHTML(pricing, pctRate);
+
+  // Email in signoff and footer
+  document.getElementById('p-contact-email').textContent = email;
+  document.getElementById('p-footer-email').textContent = email;
 
   // Pain
   const painType = document.getElementById('f-pain-type').value;
