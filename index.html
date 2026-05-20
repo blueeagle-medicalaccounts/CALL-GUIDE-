@@ -418,7 +418,7 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
   <div class="script-box">
     <span class="script-lbl">🎙 Say This</span>
     <div class="script-text">
-      Understood — good to know.<br><br>
+      Understood.<br><br>
       Out of curiosity, <span class="b">which billing system are you currently on</span> — Elixir Live, GoodX, Healthbridge, or something else?<br><br>
       <span class="pause">⏸ Listen</span>
     </div>
@@ -669,29 +669,41 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
   </div>
 </div>
 
-<!-- ═══════════ SCREEN 9: MEETING ═══════════ -->
+<!-- ═══════════ SCREEN 9: SEND OVERVIEW + FOLLOW-UP ═══════════ -->
 <div class="screen" id="s9">
   <div class="pill p-red">🔥 Hot Lead</div>
-  <div class="screen-title">Book the Meeting</div>
-  <div class="screen-sub">The ageing report review closes deals</div>
+  <div class="screen-title">Send Overview & Set Follow-Up</div>
+  <div class="screen-sub">Email the overview, then lock the follow-up day</div>
 
   <div class="script-box">
     <span class="script-lbl">🎙 Say This</span>
     <div class="script-text">
-      Perfect — what would make the most sense is a short <span class="b">15–20 minute review</span> where we look at your current billing position together on Elixir Live.<br><br>
-      We'll look at your ageing report, identify any obvious collection gaps, and you'll walk away with a clearer picture — <span class="b">no obligation at all.</span><br><br>
-      <span class="b">What works better — earlier in the week, or towards the end of the week?</span><br><br>
-      <span class="pause">⏸ Let them pick. Don't add anything.</span>
+      Ok — I'll put together an email to give you an <span class="b">overview of the services we render</span> so you get a clearer picture.<br><br>
+      <span class="b">What's the best email address to send it to?</span><br><br>
+      <span class="pause">⏸ Get email immediately</span><br><br>
+      And <span class="b">when will be convenient for me to follow up with you again this week?</span><br><br>
+      <span class="pause">⏸ Let them pick the day. Confirm it back.</span>
     </div>
   </div>
   <div class="voss">
-    <span class="voss-lbl">🧠 Voss — Assumptive Binary Close</span>
-    <div class="voss-text">Never ask "would you like to meet?" — that's an easy no. The binary (early/late week) assumes the meeting is happening and just asks when. This is the most effective close in the form.</div>
+    <span class="voss-lbl">🧠 Voss — Low-Friction Open Door</span>
+    <div class="voss-text">An overview email is a lower commitment than a meeting — almost nobody refuses. The follow-up question is assumptive: not "can I" but "when". You're locking the next touchpoint without asking for a yes.</div>
   </div>
 
-  <div class="fg"><label class="fl">Meeting Date</label>
-    <input class="fi" id="f-mdate" type="date"></div>
-  <div class="fg"><label class="fl">Time Preference</label>
+  <div class="fg"><label class="fl">Email Address</label>
+    <input class="fi" id="f-meeting-email" type="email" placeholder="doctor@practice.co.za"></div>
+  <div class="fg"><label class="fl">Follow-Up Day (This Week)</label>
+    <select class="fi" id="f-meeting-followup">
+      <option value="">Select day</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Early next week</option>
+    </select>
+  </div>
+  <div class="fg"><label class="fl">Best Time to Call Back</label>
     <select class="fi" id="f-mtime">
       <option value="">Select</option>
       <option>Morning (before 12pm)</option>
@@ -699,18 +711,10 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
       <option>After hours (after 5pm)</option>
     </select>
   </div>
-  <div class="fg"><label class="fl">Format</label>
-    <select class="fi" id="f-mformat">
-      <option value="">Select</option>
-      <option>Online / Video Call</option>
-      <option>Phone Call</option>
-      <option>In Person</option>
-    </select>
-  </div>
 
   <div class="nav-row">
     <button class="btn-back" onclick="goBack()">← Back</button>
-    <button class="btn-next" onclick="setD('outcome','HOT — Meeting Booked'); goTo(15)">Meeting Booked →</button>
+    <button class="btn-next" onclick="setD('outcome','HOT — Overview Sent'); goTo(15)">Overview Sent →</button>
   </div>
 </div>
 
@@ -1023,7 +1027,7 @@ if (salesperson) document.getElementById('f-salesperson').value = salesperson;
 const STEP_LABELS = {
   0:'Contact',1:'Opening',2:'System',3:'Satisfaction',
   4:'Mix',5:'Seed',6:'Pain',7:'Pricing',8:'Warm Lead',
-  9:'Meeting',10:'In-House',11:'CC Gap',12:'Seed',
+  9:'Send Overview',10:'In-House',11:'CC Gap',12:'Seed',
   13:'Follow-Up',15:'Notes',19:'Cold',20:'No Answer',99:'Done ✓'
 };
 
@@ -1102,9 +1106,10 @@ function collectAllData(){
     practice:'f-practice', doctor:'f-doctor', phone:'f-phone',
     email:'f-email', practice_type:'f-type', area:'f-area',
     system:'f-system', interest:'f-interest',
-    email_confirmed: ['f-email3','f-email2','f-email'],
+    email_confirmed: ['f-email3','f-email2','f-meeting-email','f-email'],
     followup_date:'f-fdate', followup_time:'f-ftime',
     meeting_date:'f-mdate', meeting_time:'f-mtime', meeting_format:'f-mformat',
+    meeting_email:'f-meeting-email', meeting_followup:'f-meeting-followup',
     pain:'f-pain', bureau:'f-bureau', tone:'f-tone', notes:'f-notes',
     recontact:'f-recontact', decline_reason:'f-decline',
     attempt:'f-attempt', next_call:'f-nextcall'
@@ -1142,7 +1147,7 @@ function buildSummary(){
     ['Billing Setup', D.billing],['System', D.system],
     ['Satisfaction', D.satisfaction],['Main Pain', D.pain],
     ['Current Bureau', D.bureau],
-    ['Follow-Up', D.followup_date],['Meeting', D.meeting_date],
+    ['Follow-Up', D.followup_date||D.meeting_followup],['Meeting', D.meeting_date],
     ['Salesperson', D.salesperson],['Logged', D.timestamp],
   ].filter(r=>r[1]);
 
@@ -1211,4 +1216,3 @@ function resetForm(){
 </script>
 </body>
 </html>
-
