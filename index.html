@@ -523,33 +523,92 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
 <div class="screen" id="s5">
   <div class="pill p-green">🌱 Seed</div>
   <div class="screen-title">They're Happy — Plant a Seed</div>
-  <div class="screen-sub">Don't push. Ask one probing question, then get permission.</div>
+  <div class="screen-sub">Ask the reporting question, then branch clearly</div>
 
   <div class="script-box">
     <span class="script-lbl">🎙 Say This</span>
     <div class="script-text">
-      That's great — sounds like they're doing something right.<br><br>
+      Good to hear.<br><br>
       <span class="pause">⏸ 2 second pause</span><br><br>
-      Out of curiosity — do you currently receive a <span class="b">monthly report showing your total rejected claims, outstanding debtor balance, and collections for the month?</span><br><br>
-      <span class="pause">⏸ Listen to their answer</span><br><br>
-      <em style="color:var(--silver);font-size:13px;">IF YES: "That's great — sounds like they're on top of reporting. Would it still be alright if I sent through our details as a second option for future reference — no obligation?"</em><br><br>
-      <em style="color:var(--silver);font-size:13px;">IF NO or HESITATION: "That's actually where most of the money gets missed — we build that reporting into every client from day one."</em>
+      Quick question — do you currently receive a <span class="b">monthly report showing your rejected claims, outstanding debtor balance, and collections for the month?</span><br><br>
+      <span class="pause">⏸ Listen to their answer</span>
     </div>
   </div>
   <div class="voss">
     <span class="voss-lbl">🧠 Voss — Black Swan Probe</span>
-    <div class="voss-text">Most practices don't receive proper monthly reports. If they hesitate — that's your crack. Don't celebrate and move on. Stay there. Ask what the report would look like if they did get one.</div>
+    <div class="voss-text">Most practices don't receive proper monthly reports. If they hesitate — that's your crack. Don't celebrate and move on. Stay there.</div>
+  </div>
+
+  <div class="screen-title" style="font-size:17px;margin-bottom:12px;">What was their answer?</div>
+  <div class="choices">
+    <button class="cb cg" onclick="goTo(51)">
+      <div class="ci">✅</div><div class="cc"><div class="ct">YES — They Get Reports</div><div class="cs">On top of their reporting</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cy" onclick="goTo(52)">
+      <div class="ci">❌</div><div class="cc"><div class="ct">NO — They Don't Get Reports</div><div class="cs">Or hesitated when asked</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="setD('outcome','COLD — Not Interested'); goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested at All</div><div class="cs">Doesn't want any info</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 51: YES — THEY GET REPORTS ═══════════ -->
+<div class="screen" id="s51">
+  <div class="pill p-green">✅ Yes</div>
+  <div class="screen-title">They Get Reports — Pivot Soft</div>
+  <div class="screen-sub">Offer yourself as a second option only</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Ok, good — sounds like they're on top of reporting then.<br><br>
+      <span class="b">Would it still be alright if I sent through our details as a second option for future reference — no obligation?</span><br><br>
+      <span class="pause">⏸ Wait</span>
+    </div>
   </div>
 
   <div class="choices">
-    <button class="cb cg" onclick="setD('outcome','WARM — Send Details'); goTo(13)">
-      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Happy to Receive Info</div><div class="cs">Agreed to overview email</div></div><div class="ca">›</div>
+    <button class="cb cg" onclick="setD('outcome','WARM — Future Reference'); goTo(13)">
+      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Send Details</div><div class="cs">Happy to keep as reference</div></div><div class="ca">›</div>
+    </button>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">No — Not Interested</div><div class="cs">Doesn't want contact</div></div><div class="ca">›</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 52: NO — REPORTING GAP ═══════════ -->
+<div class="screen" id="s52">
+  <div class="pill p-red">🔍 Gap Found</div>
+  <div class="screen-title">No Reports — That's the Wedge</div>
+  <div class="screen-sub">This is where most practices lose money</div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Say This</span>
+    <div class="script-text">
+      Honestly, that's where most of the money gets missed.<br><br>
+      Without that monthly view, it's almost impossible to see what's sitting in debtors or which claims got rejected and never resubmitted.<br><br>
+      <span class="b">We build that reporting into every client from day one</span> — would it be alright if I sent through a short overview of how we do it?<br><br>
+      <span class="pause">⏸ Wait</span>
+    </div>
+  </div>
+
+  <div class="choices">
+    <button class="cb cg" onclick="setD('satisfaction','Reporting Gap Found'); setD('outcome','WARM — Reporting Gap'); goTo(13)">
+      <div class="ci">📧</div><div class="cc"><div class="ct">Yes — Send Overview</div><div class="cs">Interested in seeing it</div></div><div class="ca">›</div>
     </button>
     <button class="cb cy" onclick="setD('satisfaction','Reporting Gap Found'); goTo(6)">
-      <div class="ci">🔍</div><div class="cc"><div class="ct">Hesitated on Reporting</div><div class="cs">Don't get proper reports — pivot to pain</div></div><div class="ca">›</div>
+      <div class="ci">🔥</div><div class="cc"><div class="ct">Wants to Hear More Now</div><div class="cs">Pivot to full pitch</div></div><div class="ca">›</div>
     </button>
-    <button class="cb cr" onclick="setD('outcome','COLD — Not Interested'); goTo(19)">
-      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested at All</div><div class="cs">Doesn't want information</div></div><div class="ca">›</div>
+    <button class="cb cr" onclick="goTo(19)">
+      <div class="ci">🚫</div><div class="cc"><div class="ct">Not Interested</div><div class="cs">Doesn't want info</div></div><div class="ca">›</div>
     </button>
   </div>
   <div class="nav-row">
@@ -727,8 +786,8 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
   <div class="script-box">
     <span class="script-lbl">🎙 Say This</span>
     <div class="script-text">
-      Understood — a lot of practices start out managing billing internally.<br><br>
-      <span class="b">Would you say collecting outstanding balances from medical aids and patients runs smoothly — or is that an area where money sometimes sits longer than it should?</span><br><br>
+      Got it — a lot of practices start out that way.<br><br>
+      <span class="b">Would you say collecting from medical aids and patients runs smoothly — or does money sometimes sit longer than it should?</span><br><br>
       <span class="pause">⏸ Listen — don't fill the silence</span>
     </div>
   </div>
@@ -796,7 +855,7 @@ hr.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
     <span class="script-lbl">🎙 Say This</span>
     <div class="script-text">
       That's great — sounds like the practice is well managed.<br><br>
-      <span class="b">Would it be alright if I sent through our details just as a reference — purely so you have it available if anything changes down the line?</span><br><br>
+      <span class="b">Would it be alright if I sent through our details just as a reference — so you have it available if anything changes down the line?</span><br><br>
       <span class="pause">⏸ Wait</span>
     </div>
   </div>
@@ -1026,12 +1085,13 @@ if (salesperson) document.getElementById('f-salesperson').value = salesperson;
 
 const STEP_LABELS = {
   0:'Contact',1:'Opening',2:'System',3:'Satisfaction',
-  4:'Mix',5:'Seed',6:'Pain',7:'Pricing',8:'Warm Lead',
+  4:'Mix',5:'Seed',51:'Reports Yes',52:'Reports No',
+  6:'Pain',7:'Pricing',8:'Warm Lead',
   9:'Send Overview',10:'In-House',11:'CC Gap',12:'Seed',
   13:'Follow-Up',15:'Notes',19:'Cold',20:'No Answer',99:'Done ✓'
 };
 
-const STEP_ORDER = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,19,20,99];
+const STEP_ORDER = [0,1,2,3,4,5,51,52,6,7,8,9,10,11,12,13,15,19,20,99];
 
 function setD(k,v){ D[k]=v; }
 function saveF(k,id){ const el=document.getElementById(id); if(el) D[k]=el.value; }
