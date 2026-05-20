@@ -246,6 +246,37 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .btn-sm-blue{background:var(--light);color:var(--blue);}
 .btn-sm-red{background:var(--red2);color:var(--call-red);}
 
+
+/* ── QUIZ ── */
+.quiz-wrap{margin-top:20px;}
+.quiz-q-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px;box-shadow:0 2px 6px rgba(21,101,192,0.05);}
+.quiz-q-num{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+.quiz-q-text{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:9px;}
+.quiz-opt{background:var(--light2);border:1px solid var(--border);border-radius:9px;padding:12px 16px;font-size:14px;color:var(--navy);cursor:pointer;transition:all 0.18s;text-align:left;font-family:'DM Sans',sans-serif;font-weight:500;}
+.quiz-opt:hover:not(:disabled){background:var(--light);border-color:var(--blue3);}
+.quiz-opt.correct{background:#e8f5ee;border-color:var(--call-green);color:var(--green);}
+.quiz-opt.wrong{background:var(--red2);border-color:var(--call-red);color:var(--call-red);}
+.quiz-score-box{background:var(--navy);border-radius:14px;padding:28px;text-align:center;margin-top:20px;}
+.quiz-score-num{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--gold);letter-spacing:3px;line-height:1;}
+.quiz-score-label{font-size:14px;color:var(--blue4);margin-top:6px;}
+.quiz-score-msg{font-size:13px;color:#fff;margin-top:10px;line-height:1.6;}
+.quiz-retake{background:var(--gold);border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px;}
+
+/* Admin quiz builder */
+.qb-question{background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;position:relative;}
+.qb-q-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.qb-remove{position:absolute;top:12px;right:12px;background:var(--red2);border:1px solid #f5c6c0;border-radius:6px;padding:4px 10px;font-size:11px;color:var(--call-red);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.qb-opt-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.qb-correct-radio{width:16px;height:16px;accent-color:var(--call-green);cursor:pointer;flex-shrink:0;}
+.qb-opt-input{flex:1;background:#fff;border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;color:var(--navy);font-family:'DM Sans',sans-serif;outline:none;}
+.qb-opt-input:focus{border-color:var(--blue);}
+.btn-add-q{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px;}
+.week-archive-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.wai-info h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.wai-info p{font-size:11px;color:var(--muted);}
+.wai-score{font-size:12px;font-weight:700;color:var(--blue);background:var(--light);padding:3px 12px;border-radius:100px;}
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,32,64,0.6);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
 .modal-overlay.open{display:flex;}
@@ -427,18 +458,34 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0;}
 
     <!-- TRAINING -->
     <div class="page" id="page-training">
-      <div class="greeting"><div class="greeting-time">Training Hub</div><h1>Training <span>Material</span></h1><p>Weekly training content updated by Owen. Complete each week's material and test.</p></div>
-      <div class="sh"><div class="sh-label">This Week</div><div class="sh-line"></div></div>
-      <div class="training-card">
-        <div class="tc-header"><h3 id="trainingWeekTitle">Week 1 — Foundation Training</h3><div class="tc-week" id="trainingWeekNum">WEEK 1</div></div>
+      <div class="greeting"><div class="greeting-time">Training Hub</div><h1>Training <span id="trainingWeekNum">Week 1</span></h1><p>Read the material, watch any links, then complete this week's quiz.</p></div>
+
+      <!-- This week card -->
+      <div class="training-card" id="trainingThisWeek" style="display:none;">
+        <div class="tc-header">
+          <h3 id="trainingWeekTitle">Week 1 — Foundation Training</h3>
+          <div class="tc-week" id="trainingWeekNumBadge">WEEK 1</div>
+        </div>
         <div class="tc-body">
-          <p id="trainingContent">Complete the full 2-hour sales training programme this week. Focus on understanding the product, mastering the opening script, and practising the closing technique until it feels natural.</p>
-          <a class="tc-link" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-sales-training.html" target="_blank">📖 Open Training →</a>
-          <a class="tc-link" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-assessment.html" target="_blank">📝 Complete Test →</a>
+          <p id="trainingContent">Complete the full 2-hour sales training programme this week.</p>
+          <div id="trainingLinkWrap" style="margin-bottom:14px;"></div>
+          <!-- Quiz section -->
+          <div id="quizSection"></div>
         </div>
       </div>
-      <div class="sh" style="margin-top:8px;"><div class="sh-label">Previous Weeks</div><div class="sh-line"></div></div>
-      <div class="coming-soon-box"><div style="font-size:28px;margin-bottom:8px;">📚</div><div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Previous weeks will appear here</div>As each week is completed, Owen archives it here so you can always go back and review.</div>
+
+      <!-- No training yet -->
+      <div id="noTrainingState" class="coming-soon-box">
+        <div style="font-size:32px;margin-bottom:10px;">🎓</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">No training published yet</div>
+        <div style="font-size:13px;">Owen will publish this week's training soon. Check back shortly.</div>
+      </div>
+
+      <!-- Previous weeks -->
+      <div class="sh" style="margin-top:24px;"><div class="sh-label">Previous Weeks</div><div class="sh-line"></div></div>
+      <div id="trainingArchive">
+        <div class="coming-soon-box" style="padding:16px;font-size:13px;">Completed weeks will appear here.</div>
+      </div>
     </div>
 
     <!-- LINKS -->
@@ -508,18 +555,42 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0;}
         <div id="focusStatus" style="font-size:12px;color:var(--green);margin-top:8px;display:none;">✅ Updated</div>
       </div>
 
-      <!-- Training -->
+      <!-- Training Builder -->
       <div class="admin-section">
-        <h3>🎓 Update This Week's Training</h3>
-        <div class="desc">Set the week number, title, and description for the Training tab.</div>
-        <label class="ll" style="margin-top:4px;">Week Number</label>
+        <h3>🎓 Publish This Week's Training</h3>
+        <div class="desc">Fill in the week details, add a resource link (YouTube, Google Doc, etc.), build the quiz questions, then publish. Noya sees it immediately in the Training tab.</div>
+
+        <label class="ll">Week Number</label>
         <input class="admin-input" id="weekNum" type="text" placeholder="e.g. Week 2">
         <label class="ll">Week Title</label>
         <input class="admin-input" id="weekTitle" type="text" placeholder="e.g. Week 2 — Objection Handling">
         <label class="ll">Training Description</label>
-        <textarea class="admin-input" id="weekContent" rows="3" placeholder="Describe what to focus on this week..."></textarea>
-        <button class="admin-btn" onclick="updateTraining()">Update Training →</button>
-        <div id="trainingStatus" style="font-size:12px;color:var(--green);margin-top:8px;display:none;">✅ Updated</div>
+        <textarea class="admin-input" id="weekContent" rows="3" placeholder="What should Noya focus on this week? What will she learn?"></textarea>
+        <label class="ll">Resource Link (YouTube / Google Doc / PDF URL)</label>
+        <input class="admin-input" id="weekLink" type="url" placeholder="https://...">
+        <label class="ll">Link Label</label>
+        <input class="admin-input" id="weekLinkLabel" type="text" placeholder="e.g. Watch: Objection Handling Video">
+
+        <div style="margin:16px 0 10px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Quiz Questions</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Add up to 10 questions. Select the correct answer using the green radio button on the left.</div>
+        <div id="quizBuilder"></div>
+        <button class="btn-add-q" onclick="addQuestion()">+ Add Question</button>
+
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="admin-btn" onclick="publishTraining()">🚀 Publish Training →</button>
+          <button class="admin-btn" onclick="archiveCurrentWeek()" style="background:#f0f4fa;color:var(--muted);">📦 Archive Current Week</button>
+          <button class="admin-btn" onclick="clearCurrentTraining()" style="background:var(--red2);color:var(--call-red);border:1px solid #f5c6c0;">🗑 Remove Current Training</button>
+        </div>
+        <div id="trainingStatus" style="font-size:12px;color:var(--green);margin-top:8px;display:none;">✅ Published — Noya can see it now</div>
+      </div>
+
+      <!-- Scores -->
+      <div class="admin-section">
+        <h3>📊 Quiz Scores</h3>
+        <div class="desc">Scores from all completed quizzes.</div>
+        <div id="scoresEl">
+          <div class="coming-soon-box" style="padding:14px;font-size:12px;">No quiz scores yet.</div>
+        </div>
       </div>
 
       <!-- Staff -->
@@ -677,14 +748,19 @@ function loadSaved() {
   const wn = localStorage.getItem('be_week_num');
   const wt = localStorage.getItem('be_week_title');
   const wc = localStorage.getItem('be_week_content');
-  if (wt) document.getElementById('trainingWeekTitle').textContent = wt;
-  if (wn) document.getElementById('trainingWeekNum').textContent = wn.toUpperCase();
-  if (wc) document.getElementById('trainingContent').textContent = wc;
   if (document.getElementById('focusInput') && f) document.getElementById('focusInput').value = f.replace(/<[^>]+>/g,'');
-  if (document.getElementById('weekNum') && wn) document.getElementById('weekNum').value = wn;
-  if (document.getElementById('weekTitle') && wt) document.getElementById('weekTitle').value = wt;
-  if (document.getElementById('weekContent') && wc) document.getElementById('weekContent').value = wc;
+  // Load quiz builder admin fields
+  const ct = JSON.parse(localStorage.getItem('be_current_training') || 'null');
+  if (ct) {
+    if (document.getElementById('weekNum')) document.getElementById('weekNum').value = ct.wn || '';
+    if (document.getElementById('weekTitle')) document.getElementById('weekTitle').value = ct.wt || '';
+    if (document.getElementById('weekContent')) document.getElementById('weekContent').value = ct.wc || '';
+    if (document.getElementById('weekLink')) document.getElementById('weekLink').value = ct.link || '';
+    if (document.getElementById('weekLinkLabel')) document.getElementById('weekLinkLabel').value = ct.linkLabel || '';
+  }
+  renderTrainingPage();
   renderListManager();
+  renderScores();
 }
 
 // ── ADMIN UPDATES ──
@@ -697,15 +773,264 @@ function updateFocus() {
   showStatus('focusStatus');
 }
 
-function updateTraining() {
+// ── QUIZ BUILDER (ADMIN) ──
+let questionCount = 0;
+
+function addQuestion() {
+  const qn = ++questionCount;
+  const container = document.getElementById('quizBuilder');
+  const div = document.createElement('div');
+  div.className = 'qb-question';
+  div.id = 'qb_' + qn;
+  div.innerHTML = `
+    <div class="qb-q-label">Question ${qn}</div>
+    <button class="qb-remove" onclick="removeQuestion(${qn})">✕ Remove</button>
+    <input class="admin-input" id="q_text_${qn}" type="text" placeholder="Type the question here..." style="margin-bottom:10px;">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;font-weight:700;">Options — select ● for correct answer</div>
+    ${[1,2,3,4].map(o => `
+      <div class="qb-opt-row">
+        <input type="radio" class="qb-correct-radio" name="correct_${qn}" value="${o}" id="r_${qn}_${o}">
+        <input class="qb-opt-input" id="q_opt_${qn}_${o}" type="text" placeholder="Option ${o}">
+      </div>`).join('')}
+  `;
+  container.appendChild(div);
+}
+
+function removeQuestion(qn) {
+  const el = document.getElementById('qb_' + qn);
+  if (el) el.remove();
+}
+
+function collectQuestions() {
+  const qs = [];
+  document.querySelectorAll('.qb-question').forEach(qDiv => {
+    const id = qDiv.id.replace('qb_','');
+    const text = document.getElementById('q_text_'+id)?.value.trim();
+    if (!text) return;
+    const opts = [1,2,3,4].map(o => document.getElementById('q_opt_'+id+'_'+o)?.value.trim() || '').filter(Boolean);
+    const correctRadio = document.querySelector('input[name="correct_'+id+'"]:checked');
+    const correct = correctRadio ? parseInt(correctRadio.value) - 1 : 0;
+    if (opts.length >= 2) qs.push({ text, opts, correct });
+  });
+  return qs;
+}
+
+function publishTraining() {
   const wn = document.getElementById('weekNum').value.trim();
   const wt = document.getElementById('weekTitle').value.trim();
   const wc = document.getElementById('weekContent').value.trim();
-  if(!wt) return;
-  if(wn) { document.getElementById('trainingWeekNum').textContent = wn.toUpperCase(); localStorage.setItem('be_week_num', wn); }
-  document.getElementById('trainingWeekTitle').textContent = wt; localStorage.setItem('be_week_title', wt);
-  if(wc) { document.getElementById('trainingContent').textContent = wc; localStorage.setItem('be_week_content', wc); }
+  const link = document.getElementById('weekLink').value.trim();
+  const linkLabel = document.getElementById('weekLinkLabel').value.trim();
+  if (!wt) { showToast('Please enter a week title'); return; }
+  const questions = collectQuestions();
+  const training = { wn, wt, wc, link, linkLabel, questions, published: new Date().toLocaleDateString('en-ZA') };
+  localStorage.setItem('be_current_training', JSON.stringify(training));
+  renderTrainingPage();
   showStatus('trainingStatus');
+  showToast('✅ Training published — Noya can see it now');
+}
+
+function archiveCurrentWeek() {
+  const current = JSON.parse(localStorage.getItem('be_current_training') || 'null');
+  if (!current) { showToast('No current training to archive'); return; }
+  const archives = JSON.parse(localStorage.getItem('be_training_archive') || '[]');
+  if (!archives.find(a => a.wt === current.wt)) {
+    archives.unshift(current);
+    localStorage.setItem('be_training_archive', JSON.stringify(archives));
+  }
+  localStorage.removeItem('be_current_training');
+  renderTrainingPage();
+  renderTrainingArchive();
+  showToast('📦 Week archived');
+}
+
+// ── TRAINING PAGE (NOYA) ──
+function renderTrainingPage() {
+  const training = JSON.parse(localStorage.getItem('be_current_training') || 'null');
+  const noState = document.getElementById('noTrainingState');
+  const thisWeek = document.getElementById('trainingThisWeek');
+  if (!training || !noState || !thisWeek) return;
+
+  if (!training.wt) {
+    noState.style.display = 'block';
+    thisWeek.style.display = 'none';
+    return;
+  }
+
+  noState.style.display = 'none';
+  thisWeek.style.display = 'block';
+
+  document.getElementById('trainingWeekTitle').textContent = training.wt;
+  document.getElementById('trainingWeekNum').textContent = training.wn || 'Training';
+  document.getElementById('trainingWeekNumBadge').textContent = (training.wn || 'This Week').toUpperCase();
+  document.getElementById('trainingContent').textContent = training.wc || '';
+
+  // Resource link
+  const linkWrap = document.getElementById('trainingLinkWrap');
+  linkWrap.innerHTML = training.link
+    ? `<a class="tc-link" href="${training.link}" target="_blank">🔗 ${training.linkLabel || 'Open Resource'} →</a>`
+    : '';
+
+  // Quiz
+  renderQuiz(training);
+  renderTrainingArchive();
+  renderScores();
+}
+
+let quizAnswers = {};
+let quizSubmitted = false;
+
+function renderQuiz(training) {
+  const section = document.getElementById('quizSection');
+  if (!section) return;
+
+  if (!training.questions || training.questions.length === 0) {
+    section.innerHTML = '<div class="coming-soon-box" style="margin-top:12px;padding:14px;font-size:13px;">No quiz set for this week.</div>';
+    return;
+  }
+
+  // Check if already completed
+  const savedScore = localStorage.getItem('be_quiz_score_' + training.wt);
+  if (savedScore) {
+    const score = JSON.parse(savedScore);
+    section.innerHTML = renderScoreBox(score.got, score.total, true);
+    return;
+  }
+
+  quizAnswers = {};
+  quizSubmitted = false;
+
+  section.innerHTML = `
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin:16px 0 12px;">This Week's Quiz — ${training.questions.length} Questions</div>
+    <div class="quiz-wrap" id="quizQuestionsEl">
+      ${training.questions.map((q,i) => `
+        <div class="quiz-q-card" id="qq_${i}">
+          <div class="quiz-q-num">Question ${i+1} of ${training.questions.length}</div>
+          <div class="quiz-q-text">${q.text}</div>
+          <div class="quiz-opts">
+            ${q.opts.map((opt,oi) => `
+              <button class="quiz-opt" onclick="selectAnswer(${i},${oi},${q.correct})" id="qopt_${i}_${oi}">${opt}</button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <button id="submitQuizBtn" onclick="submitQuiz('${training.wt}',${training.questions.length})" style="display:none;width:100%;background:var(--navy);border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;">Submit Quiz →</button>
+  `;
+}
+
+function selectAnswer(qIdx, optIdx, correct) {
+  if (quizAnswers[qIdx] !== undefined) return; // already answered
+  quizAnswers[qIdx] = optIdx;
+
+  // Show correct/wrong
+  const correctBtn = document.getElementById('qopt_' + qIdx + '_' + correct);
+  const chosenBtn  = document.getElementById('qopt_' + qIdx + '_' + optIdx);
+  if (correctBtn) correctBtn.classList.add('correct');
+  if (chosenBtn && optIdx !== correct) chosenBtn.classList.add('wrong');
+
+  // Disable all options for this question
+  document.querySelectorAll('[id^="qopt_' + qIdx + '_"]').forEach(b => b.disabled = true);
+
+  // Show submit button when all answered
+  const training = JSON.parse(localStorage.getItem('be_current_training') || '{}');
+  const total = training.questions?.length || 0;
+  if (Object.keys(quizAnswers).length === total) {
+    const btn = document.getElementById('submitQuizBtn');
+    if (btn) btn.style.display = 'block';
+  }
+}
+
+function submitQuiz(weekTitle, total) {
+  const training = JSON.parse(localStorage.getItem('be_current_training') || '{}');
+  if (!training.questions) return;
+
+  let got = 0;
+  training.questions.forEach((q,i) => {
+    if (quizAnswers[i] === q.correct) got++;
+  });
+
+  const scoreData = { got, total, weekTitle, user: currentUser?.name || 'Staff', date: new Date().toLocaleDateString('en-ZA') };
+  localStorage.setItem('be_quiz_score_' + weekTitle, JSON.stringify(scoreData));
+
+  // Save to scores list
+  const allScores = JSON.parse(localStorage.getItem('be_all_scores') || '[]');
+  allScores.unshift(scoreData);
+  localStorage.setItem('be_all_scores', JSON.stringify(allScores));
+
+  document.getElementById('quizSection').innerHTML = renderScoreBox(got, total, false);
+  renderScores();
+  showToast('✅ Quiz submitted — ' + got + '/' + total);
+}
+
+function renderScoreBox(got, total, alreadyDone) {
+  const pct = Math.round((got/total)*100);
+  const msg = pct >= 80 ? '🎉 Excellent work — well above the pass mark!' : pct >= 60 ? '✅ Good effort. Review the questions you missed.' : '📖 Review this week&#39;s material and try again next time.';
+  return `
+    <div class="quiz-score-box">
+      <div class="quiz-score-num">${got}/${total}</div>
+      <div class="quiz-score-label">${pct}% — ${alreadyDone ? 'Already completed' : 'Quiz submitted'}</div>
+      <div class="quiz-score-msg">${msg}</div>
+    </div>`;
+}
+
+function renderTrainingArchive() {
+  const archives = JSON.parse(localStorage.getItem('be_training_archive') || '[]');
+  const el = document.getElementById('trainingArchive');
+  if (!el) return;
+  if (archives.length === 0) {
+    el.innerHTML = '<div class="coming-soon-box" style="padding:14px;font-size:13px;">Completed weeks will appear here once archived by Owen.</div>';
+    return;
+  }
+  const isAdmin = currentUser && currentUser.isAdmin;
+  el.innerHTML = archives.map(a => {
+    const score = JSON.parse(localStorage.getItem('be_quiz_score_' + a.wt) || 'null');
+    return `<div class="week-archive-item">
+      <div class="wai-info"><h4>${a.wt}</h4><p>Published ${a.published}</p></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${score ? `<div class="wai-score">${score.got}/${score.total}</div>` : '<div style="font-size:11px;color:var(--silver);">Not completed</div>'}
+        ${isAdmin ? `<button class="btn-sm btn-sm-red" onclick="deleteArchivedWeek('${a.wt.replace(/'/g,"\\'")}')">🗑</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderScores() {
+  const el = document.getElementById('scoresEl');
+  if (!el) return;
+  const scores = JSON.parse(localStorage.getItem('be_all_scores') || '[]');
+  if (scores.length === 0) {
+    el.innerHTML = '<div class="coming-soon-box" style="padding:14px;font-size:12px;">No quiz scores yet.</div>';
+    return;
+  }
+  el.innerHTML = `<table class="admin-table"><thead><tr><th>Staff</th><th>Week</th><th>Score</th><th>Date</th></tr></thead><tbody>
+    ${scores.map(s => `<tr><td>${s.user}</td><td style="font-size:12px;">${s.weekTitle}</td><td><strong>${s.got}/${s.total}</strong> (${Math.round(s.got/s.total*100)}%)</td><td style="font-size:12px;">${s.date}</td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function updateTraining() { publishTraining(); }
+
+function clearCurrentTraining() {
+  if (!confirm('Remove the current training? Noya will no longer see it. This cannot be undone.')) return;
+  localStorage.removeItem('be_current_training');
+  // Clear form fields
+  ['weekNum','weekTitle','weekContent','weekLink','weekLinkLabel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('quizBuilder').innerHTML = '';
+  questionCount = 0;
+  renderTrainingPage();
+  showToast('🗑 Training removed');
+}
+
+function deleteArchivedWeek(weekTitle) {
+  if (!confirm('Delete "' + weekTitle + '" from the archive? This cannot be undone.')) return;
+  const archives = JSON.parse(localStorage.getItem('be_training_archive') || '[]').filter(a => a.wt !== weekTitle);
+  localStorage.setItem('be_training_archive', JSON.stringify(archives));
+  localStorage.removeItem('be_quiz_score_' + weekTitle);
+  renderTrainingArchive();
+  showToast('🗑 Week deleted from archive');
 }
 
 function showStatus(id) {
