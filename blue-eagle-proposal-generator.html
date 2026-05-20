@@ -668,34 +668,53 @@ document.getElementById('f-sales-title').value = 'Sales Executive';
 document.getElementById('f-pain-type').value = 'collections';
 update();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <script>
 function downloadPDF() {
-  const btn = document.querySelector('.btn-generate');
-  btn.textContent = '⏳ Generating PDF...';
-  btn.disabled = true;
-
   const doctor = document.getElementById('f-doctor')?.value.trim() || 'Proposal';
-  const filename = 'BlueEagle_Proposal_' + doctor.replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
+  const filename = 'BlueEagle_Proposal_' + doctor.replace(/[^a-zA-Z0-9]/g,'_');
 
-  const element = document.getElementById('proposal');
+  // Get the proposal HTML and all page styles
+  const proposalHTML = document.getElementById('proposal').outerHTML;
+  const styles = Array.from(document.styleSheets).map(sheet => {
+    try {
+      return Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
+    } catch(e) { return ''; }
+  }).join('\n');
 
-  const opt = {
-    margin:       [8, 8, 8, 8],
-    filename:     filename,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, logging: false, allowTaint: true },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  // Open a clean print window with just the proposal
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${filename}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+${styles}
+* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+body { margin: 0; padding: 0; background: #fff; }
+.proposal { box-shadow: none !important; max-width: 100% !important; }
+@page { margin: 8mm; size: A4; }
+@media print {
+  body { margin: 0; }
+  .proposal { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+${proposalHTML}
+<script>
+  window.onload = function() {
+    setTimeout(function() {
+      window.print();
+      setTimeout(function() { window.close(); }, 1000);
+    }, 800);
   };
-
-  html2pdf().set(opt).from(element).save().then(() => {
-    btn.textContent = '⬇️ Download as PDF';
-    btn.disabled = false;
-  }).catch(err => {
-    console.error(err);
-    btn.textContent = '⬇️ Download as PDF';
-    btn.disabled = false;
-  });
+<\/script>
+</body>
+</html>`);
+  win.document.close();
 }
 </script>
 </body>
