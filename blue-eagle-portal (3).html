@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Eagle — Staff Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d2040;--navy2:#071428;--blue:#1565c0;--blue2:#1976d2;
+  --blue3:#42a5f5;--blue4:#90caf9;--light:#e8f0fe;--light2:#f0f6ff;
+  --gold:#f5a623;--green:#1a7a4a;--green2:#e8f5ee;
+  --white:#ffffff;--bg:#f0f4fa;--card:#ffffff;
+  --border:#dce8f8;--text:#1a2a3a;--muted:#6b8cad;--silver:#94a8c0;
+  --red:#e74c3c;--red2:#fff0ee;--orange:#f39c12;--orange2:#fff8ee;
+  --call-green:#27ae60;--call-red:#e74c3c;--call-blue:#1565c0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;}
+
+/* LOGIN */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:linear-gradient(135deg,var(--navy2) 0%,var(--navy) 50%,#1565c0 100%);}
+.login-box{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 24px 80px rgba(0,0,0,0.3);}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo img{width:64px;height:64px;border-radius:12px;padding:4px;object-fit:contain;border:2px solid var(--border);}
+.lb{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--navy);margin-top:10px;}
+.ls{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.login-title{font-size:20px;font-weight:800;text-align:center;color:var(--navy);margin-bottom:4px;}
+.login-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:24px;}
+.lf{margin-bottom:14px;}
+.ll{display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.li{width:100%;background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;font-size:15px;color:var(--navy);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+.li:focus{border-color:var(--blue);background:#fff;}
+.li::placeholder{color:var(--silver);}
+.login-btn{width:100%;background:var(--navy);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:6px;}
+.login-btn:hover{background:var(--blue2);}
+.login-error{background:#fff0f0;border:1px solid #ffcccc;border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-top:10px;text-align:center;display:none;}
+.login-error.show{display:block;}
+.login-hint{font-size:11px;color:var(--silver);text-align:center;margin-top:14px;}
+
+/* PORTAL */
+.portal{display:none;}
+.portal.active{display:block;}
+
+/* TOPBAR */
+.topbar{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:62px;box-shadow:0 2px 20px rgba(13,32,64,0.3);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.tb-logo{width:36px;height:36px;border-radius:8px;background:#fff;padding:3px;object-fit:contain;}
+.tb-brand{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;color:#fff;}
+.tb-sub{font-size:10px;color:var(--blue4);letter-spacing:1.5px;text-transform:uppercase;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.user-badge{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:5px 12px 5px 6px;}
+.user-av{width:28px;height:28px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--navy);flex-shrink:0;}
+.user-name{font-size:13px;font-weight:600;color:#fff;}
+.user-role{font-size:10px;color:var(--blue4);}
+.logout-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;font-size:12px;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.logout-btn:hover{background:rgba(255,255,255,0.2);}
+
+/* NAV TABS */
+.nav-tabs{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:0;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.nav-tab{padding:14px 16px;font-size:12px;font-weight:600;letter-spacing:0.5px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
+.nav-tab:hover{color:var(--navy);}
+.nav-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+/* MAIN */
+.portal-main{max-width:1060px;margin:0 auto;padding:28px 20px 80px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp 0.22s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* GREETING */
+.greeting{margin-bottom:24px;}
+.greeting-time{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+.greeting h1{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;line-height:1;color:var(--navy);}
+.greeting h1 span{color:var(--blue);}
+.greeting p{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(21,101,192,0.06);}
+.stat-card .si{font-size:22px;margin-bottom:6px;}
+.stat-card .sn{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--navy);letter-spacing:1px;line-height:1;}
+.stat-card .sl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+
+/* NOTICE BOARD */
+.notice-board{background:var(--navy);border-radius:14px;padding:20px 22px;margin-bottom:24px;box-shadow:0 4px 16px rgba(13,32,64,0.2);}
+.nb-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.nb-head h3{font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px;}
+.nb-badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:var(--navy);padding:3px 10px;border-radius:100px;}
+.nb-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;color:var(--blue4);line-height:1.65;}
+.nb-item:last-child{border-bottom:none;padding-bottom:0;}
+.nb-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;}
+.nb-item strong{color:#fff;}
+.nb-focus{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;color:var(--gold);display:flex;align-items:center;gap:8px;}
+
+/* SECTION HEADING */
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.sh-line{flex:1;height:1px;background:var(--border);}
+.sh-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+
+/* TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:24px;}
+.tool-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s;cursor:pointer;box-shadow:0 2px 8px rgba(21,101,192,0.06);}
+.tool-card:hover{border-color:var(--blue3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(21,101,192,0.15);}
+.tool-banner{height:70px;display:flex;align-items:center;justify-content:center;font-size:30px;}
+.tb-navy{background:linear-gradient(135deg,var(--navy2),var(--navy));}
+.tb-blue{background:linear-gradient(135deg,var(--navy),var(--blue2));}
+.tb-lblue{background:linear-gradient(135deg,var(--blue2),var(--blue3));}
+.tb-gold{background:linear-gradient(135deg,#5a2a00,var(--gold));}
+.tb-green{background:linear-gradient(135deg,#0a2a18,#27ae60);}
+.tb-grey{background:linear-gradient(135deg,#2a3a4a,#4a6a8a);}
+.tb-teal{background:linear-gradient(135deg,#0a3a30,#1abc9c);}
+.tool-body{padding:14px 16px;}
+.tool-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-bottom:6px;display:inline-block;}
+.tg-navy{background:rgba(13,32,64,0.1);color:var(--navy);}
+.tg-blue{background:var(--light);color:var(--blue);}
+.tg-gold{background:rgba(245,166,35,0.12);color:#b07000;}
+.tg-green{background:#e8f5ee;color:var(--green);}
+.tg-grey{background:#f0f4f8;color:var(--muted);}
+.tg-teal{background:rgba(26,188,156,0.12);color:#0e8a6e;}
+.tool-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.tool-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.tool-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.tool-btn{font-size:11px;font-weight:700;color:var(--blue);background:var(--light);border:1px solid var(--border);padding:5px 12px;border-radius:6px;}
+.tool-status{font-size:10px;color:var(--muted);}
+.tool-status.live::before{content:'● ';color:#27ae60;}
+.tool-status.soon::before{content:'● ';color:var(--silver);}
+
+/* CHECKLIST */
+.checklist-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;box-shadow:0 2px 8px rgba(21,101,192,0.06);}
+.cl-header{background:var(--light2);border-bottom:1px solid var(--border);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;}
+.cl-header h3{font-size:14px;font-weight:700;color:var(--navy);}
+.cl-progress{font-size:12px;color:var(--blue);font-weight:700;background:var(--light);padding:3px 12px;border-radius:100px;}
+.cl-row{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
+.cl-row:last-child{border-bottom:none;}
+.cl-row:hover{background:var(--light2);}
+.cl-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;color:#fff;}
+.cl-row.done .cl-check{background:var(--green);border-color:var(--green);}
+.cl-row.done .cl-text{text-decoration:line-through;opacity:0.4;}
+.cl-text{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:2px;}
+.cl-sub{font-size:11px;color:var(--muted);}
+
+/* ═══ CONTACT LIST ═══ */
+.cl-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.cl-search{flex:1;min-width:200px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:14px;color:var(--navy);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+.cl-search:focus{border-color:var(--blue);}
+.cl-search::placeholder{color:var(--silver);}
+.cl-filter{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--navy);font-family:'DM Sans',sans-serif;cursor:pointer;outline:none;}
+.cl-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.cls-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 16px;text-align:center;}
+.cls-num{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;line-height:1;}
+.cls-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.cls-total .cls-num{color:var(--navy);}
+.cls-green .cls-num{color:var(--call-green);}
+.cls-red .cls-num{color:var(--call-red);}
+.cls-blue .cls-num{color:var(--call-blue);}
+
+/* CONTACT CARDS */
+.contact-list{display:flex;flex-direction:column;gap:8px;}
+.contact-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;transition:all 0.2s;box-shadow:0 1px 4px rgba(21,101,192,0.04);}
+.contact-card:hover{box-shadow:0 4px 12px rgba(21,101,192,0.1);}
+.contact-card.status-green{border-left:4px solid var(--call-green);}
+.contact-card.status-red{border-left:4px solid var(--call-red);background:#fff8f8;}
+.contact-card.status-blue{border-left:4px solid var(--call-blue);background:#f8fbff;}
+.contact-card.status-none{border-left:4px solid var(--border);}
+
+.cc-info{flex:1;min-width:0;}
+.cc-name{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cc-practice{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cc-phone{font-size:13px;font-weight:600;color:var(--blue);margin-top:4px;font-family:'DM Sans',monospace;}
+
+.cc-actions{display:flex;gap:6px;flex-shrink:0;}
+.cc-btn{border:none;border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;letter-spacing:0.5px;white-space:nowrap;}
+.cc-btn-green{background:#e8f5ee;color:var(--call-green);border:1px solid #b8dfc8;}
+.cc-btn-green:hover,.cc-btn-green.active{background:var(--call-green);color:#fff;}
+.cc-btn-red{background:var(--red2);color:var(--call-red);border:1px solid #f5c6c0;}
+.cc-btn-red:hover,.cc-btn-red.active{background:var(--call-red);color:#fff;}
+.cc-btn-blue{background:var(--light);color:var(--call-blue);border:1px solid #c0d8f5;}
+.cc-btn-blue:hover,.cc-btn-blue.active{background:var(--call-blue);color:#fff;}
+.cc-btn-reset{background:#f5f7fa;color:var(--muted);border:1px solid var(--border);}
+.cc-btn-reset:hover{background:var(--border);}
+
+.cc-status-badge{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.csb-green{background:#e8f5ee;color:var(--call-green);}
+.csb-red{background:var(--red2);color:var(--call-red);}
+.csb-blue{background:var(--light);color:var(--call-blue);}
+.csb-none{background:#f5f7fa;color:var(--silver);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+.empty-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.empty-sub{font-size:13px;line-height:1.6;}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;margin-bottom:20px;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue);background:var(--light2);}
+.upload-icon{font-size:40px;margin-bottom:12px;}
+.upload-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.upload-sub{font-size:13px;color:var(--muted);}
+.upload-btn-label{display:inline-block;background:var(--navy);color:#fff;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.upload-btn-label:hover{background:var(--blue2);}
+
+/* LINKS */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
+.link-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;text-decoration:none;box-shadow:0 2px 6px rgba(21,101,192,0.05);}
+.link-card:hover{border-color:var(--blue3);background:var(--light2);transform:translateY(-1px);}
+.link-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.link-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.link-url{font-size:10px;color:var(--muted);}
+.link-arrow{color:var(--silver);margin-left:auto;font-size:14px;}
+
+/* TRAINING */
+.training-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 8px rgba(21,101,192,0.06);}
+.tc-header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.tc-header h3{font-size:14px;font-weight:700;color:#fff;}
+.tc-week{font-size:10px;color:var(--blue4);letter-spacing:2px;text-transform:uppercase;}
+.tc-body{padding:18px 20px;}
+.tc-body p{font-size:13px;color:var(--text);line-height:1.75;margin-bottom:12px;}
+.tc-link{display:inline-flex;align-items:center;gap:6px;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;transition:all 0.2s;margin-right:8px;}
+.tc-link:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.coming-soon-box{background:var(--light2);border:1px dashed var(--border);border-radius:10px;padding:20px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* ADMIN */
+.admin-section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(21,101,192,0.06);}
+.admin-section h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.admin-section .desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
+.admin-input{width:100%;background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;font-size:14px;color:var(--navy);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;transition:border-color 0.2s;}
+.admin-input:focus{border-color:var(--blue);background:#fff;}
+.admin-btn{background:var(--navy);border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.admin-btn:hover{background:var(--blue2);}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px;}
+.admin-table th{background:var(--light2);color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-weight:700;}
+.admin-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+.admin-table tr:hover td{background:var(--light2);}
+.sb{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;}
+.sb-active{background:#e8f5ee;color:var(--green);}
+.sb-live{background:var(--light);color:var(--blue);}
+
+/* LIST MGMT */
+.list-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.list-info h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.list-info p{font-size:12px;color:var(--muted);}
+.list-actions{display:flex;gap:8px;}
+.btn-sm{font-size:11px;font-weight:700;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-sm-blue{background:var(--light);color:var(--blue);}
+.btn-sm-red{background:var(--red2);color:var(--call-red);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,32,64,0.6);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:380px;animation:fadeUp 0.2s ease;box-shadow:0 24px 60px rgba(13,32,64,0.25);}
+.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:-4px;}
+.modal-icon{font-size:34px;margin-bottom:10px;}
+.modal-title{font-size:17px;font-weight:800;margin-bottom:5px;color:var(--navy);}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.modal-open-btn{display:block;width:100%;background:var(--navy);border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:8px;text-align:center;text-decoration:none;transition:background 0.2s;}
+.modal-open-btn:hover{background:var(--blue2);}
+.modal-cancel{display:block;width:100%;background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:12px 24px;border-radius:100px;font-size:13px;font-weight:600;z-index:300;transition:transform 0.3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+hr.div{border:none;border-top:1px solid var(--border);margin:20px 0;}
+
+@media(max-width:600px){
+  .topbar{padding:0 12px;}
+  .portal-main{padding:16px 12px 60px;}
+  .tools-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .cl-stats-bar{grid-template-columns:1fr 1fr;}
+  .cc-actions{flex-direction:column;}
+  .nav-tabs{padding:0 12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+      <div class="lb">Blue Eagle Medical Accounts</div>
+      <div class="ls">Staff Portal</div>
+    </div>
+    <div class="login-title">Sign In</div>
+    <div class="login-sub">Enter your credentials to continue</div>
+    <div class="lf"><label class="ll">Username</label><input class="li" id="l-user" type="text" placeholder="Your username" autocomplete="username"></div>
+    <div class="lf"><label class="ll">Password</label><input class="li" id="l-pass" type="password" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="loginError">Incorrect username or password.</div>
+    <div class="login-hint">Contact Owen if you need your login details.</div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div class="portal" id="portal">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img class="tb-logo" src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+      <div><div class="tb-brand">Blue Eagle Medical Accounts</div><div class="tb-sub">Staff Portal</div></div>
+    </div>
+    <div class="topbar-right">
+      <div class="user-badge">
+        <div class="user-av" id="userAv">NM</div>
+        <div><div class="user-name" id="userName">Noya</div><div class="user-role" id="userRole">Sales Executive</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+    <button class="nav-tab" onclick="showPage('contacts',this)">📋 Call List</button>
+    <button class="nav-tab" onclick="showPage('tools',this)">🛠 Tools</button>
+    <button class="nav-tab" onclick="showPage('training',this)">🎓 Training</button>
+    <button class="nav-tab" onclick="showPage('links',this)">🔗 Links</button>
+    <button class="nav-tab admin-only" onclick="showPage('admin',this)" style="display:none;">⚙️ Admin</button>
+  </div>
+
+  <div class="portal-main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="greeting">
+        <div class="greeting-time" id="greetTime">Good Morning</div>
+        <h1>Welcome back, <span id="greetName">Noya</span> 🦅</h1>
+        <p id="greetSub">Sales Executive — Blue Eagle Medical Accounts</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="si">📞</div><div class="sn" id="dCalls">0</div><div class="sl">Connected Today</div></div>
+        <div class="stat-card"><div class="si">🔥</div><div class="sn" id="dHot">0</div><div class="sl">Spoke to Doctor</div></div>
+        <div class="stat-card"><div class="si">❌</div><div class="sn" id="dInvalid">0</div><div class="sl">Invalid Numbers</div></div>
+        <div class="stat-card"><div class="si">🎯</div><div class="sn">50</div><div class="sl">Daily Target</div></div>
+      </div>
+      <div class="notice-board">
+        <div class="nb-head"><span style="font-size:18px;">📌</span><h3>Notice Board</h3><div class="nb-badge">Daily</div></div>
+        <div class="nb-item"><div class="nb-dot"></div><div>Your daily target is <strong>50 connected calls</strong> — calls where someone actually answered. No answers do not count.</div></div>
+        <div class="nb-item"><div class="nb-dot"></div><div>Log <strong>every single call</strong> in the Call Guide — no exceptions, even no-answers and wrong numbers.</div></div>
+        <div class="nb-item"><div class="nb-dot"></div><div>Send follow-up emails within <strong>2 hours</strong> of every warm lead call — same day, no exceptions.</div></div>
+        <div class="nb-item"><div class="nb-dot"></div><div>Every cold lead must have a <strong>re-contact date</strong> set — no contact leaves without a next step.</div></div>
+        <div class="nb-focus" id="weeklyFocus"><span style="font-size:16px;">⭐</span><span>This week's focus: <strong>Getting past the gatekeeper</strong> — practise your opening script every morning before your first call.</span></div>
+      </div>
+      <div class="sh"><div class="sh-label">Daily Checklist</div><div class="sh-line"></div><div style="font-size:11px;color:var(--muted);">Tap to tick off</div></div>
+      <div class="checklist-card">
+        <div class="cl-header"><h3>Today's Tasks</h3><div class="cl-progress" id="clProg">0 / 6 done</div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">Prepare today's call list</div><div class="cl-sub">Warm leads first, then new contacts</div></div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">Morning block — 25+ connected calls</div><div class="cl-sub">8:00 AM – 12:00 PM</div></div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">Send all follow-up emails</div><div class="cl-sub">Within 2 hours of each warm lead call</div></div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">Afternoon block — 25+ connected calls</div><div class="cl-sub">2:00 PM – 5:00 PM</div></div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">Follow up on warm leads from previous days</div><div class="cl-sub">Check pipeline for anyone due a call today</div></div></div>
+        <div class="cl-row" onclick="tick(this)"><div class="cl-check"></div><div><div class="cl-text">All calls logged in Google Sheets</div><div class="cl-sub">Every call before end of day — no exceptions</div></div></div>
+      </div>
+    </div>
+
+    <!-- CALL LIST -->
+    <div class="page" id="page-contacts">
+      <div class="greeting">
+        <div class="greeting-time">Call List</div>
+        <h1>Contact <span id="listTitle">List</span></h1>
+        <p id="listSub">Tap a contact to mark the outcome of your call.</p>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="cl-stats-bar">
+        <div class="cls-item cls-total"><div class="cls-num" id="statTotal">0</div><div class="cls-label">Total</div></div>
+        <div class="cls-item cls-green"><div class="cls-num" id="statGreen">0</div><div class="cls-label">✅ Connected</div></div>
+        <div class="cls-item cls-blue"><div class="cls-num" id="statBlue">0</div><div class="cls-label">📵 No Answer</div></div>
+        <div class="cls-item cls-red"><div class="cls-num" id="statRed">0</div><div class="cls-label">❌ Invalid</div></div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="cl-toolbar">
+        <input class="cl-search" id="contactSearch" placeholder="🔍  Search doctor or practice..." oninput="renderContacts()">
+        <select class="cl-filter" id="contactFilter" onchange="renderContacts()">
+          <option value="all">All Contacts</option>
+          <option value="none">Not Called</option>
+          <option value="green">✅ Connected</option>
+          <option value="blue">📵 No Answer</option>
+          <option value="red">❌ Invalid</option>
+        </select>
+      </div>
+
+      <!-- No list loaded -->
+      <div id="noListState" class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No Call List Loaded</div>
+        <div class="empty-sub">Owen will upload a contact list for you to call.<br>It will appear here automatically once loaded.</div>
+      </div>
+
+      <!-- Contact list -->
+      <div class="contact-list" id="contactListEl"></div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="page" id="page-tools">
+      <div class="greeting"><div class="greeting-time">Tools</div><h1>Your <span>Work Tools</span></h1><p>Everything you need. Tap any card to open.</p></div>
+      <div class="tools-grid">
+        <div class="tool-card" onclick="openTool('callguide')">
+          <div class="tool-banner tb-navy">🎙</div>
+          <div class="tool-body"><div class="tool-tag tg-navy">Live Call Tool</div><div class="tool-title">Call Guide</div><div class="tool-desc">Live call script with branching paths and automatic Google Sheets logging. Use on every call.</div><div class="tool-footer"><div class="tool-btn">Open →</div><div class="tool-status live">Live</div></div></div>
+        </div>
+        <div class="tool-card" onclick="openTool('proposal')">
+          <div class="tool-banner tb-blue">📋</div>
+          <div class="tool-body"><div class="tool-tag tg-blue">Sales Tool</div><div class="tool-title">Proposal Generator</div><div class="tool-desc">Fill in doctor details, select pain point and pricing, download a personalised proposal instantly.</div><div class="tool-footer"><div class="tool-btn">Open →</div><div class="tool-status live">Live</div></div></div>
+        </div>
+        <div class="tool-card" onclick="openTool('sheets')">
+          <div class="tool-banner tb-lblue">📊</div>
+          <div class="tool-body"><div class="tool-tag tg-blue">Pipeline</div><div class="tool-title">Sales Tracker</div><div class="tool-desc">Live Google Sheet — Call Log, Pipeline, Stats, and Dashboard. Calls log automatically.</div><div class="tool-footer"><div class="tool-btn">Open →</div><div class="tool-status live">Live</div></div></div>
+        </div>
+        <div class="tool-card" onclick="openTool('training')">
+          <div class="tool-banner tb-gold">🎓</div>
+          <div class="tool-body"><div class="tool-tag tg-gold">Training</div><div class="tool-title">Sales Training</div><div class="tool-desc">Complete 2-hour training programme — product knowledge, call structure, objections, closing.</div><div class="tool-footer"><div class="tool-btn">Open →</div><div class="tool-status live">Live</div></div></div>
+        </div>
+        <div class="tool-card" onclick="openTool('assessment')">
+          <div class="tool-banner tb-green">📝</div>
+          <div class="tool-body"><div class="tool-tag tg-green">Assessment</div><div class="tool-title">Training Test</div><div class="tool-desc">25-question test covering all training modules. Submit to Owen for grading.</div><div class="tool-footer"><div class="tool-btn">Open →</div><div class="tool-status live">Live</div></div></div>
+        </div>
+        <div class="tool-card" style="opacity:0.4;pointer-events:none;">
+          <div class="tool-banner tb-grey">➕</div>
+          <div class="tool-body"><div class="tool-tag tg-grey">Coming Soon</div><div class="tool-title">More Tools</div><div class="tool-desc">More tools will be added here as the business grows.</div><div class="tool-footer"><div class="tool-btn" style="opacity:0.4;">Soon</div><div class="tool-status soon">Pending</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAINING -->
+    <div class="page" id="page-training">
+      <div class="greeting"><div class="greeting-time">Training Hub</div><h1>Training <span>Material</span></h1><p>Weekly training content updated by Owen. Complete each week's material and test.</p></div>
+      <div class="sh"><div class="sh-label">This Week</div><div class="sh-line"></div></div>
+      <div class="training-card">
+        <div class="tc-header"><h3 id="trainingWeekTitle">Week 1 — Foundation Training</h3><div class="tc-week" id="trainingWeekNum">WEEK 1</div></div>
+        <div class="tc-body">
+          <p id="trainingContent">Complete the full 2-hour sales training programme this week. Focus on understanding the product, mastering the opening script, and practising the closing technique until it feels natural.</p>
+          <a class="tc-link" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-sales-training.html" target="_blank">📖 Open Training →</a>
+          <a class="tc-link" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-assessment.html" target="_blank">📝 Complete Test →</a>
+        </div>
+      </div>
+      <div class="sh" style="margin-top:8px;"><div class="sh-label">Previous Weeks</div><div class="sh-line"></div></div>
+      <div class="coming-soon-box"><div style="font-size:28px;margin-bottom:8px;">📚</div><div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Previous weeks will appear here</div>As each week is completed, Owen archives it here so you can always go back and review.</div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="page" id="page-links">
+      <div class="greeting"><div class="greeting-time">Quick Links</div><h1>Important <span>Links</span></h1><p>All your key links in one place.</p></div>
+      <div class="sh"><div class="sh-label">Work Tools</div><div class="sh-line"></div></div>
+      <div class="links-grid">
+        <a class="link-card" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/" target="_blank"><div class="link-icon" style="background:rgba(13,32,64,0.08);">🎙</div><div><div class="link-title">Live Call Guide</div><div class="link-url">blueeagle-medicalaccounts.github.io</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-proposal-generator.html" target="_blank"><div class="link-icon" style="background:rgba(21,101,192,0.08);">📋</div><div><div class="link-title">Proposal Generator</div><div class="link-url">blueeagle-medicalaccounts.github.io</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="https://docs.google.com/spreadsheets/d/121HD26mUlsW_PanXu4mL_q3jduQ0lahqCxntC9C8h74/edit?gid=1943166060" target="_blank"><div class="link-icon" style="background:rgba(21,101,192,0.08);">📊</div><div><div class="link-title">Sales Tracker</div><div class="link-url">docs.google.com</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-sales-training.html" target="_blank"><div class="link-icon" style="background:rgba(245,166,35,0.1);">🎓</div><div><div class="link-title">Sales Training</div><div class="link-url">blueeagle-medicalaccounts.github.io</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-assessment.html" target="_blank"><div class="link-icon" style="background:#e8f5ee;">📝</div><div><div class="link-title">Training Assessment</div><div class="link-url">blueeagle-medicalaccounts.github.io</div></div><div class="link-arrow">↗</div></a>
+      </div>
+      <div class="sh"><div class="sh-label">Blue Eagle</div><div class="sh-line"></div></div>
+      <div class="links-grid">
+        <a class="link-card" href="https://www.blueeaglemedicalaccounts.com" target="_blank"><div class="link-icon" style="background:rgba(13,32,64,0.08);">🌐</div><div><div class="link-title">Website</div><div class="link-url">www.blueeaglemedicalaccounts.com</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="mailto:info@blueeagle-medacc.com"><div class="link-icon" style="background:rgba(21,101,192,0.08);">✉️</div><div><div class="link-title">Info Email</div><div class="link-url">info@blueeagle-medacc.com</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="mailto:sales@blueeagle-medacc.com"><div class="link-icon" style="background:rgba(21,101,192,0.08);">📧</div><div><div class="link-title">Sales Email</div><div class="link-url">sales@blueeagle-medacc.com</div></div><div class="link-arrow">↗</div></a>
+        <a class="link-card" href="tel:0101109889"><div class="link-icon" style="background:#e8f5ee;">📞</div><div><div class="link-title">Office Number</div><div class="link-url">010 110 9889</div></div><div class="link-arrow">↗</div></a>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="page" id="page-admin">
+      <div class="greeting"><div class="greeting-time">Admin Only</div><h1>Admin <span>Panel</span></h1><p>Manage notices, contact lists, and training content.</p></div>
+
+      <!-- Upload Call List -->
+      <div class="admin-section">
+        <h3>📋 Upload Contact List</h3>
+        <div class="desc">Upload a CSV file exported from Excel. The system will read Doctor Name, Practice Name, and Contact Number automatically. Each upload is saved as a named list. Noya sees the active list in the Call List tab.</div>
+
+        <div class="upload-zone" id="uploadZone" ondragover="e=>e.preventDefault()" ondrop="handleDrop(event)">
+          <div class="upload-icon">📁</div>
+          <div class="upload-title">Drag & Drop your CSV file here</div>
+          <div class="upload-sub">Or click below to browse. Export from Excel as CSV first.</div>
+          <label class="upload-btn-label" for="csvFileInput">Browse CSV File</label>
+          <input type="file" id="csvFileInput" accept=".csv,.txt" style="display:none" onchange="handleFileSelect(event)">
+        </div>
+
+        <div id="uploadPreview" style="display:none;">
+          <div style="background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;" id="previewTitle">Preview</div>
+            <div style="font-size:12px;color:var(--muted);" id="previewCount"></div>
+          </div>
+          <label class="ll">List Name (e.g. "Gauteng GPs - May 2026")</label>
+          <input class="admin-input" id="listNameInput" type="text" placeholder="Enter a name for this list">
+          <button class="admin-btn" onclick="saveList()">✅ Save & Publish List →</button>
+          <button class="admin-btn" onclick="cancelUpload()" style="background:#f0f4fa;color:var(--muted);margin-left:8px;">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Manage Lists -->
+      <div class="admin-section">
+        <h3>📂 Manage Contact Lists</h3>
+        <div class="desc">All uploaded lists. The active list is what Noya sees. Click "Set Active" to switch lists.</div>
+        <div id="listManagerEl">
+          <div class="coming-soon-box" style="padding:16px;"><div style="font-size:12px;">No lists uploaded yet. Upload a CSV above to get started.</div></div>
+        </div>
+      </div>
+
+      <!-- Notice Board -->
+      <div class="admin-section">
+        <h3>⭐ Update Weekly Focus</h3>
+        <div class="desc">Change the weekly focus message Noya sees on her dashboard.</div>
+        <input class="admin-input" id="focusInput" type="text" placeholder="e.g. This week focus on closing — practise the binary close every morning">
+        <button class="admin-btn" onclick="updateFocus()">Update →</button>
+        <div id="focusStatus" style="font-size:12px;color:var(--green);margin-top:8px;display:none;">✅ Updated</div>
+      </div>
+
+      <!-- Training -->
+      <div class="admin-section">
+        <h3>🎓 Update This Week's Training</h3>
+        <div class="desc">Set the week number, title, and description for the Training tab.</div>
+        <label class="ll" style="margin-top:4px;">Week Number</label>
+        <input class="admin-input" id="weekNum" type="text" placeholder="e.g. Week 2">
+        <label class="ll">Week Title</label>
+        <input class="admin-input" id="weekTitle" type="text" placeholder="e.g. Week 2 — Objection Handling">
+        <label class="ll">Training Description</label>
+        <textarea class="admin-input" id="weekContent" rows="3" placeholder="Describe what to focus on this week..."></textarea>
+        <button class="admin-btn" onclick="updateTraining()">Update Training →</button>
+        <div id="trainingStatus" style="font-size:12px;color:var(--green);margin-top:8px;display:none;">✅ Updated</div>
+      </div>
+
+      <!-- Staff -->
+      <div class="admin-section">
+        <h3>👥 Staff Logins</h3>
+        <div class="desc">Current portal users. To add new staff — update the USERS section in the portal code on GitHub.</div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Owen Blauw</strong></td><td>admin</td><td>Administrator</td><td><span class="sb sb-active">Active</span></td></tr>
+            <tr><td><strong>Noya Mbulaheni</strong></td><td>noya</td><td>Sales Executive</td><td><span class="sb sb-active">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- URLs -->
+      <div class="admin-section">
+        <h3>🔗 All Tool URLs</h3>
+        <div class="desc">Quick reference for all live tool links.</div>
+        <table class="admin-table">
+          <thead><tr><th>Tool</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-size:12px;">Call Guide — blueeagle-medicalaccounts.github.io/CALL-GUIDE-/</td><td><span class="sb sb-live">Live</span></td></tr>
+            <tr><td style="font-size:12px;">Proposal Generator — .../blue-eagle-proposal-generator.html</td><td><span class="sb sb-live">Live</span></td></tr>
+            <tr><td style="font-size:12px;">Sales Training — .../blue-eagle-sales-training.html</td><td><span class="sb sb-live">Live</span></td></tr>
+            <tr><td style="font-size:12px;">Assessment — .../blue-eagle-assessment.html</td><td><span class="sb sb-live">Live</span></td></tr>
+            <tr><td style="font-size:12px;">Google Sheet — docs.google.com/spreadsheets/d/121HD26m...</td><td><span class="sb sb-live">Live</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end portal-main -->
+</div><!-- end portal -->
+
+<!-- TOOL MODAL -->
+<div class="modal-overlay" id="toolModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon" id="mIcon">🎙</div>
+    <div class="modal-title" id="mTitle">Tool</div>
+    <div class="modal-sub" id="mSub">Opening tool.</div>
+    <a class="modal-open-btn" id="mBtn" href="#" target="_blank" onclick="closeModal()">Open →</a>
+    <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Saved</div>
+
+<script>
+// ── USERS ──
+const USERS = {
+  'admin': { password:'Owenblauw#17',  name:'Owen Blauw',     role:'Administrator',   isAdmin:true  },
+  'noya':  { password:'Noya@Sales123', name:'Noya Mbulaheni', role:'Sales Executive', isAdmin:false },
+};
+
+// ── TOOLS ──
+const TOOLS = {
+  callguide:  { icon:'🎙', title:'Live Call Guide',    sub:'Your live call script. Use this on every call — logs automatically to Google Sheets.',      url:'https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/' },
+  proposal:   { icon:'📋', title:'Proposal Generator', sub:'Fill in doctor details and download a personalised proposal instantly.',                     url:'https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-proposal-generator.html' },
+  sheets:     { icon:'📊', title:'Sales Tracker',      sub:'Opens your live Google Sheet with Call Log, Pipeline, Stats, and Dashboard.',                url:'https://docs.google.com/spreadsheets/d/121HD26mUlsW_PanXu4mL_q3jduQ0lahqCxntC9C8h74/edit?gid=1943166060' },
+  training:   { icon:'🎓', title:'Sales Training',     sub:'Full 2-hour training programme with all 7 modules.',                                         url:'https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-sales-training.html' },
+  assessment: { icon:'📝', title:'Training Assessment',sub:'25-question test. Complete and submit to Owen for grading.',                                  url:'https://blueeagle-medicalaccounts.github.io/CALL-GUIDE-/blue-eagle-assessment.html' },
+};
+
+// ── STATE ──
+let currentUser = null;
+let contactData = []; // { id, doctor, practice, phone, status: 'none'|'green'|'red'|'blue' }
+let parsedCSV = [];
+const WEBHOOK = localStorage.getItem('be_webhook') || '';
+
+// ── LOGIN ──
+function doLogin() {
+  const u = document.getElementById('l-user').value.trim().toLowerCase();
+  const p = document.getElementById('l-pass').value.trim();
+  if (USERS[u] && USERS[u].password === p) {
+    document.getElementById('loginError').classList.remove('show');
+    currentUser = { ...USERS[u], username: u };
+    sessionStorage.setItem('be_u', JSON.stringify(currentUser));
+    launch(currentUser);
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    document.getElementById('l-pass').value = '';
+  }
+}
+
+function launch(u) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('portal').classList.add('active');
+  const ini = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('userAv').textContent = ini;
+  document.getElementById('userName').textContent = u.name.split(' ')[0];
+  document.getElementById('userRole').textContent = u.role;
+  document.getElementById('greetName').textContent = u.name.split(' ')[0];
+  document.getElementById('greetSub').textContent = u.role + ' — Blue Eagle Medical Accounts';
+  const h = new Date().getHours();
+  document.getElementById('greetTime').textContent = h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  if (u.isAdmin) document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
+  loadSaved();
+  loadActiveList();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('be_u');
+  currentUser = null;
+  document.getElementById('portal').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.querySelectorAll('.cl-row').forEach(r=>{r.classList.remove('done');r.querySelector('.cl-check').textContent='';});
+  document.getElementById('clProg').textContent = '0 / 6 done';
+  showPage('dashboard', document.querySelector('.nav-tab'));
+}
+
+const sv = sessionStorage.getItem('be_u');
+if (sv) { try { currentUser=JSON.parse(sv); launch(currentUser); } catch(e) { sessionStorage.removeItem('be_u'); } }
+document.getElementById('l-user').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('l-pass').focus(); });
+
+// ── NAVIGATION ──
+function showPage(id, btn) {
+  if (id === 'admin' && (!currentUser || !currentUser.isAdmin)) return;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── TOOLS ──
+function openTool(key) {
+  const t = TOOLS[key]; if(!t) return;
+  document.getElementById('mIcon').textContent = t.icon;
+  document.getElementById('mTitle').textContent = t.title;
+  document.getElementById('mSub').textContent = t.sub;
+  document.getElementById('mBtn').href = t.url;
+  document.getElementById('toolModal').classList.add('open');
+}
+function closeModal() { document.getElementById('toolModal').classList.remove('open'); }
+
+// ── CHECKLIST ──
+function tick(row) {
+  row.classList.toggle('done');
+  row.querySelector('.cl-check').textContent = row.classList.contains('done') ? '✓' : '';
+  const done = document.querySelectorAll('.cl-row.done').length;
+  const total = document.querySelectorAll('.cl-row').length;
+  document.getElementById('clProg').textContent = done+' / '+total+' done';
+  document.getElementById('dCalls').textContent = done > 1 ? Math.min(done*9,50) : 0;
+}
+
+// ── SAVED STATE ──
+function loadSaved() {
+  const f = localStorage.getItem('be_focus');
+  if (f) document.getElementById('weeklyFocus').innerHTML = '<span style="font-size:16px;">⭐</span><span>' + f + '</span>';
+  const wn = localStorage.getItem('be_week_num');
+  const wt = localStorage.getItem('be_week_title');
+  const wc = localStorage.getItem('be_week_content');
+  if (wt) document.getElementById('trainingWeekTitle').textContent = wt;
+  if (wn) document.getElementById('trainingWeekNum').textContent = wn.toUpperCase();
+  if (wc) document.getElementById('trainingContent').textContent = wc;
+  if (document.getElementById('focusInput') && f) document.getElementById('focusInput').value = f.replace(/<[^>]+>/g,'');
+  if (document.getElementById('weekNum') && wn) document.getElementById('weekNum').value = wn;
+  if (document.getElementById('weekTitle') && wt) document.getElementById('weekTitle').value = wt;
+  if (document.getElementById('weekContent') && wc) document.getElementById('weekContent').value = wc;
+  renderListManager();
+}
+
+// ── ADMIN UPDATES ──
+function updateFocus() {
+  const val = document.getElementById('focusInput').value.trim();
+  if(!val) return;
+  const html = `This week's focus: <strong>${val}</strong>`;
+  document.getElementById('weeklyFocus').innerHTML = '<span style="font-size:16px;">⭐</span><span>' + html + '</span>';
+  localStorage.setItem('be_focus', html);
+  showStatus('focusStatus');
+}
+
+function updateTraining() {
+  const wn = document.getElementById('weekNum').value.trim();
+  const wt = document.getElementById('weekTitle').value.trim();
+  const wc = document.getElementById('weekContent').value.trim();
+  if(!wt) return;
+  if(wn) { document.getElementById('trainingWeekNum').textContent = wn.toUpperCase(); localStorage.setItem('be_week_num', wn); }
+  document.getElementById('trainingWeekTitle').textContent = wt; localStorage.setItem('be_week_title', wt);
+  if(wc) { document.getElementById('trainingContent').textContent = wc; localStorage.setItem('be_week_content', wc); }
+  showStatus('trainingStatus');
+}
+
+function showStatus(id) {
+  const el = document.getElementById(id);
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none', 3000);
+}
+
+// ── CSV PARSING ──
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).filter(l=>l.trim());
+  if (lines.length < 2) return [];
+
+  // Detect separator — semicolon wins if it appears more than comma
+  const sample = lines.slice(0,3).join('\n');
+  const semiCount = (sample.match(/;/g)||[]).length;
+  const commaCount = (sample.match(/,/g)||[]).length;
+  const tabCount = (sample.match(/\t/g)||[]).length;
+  let sep = ',';
+  if (semiCount > commaCount && semiCount > tabCount) sep = ';';
+  else if (tabCount > commaCount) sep = '\t';
+
+  // Skip blank/header rows at top — find actual header
+  let headerIdx = 0;
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    const row = lines[i].split(sep);
+    if (row.length >= 4 && row.some(c => c.trim().length > 2)) {
+      headerIdx = i; break;
+    }
+  }
+
+  const headers = lines[headerIdx].split(sep).map(h=>h.trim().toLowerCase().replace(/[\'"]/g,''));
+
+  const findCol = (...names) => {
+    for (const n of names) {
+      const idx = headers.findIndex(h => h.includes(n));
+      if (idx >= 0) return idx;
+    }
+    return -1;
+  };
+
+  // Flexible column detection
+  // Handles: PROVINCE;PHYSICAL TOWN;PHYSICAL SUBURB;ADDRESS;POSTAL;PRACTICE NAME;PRACTICE NUMBER;CONTACT NUMBER
+  const doctorCol  = findCol('practice name','doctor name','doctor','name');
+  const phoneCol   = findCol('contact number','contact no','phone','tel','mobile');
+  const townCol    = findCol('physical town','town','city');
+  const suburbCol  = findCol('physical suburb','suburb','area');
+
+  const results = [];
+  const seen = new Set();
+
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    // Skip rows that are all separators
+    if (line.replace(new RegExp(sep === ';' ? ';' : sep, 'g'), '').trim() === '') continue;
+
+    const cols = splitCSVLine(line, sep);
+    if (cols.length < 3) continue;
+
+    // Use detected columns or fallback to positional (col 5 for GEMS format)
+    let doctor = '';
+    if (doctorCol >= 0 && cols[doctorCol]) {
+      doctor = cols[doctorCol].trim().replace(/[\'"]/g,'');
+    } else if (cols.length >= 6) {
+      doctor = cols[5].trim().replace(/[\'"]/g,''); // GEMS REO format: col 5 = PRACTICE NAME
+    } else {
+      doctor = cols[0].trim().replace(/[\'"]/g,'');
+    }
+
+    let phone = '';
+    if (phoneCol >= 0 && cols[phoneCol]) {
+      phone = cols[phoneCol].trim().replace(/[\'"\s]/g,'');
+    } else {
+      phone = cols[cols.length - 1].trim().replace(/[\'"\s]/g,'');
+    }
+
+    const town   = (townCol >= 0   && cols[townCol])   ? cols[townCol].trim().replace(/[\'"]/g,'')   : (cols[1]||'').trim();
+    const suburb = (suburbCol >= 0 && cols[suburbCol]) ? cols[suburbCol].trim().replace(/[\'"]/g,'') : (cols[2]||'').trim();
+
+    // Skip header-like rows and empty rows
+    if (!doctor || doctor === '') continue;
+    if (['practice name','doctor','doctor name','province','name'].includes(doctor.toLowerCase())) continue;
+    if (doctor.toLowerCase().startsWith('page ') || doctor.toLowerCase().includes('gems reo')) continue;
+
+    const location = [suburb, town].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', ');
+
+    const uid = doctor.toLowerCase() + '|' + phone;
+    if (seen.has(uid)) continue;
+    seen.add(uid);
+
+    results.push({
+      id: 'c_' + i + '_' + Date.now(),
+      doctor,
+      practice: location,
+      phone: formatPhone(phone),
+      status: 'none'
+    });
+  }
+  return results;
+}
+
+function splitCSVLine(line, sep) {
+  const result = [];
+  let cur = '';
+  let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') { inQuote = !inQuote; }
+    else if (ch === sep && !inQuote) { result.push(cur); cur = ''; }
+    else { cur += ch; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function formatPhone(p) {
+  if (!p) return '';
+  p = p.replace(/\D/g,'');
+  if (p.startsWith('27') && p.length === 11) p = '0' + p.slice(2);
+  return p;
+}
+
+// ── FILE HANDLING ──
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) readFile(file);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) readFile(file);
+}
+
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    parsedCSV = parseCSV(e.target.result);
+    showPreview(parsedCSV, file.name);
+  };
+  reader.readAsText(file);
+}
+
+function showPreview(data, filename) {
+  if (data.length === 0) {
+    showToast('❌ Could not read contacts. Check the CSV format.');
+    return;
+  }
+  document.getElementById('previewTitle').textContent = `✅ ${data.length} contacts found in "${filename}"`;
+  document.getElementById('previewCount').textContent =
+    `First few: ${data.slice(0,3).map(d=>d.doctor).join(', ')}${data.length > 3 ? '...' : ''}`;
+  document.getElementById('listNameInput').value = filename.replace('.csv','').replace('.txt','');
+  document.getElementById('uploadPreview').style.display = 'block';
+}
+
+function cancelUpload() {
+  parsedCSV = [];
+  document.getElementById('uploadPreview').style.display = 'none';
+  document.getElementById('csvFileInput').value = '';
+}
+
+// ── SAVE LIST ──
+function saveList() {
+  const name = document.getElementById('listNameInput').value.trim();
+  if (!name) { showToast('Please enter a list name'); return; }
+  if (parsedCSV.length === 0) return;
+
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const newList = {
+    id: 'list_' + Date.now(),
+    name: name,
+    count: parsedCSV.length,
+    date: new Date().toLocaleDateString('en-ZA'),
+    contacts: parsedCSV,
+    active: false
+  };
+  lists.push(newList);
+  localStorage.setItem('be_lists', JSON.stringify(lists));
+  setActiveList(newList.id);
+  cancelUpload();
+  renderListManager();
+  showToast(`✅ "${name}" uploaded with ${parsedCSV.length} contacts`);
+}
+
+function setActiveList(listId) {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  lists.forEach(l => l.active = l.id === listId);
+  localStorage.setItem('be_lists', JSON.stringify(lists));
+  loadActiveList();
+  renderListManager();
+}
+
+function deleteList(listId) {
+  if (!confirm('Delete this list? This cannot be undone.')) return;
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]').filter(l => l.id !== listId);
+  localStorage.setItem('be_lists', JSON.stringify(lists));
+  loadActiveList();
+  renderListManager();
+  showToast('List deleted');
+}
+
+function loadActiveList() {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const active = lists.find(l => l.active);
+  if (!active) {
+    contactData = [];
+    document.getElementById('noListState').style.display = 'block';
+    document.getElementById('contactListEl').innerHTML = '';
+    updateContactStats();
+    return;
+  }
+
+  // Load saved statuses
+  const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
+  contactData = active.contacts.map(c => ({ ...c, status: statuses[c.id] || 'none' }));
+
+  document.getElementById('listTitle').textContent = active.name;
+  document.getElementById('listSub').textContent = `${active.count} contacts · Tap to mark call outcome`;
+  document.getElementById('noListState').style.display = 'none';
+  renderContacts();
+}
+
+// ── RENDER CONTACTS ──
+function renderContacts() {
+  const search = document.getElementById('contactSearch').value.toLowerCase();
+  const filter = document.getElementById('contactFilter').value;
+
+  const filtered = contactData.filter(c => {
+    const matchSearch = !search || c.doctor.toLowerCase().includes(search) || c.practice.toLowerCase().includes(search) || c.phone.includes(search);
+    const matchFilter = filter === 'all' || c.status === filter;
+    return matchSearch && matchFilter;
+  });
+
+  updateContactStats();
+
+  const el = document.getElementById('contactListEl');
+  if (filtered.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No contacts found</div><div class="empty-sub">Try a different search or filter.</div></div>';
+    return;
+  }
+
+  el.innerHTML = filtered.map(c => `
+    <div class="contact-card status-${c.status}" id="card_${c.id}">
+      <div class="cc-info">
+        <div class="cc-name">${c.doctor}</div>
+        ${c.practice ? `<div class="cc-practice">${c.practice}</div>` : ''}
+        <div class="cc-phone">${c.phone || 'No number'}</div>
+      </div>
+      <div class="cc-actions">
+        <button class="cc-btn cc-btn-green ${c.status==='green'?'active':''}" onclick="setStatus('${c.id}','green')" title="Connected — spoke to doctor">✅ Connected</button>
+        <button class="cc-btn cc-btn-blue ${c.status==='blue'?'active':''}" onclick="setStatus('${c.id}','blue')" title="No answer">📵 No Answer</button>
+        <button class="cc-btn cc-btn-red ${c.status==='red'?'active':''}" onclick="setStatus('${c.id}','red')" title="Invalid number">❌ Invalid</button>
+        ${c.status !== 'none' ? `<button class="cc-btn cc-btn-reset" onclick="setStatus('${c.id}','none')" title="Reset">↺</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateContactStats() {
+  const total = contactData.length;
+  const green = contactData.filter(c=>c.status==='green').length;
+  const blue  = contactData.filter(c=>c.status==='blue').length;
+  const red   = contactData.filter(c=>c.status==='red').length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statGreen').textContent = green;
+  document.getElementById('statBlue').textContent  = blue;
+  document.getElementById('statRed').textContent   = red;
+  document.getElementById('dHot').textContent = green;
+  document.getElementById('dInvalid').textContent = red;
+  document.getElementById('dCalls').textContent = green + blue;
+}
+
+function setStatus(id, status) {
+  const contact = contactData.find(c=>c.id===id);
+  if (!contact) return;
+  contact.status = status;
+
+  // Save statuses
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const active = lists.find(l=>l.active);
+  if (active) {
+    const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
+    statuses[id] = status;
+    localStorage.setItem('be_statuses_' + active.id, JSON.stringify(statuses));
+  }
+
+  renderContacts();
+
+  // Log to Google Sheets
+  if (status !== 'none') logOutcomeToSheets(contact, status);
+}
+
+async function logOutcomeToSheets(contact, status) {
+  const webhook = localStorage.getItem('be_webhook');
+  if (!webhook) return;
+  const outcomes = { green:'CONNECTED — Spoke to Doctor', blue:'NO ANSWER', red:'INVALID NUMBER' };
+  try {
+    await fetch(webhook, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        type: 'CALL_LIST_OUTCOME',
+        doctor: contact.doctor,
+        practice: contact.practice,
+        phone: contact.phone,
+        outcome: outcomes[status] || status,
+        salesperson: currentUser?.name || '',
+        timestamp: new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})
+      })
+    });
+  } catch(e) { /* silent */ }
+}
+
+// ── LIST MANAGER ──
+function renderListManager() {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const el = document.getElementById('listManagerEl');
+  if (!el) return;
+  if (lists.length === 0) {
+    el.innerHTML = '<div class="coming-soon-box" style="padding:16px;"><div style="font-size:12px;">No lists uploaded yet.</div></div>';
+    return;
+  }
+  el.innerHTML = lists.map(l => `
+    <div class="list-card">
+      <div class="list-info">
+        <h4>${l.name} ${l.active ? '<span style="font-size:10px;background:#e8f5ee;color:var(--green);padding:2px 8px;border-radius:100px;font-weight:700;">ACTIVE</span>' : ''}</h4>
+        <p>${l.count} contacts · Uploaded ${l.date}</p>
+      </div>
+      <div class="list-actions">
+        ${!l.active ? `<button class="btn-sm btn-sm-blue" onclick="setActiveList('${l.id}')">Set Active</button>` : ''}
+        <button class="btn-sm btn-sm-red" onclick="deleteList('${l.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ── DRAG/DROP ──
+const uz = document.getElementById('uploadZone');
+if (uz) {
+  uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
+  uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
+  uz.addEventListener('drop', e => { e.preventDefault(); uz.classList.remove('drag'); handleDrop(e); });
+}
+</script>
+</body>
+</html>
