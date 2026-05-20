@@ -675,16 +675,16 @@ function downloadPDF() {
   btn.textContent = '⏳ Generating PDF...';
   btn.disabled = true;
 
-  const doctor = document.getElementById('doctorName')?.value.trim() || 'Proposal';
+  const doctor = document.getElementById('f-doctor')?.value.trim() || 'Proposal';
   const filename = 'BlueEagle_Proposal_' + doctor.replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
 
-  const element = document.getElementById('proposalPreview');
+  const element = document.getElementById('proposal');
 
   const opt = {
-    margin:       [10, 10, 10, 10],
+    margin:       [8, 8, 8, 8],
     filename:     filename,
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, logging: false },
+    html2canvas:  { scale: 2, useCORS: true, logging: false, allowTaint: true },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
