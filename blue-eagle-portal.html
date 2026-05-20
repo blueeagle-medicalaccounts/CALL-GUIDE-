@@ -155,6 +155,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .cls-red .cls-num{color:var(--call-red);}
 .cls-blue .cls-num{color:var(--call-blue);}
 
+/* PORTAL-ONLY NOTICE BANNER */
+.local-only-banner{background:linear-gradient(135deg,var(--light2),#fff);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:10px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;}
+.lob-icon{font-size:20px;flex-shrink:0;}
+.lob-text{font-size:12px;color:var(--text);line-height:1.55;}
+.lob-text strong{color:var(--navy);}
+
 /* CONTACT CARDS */
 .contact-list{display:flex;flex-direction:column;gap:8px;}
 .contact-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;transition:all 0.2s;box-shadow:0 1px 4px rgba(21,101,192,0.04);}
@@ -236,6 +242,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .sb{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;}
 .sb-active{background:#e8f5ee;color:var(--green);}
 .sb-live{background:var(--light);color:var(--blue);}
+
+/* CALL ACTIVITY (admin) */
+.activity-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
+.act-stat{background:var(--light2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+.act-num{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;line-height:1;}
+.act-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.act-num.green{color:var(--call-green);}
+.act-num.blue{color:var(--call-blue);}
+.act-num.red{color:var(--call-red);}
+.act-num.navy{color:var(--navy);}
 
 /* LIST MGMT */
 .list-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
@@ -394,6 +410,14 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0;}
         <p id="listSub">Tap a contact to mark the outcome of your call.</p>
       </div>
 
+      <!-- ⚡ NEW: Notice that this list is portal-only -->
+      <div class="local-only-banner">
+        <div class="lob-icon">💡</div>
+        <div class="lob-text">
+          <strong>Heads up:</strong> ticking ✅ / 📵 / ❌ here only tracks your progress through the list — it does <strong>not</strong> log to Google Sheets. The Call Guide handles all Sheet logging when you finish each call. Use this list to manage who you've worked through.
+        </div>
+      </div>
+
       <!-- Stats bar -->
       <div class="cl-stats-bar">
         <div class="cls-item cls-total"><div class="cls-num" id="statTotal">0</div><div class="cls-label">Total</div></div>
@@ -511,6 +535,22 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0;}
     <!-- ADMIN -->
     <div class="page" id="page-admin">
       <div class="greeting"><div class="greeting-time">Admin Only</div><h1>Admin <span>Panel</span></h1><p>Manage notices, contact lists, and training content.</p></div>
+
+      <!-- ⚡ NEW: Call Activity Tracker -->
+      <div class="admin-section">
+        <h3>📞 Noya's Call Activity</h3>
+        <div class="desc">Live view of Noya's progress through the active call list. <strong>This is portal-only data</strong> — the Google Sheet only receives entries from the Call Guide tool, so there's no duplication.</div>
+        <div class="activity-stats" id="activityStats">
+          <div class="act-stat"><div class="act-num navy" id="actTotal">0</div><div class="act-lbl">In List</div></div>
+          <div class="act-stat"><div class="act-num green" id="actGreen">0</div><div class="act-lbl">✅ Connected</div></div>
+          <div class="act-stat"><div class="act-num blue" id="actBlue">0</div><div class="act-lbl">📵 No Answer</div></div>
+          <div class="act-stat"><div class="act-num red" id="actRed">0</div><div class="act-lbl">❌ Invalid</div></div>
+          <div class="act-stat"><div class="act-num navy" id="actRemain">0</div><div class="act-lbl">Remaining</div></div>
+        </div>
+        <div id="activityNote" style="font-size:12px;color:var(--muted);padding:10px 0;">No active list to track.</div>
+        <button class="admin-btn" onclick="exportActivity()" style="margin-top:8px;">📥 Export Invalid Numbers</button>
+        <button class="admin-btn" onclick="resetListProgress()" style="margin-left:8px;background:var(--red2);color:var(--call-red);border:1px solid #f5c6c0;">↺ Reset List Progress</button>
+      </div>
 
       <!-- Upload Call List -->
       <div class="admin-section">
@@ -661,7 +701,6 @@ const TOOLS = {
 let currentUser = null;
 let contactData = []; // { id, doctor, practice, phone, status: 'none'|'green'|'red'|'blue' }
 let parsedCSV = [];
-const WEBHOOK = localStorage.getItem('be_webhook') || '';
 
 // ── LOGIN ──
 function doLogin() {
@@ -718,6 +757,8 @@ function showPage(id, btn) {
   document.getElementById('page-'+id).classList.add('active');
   if(btn) btn.classList.add('active');
   window.scrollTo(0,0);
+  // Refresh activity stats when admin opens
+  if (id === 'admin') renderActivityStats();
 }
 
 // ── TOOLS ──
@@ -738,18 +779,13 @@ function tick(row) {
   const done = document.querySelectorAll('.cl-row.done').length;
   const total = document.querySelectorAll('.cl-row').length;
   document.getElementById('clProg').textContent = done+' / '+total+' done';
-  document.getElementById('dCalls').textContent = done > 1 ? Math.min(done*9,50) : 0;
 }
 
 // ── SAVED STATE ──
 function loadSaved() {
   const f = localStorage.getItem('be_focus');
   if (f) document.getElementById('weeklyFocus').innerHTML = '<span style="font-size:16px;">⭐</span><span>' + f + '</span>';
-  const wn = localStorage.getItem('be_week_num');
-  const wt = localStorage.getItem('be_week_title');
-  const wc = localStorage.getItem('be_week_content');
   if (document.getElementById('focusInput') && f) document.getElementById('focusInput').value = f.replace(/<[^>]+>/g,'');
-  // Load quiz builder admin fields
   const ct = JSON.parse(localStorage.getItem('be_current_training') || 'null');
   if (ct) {
     if (document.getElementById('weekNum')) document.getElementById('weekNum').value = ct.wn || '';
@@ -865,13 +901,11 @@ function renderTrainingPage() {
   document.getElementById('trainingWeekNumBadge').textContent = (training.wn || 'This Week').toUpperCase();
   document.getElementById('trainingContent').textContent = training.wc || '';
 
-  // Resource link
   const linkWrap = document.getElementById('trainingLinkWrap');
   linkWrap.innerHTML = training.link
     ? `<a class="tc-link" href="${training.link}" target="_blank">🔗 ${training.linkLabel || 'Open Resource'} →</a>`
     : '';
 
-  // Quiz
   renderQuiz(training);
   renderTrainingArchive();
   renderScores();
@@ -889,7 +923,6 @@ function renderQuiz(training) {
     return;
   }
 
-  // Check if already completed
   const savedScore = localStorage.getItem('be_quiz_score_' + training.wt);
   if (savedScore) {
     const score = JSON.parse(savedScore);
@@ -920,19 +953,16 @@ function renderQuiz(training) {
 }
 
 function selectAnswer(qIdx, optIdx, correct) {
-  if (quizAnswers[qIdx] !== undefined) return; // already answered
+  if (quizAnswers[qIdx] !== undefined) return;
   quizAnswers[qIdx] = optIdx;
 
-  // Show correct/wrong
   const correctBtn = document.getElementById('qopt_' + qIdx + '_' + correct);
   const chosenBtn  = document.getElementById('qopt_' + qIdx + '_' + optIdx);
   if (correctBtn) correctBtn.classList.add('correct');
   if (chosenBtn && optIdx !== correct) chosenBtn.classList.add('wrong');
 
-  // Disable all options for this question
   document.querySelectorAll('[id^="qopt_' + qIdx + '_"]').forEach(b => b.disabled = true);
 
-  // Show submit button when all answered
   const training = JSON.parse(localStorage.getItem('be_current_training') || '{}');
   const total = training.questions?.length || 0;
   if (Object.keys(quizAnswers).length === total) {
@@ -953,7 +983,6 @@ function submitQuiz(weekTitle, total) {
   const scoreData = { got, total, weekTitle, user: currentUser?.name || 'Staff', date: new Date().toLocaleDateString('en-ZA') };
   localStorage.setItem('be_quiz_score_' + weekTitle, JSON.stringify(scoreData));
 
-  // Save to scores list
   const allScores = JSON.parse(localStorage.getItem('be_all_scores') || '[]');
   allScores.unshift(scoreData);
   localStorage.setItem('be_all_scores', JSON.stringify(allScores));
@@ -1013,7 +1042,6 @@ function updateTraining() { publishTraining(); }
 function clearCurrentTraining() {
   if (!confirm('Remove the current training? Noya will no longer see it. This cannot be undone.')) return;
   localStorage.removeItem('be_current_training');
-  // Clear form fields
   ['weekNum','weekTitle','weekContent','weekLink','weekLinkLabel'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -1044,7 +1072,6 @@ function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(l=>l.trim());
   if (lines.length < 2) return [];
 
-  // Detect separator — semicolon wins if it appears more than comma
   const sample = lines.slice(0,3).join('\n');
   const semiCount = (sample.match(/;/g)||[]).length;
   const commaCount = (sample.match(/,/g)||[]).length;
@@ -1053,7 +1080,6 @@ function parseCSV(text) {
   if (semiCount > commaCount && semiCount > tabCount) sep = ';';
   else if (tabCount > commaCount) sep = '\t';
 
-  // Skip blank/header rows at top — find actual header
   let headerIdx = 0;
   for (let i = 0; i < Math.min(5, lines.length); i++) {
     const row = lines[i].split(sep);
@@ -1072,8 +1098,6 @@ function parseCSV(text) {
     return -1;
   };
 
-  // Flexible column detection
-  // Handles: PROVINCE;PHYSICAL TOWN;PHYSICAL SUBURB;ADDRESS;POSTAL;PRACTICE NAME;PRACTICE NUMBER;CONTACT NUMBER
   const doctorCol  = findCol('practice name','doctor name','doctor','name');
   const phoneCol   = findCol('contact number','contact no','phone','tel','mobile');
   const townCol    = findCol('physical town','town','city');
@@ -1085,18 +1109,16 @@ function parseCSV(text) {
   for (let i = headerIdx + 1; i < lines.length; i++) {
     const line = lines[i];
     if (!line.trim()) continue;
-    // Skip rows that are all separators
     if (line.replace(new RegExp(sep === ';' ? ';' : sep, 'g'), '').trim() === '') continue;
 
     const cols = splitCSVLine(line, sep);
     if (cols.length < 3) continue;
 
-    // Use detected columns or fallback to positional (col 5 for GEMS format)
     let doctor = '';
     if (doctorCol >= 0 && cols[doctorCol]) {
       doctor = cols[doctorCol].trim().replace(/[\'"]/g,'');
     } else if (cols.length >= 6) {
-      doctor = cols[5].trim().replace(/[\'"]/g,''); // GEMS REO format: col 5 = PRACTICE NAME
+      doctor = cols[5].trim().replace(/[\'"]/g,'');
     } else {
       doctor = cols[0].trim().replace(/[\'"]/g,'');
     }
@@ -1111,7 +1133,6 @@ function parseCSV(text) {
     const town   = (townCol >= 0   && cols[townCol])   ? cols[townCol].trim().replace(/[\'"]/g,'')   : (cols[1]||'').trim();
     const suburb = (suburbCol >= 0 && cols[suburbCol]) ? cols[suburbCol].trim().replace(/[\'"]/g,'') : (cols[2]||'').trim();
 
-    // Skip header-like rows and empty rows
     if (!doctor || doctor === '') continue;
     if (['practice name','doctor','doctor name','province','name'].includes(doctor.toLowerCase())) continue;
     if (doctor.toLowerCase().startsWith('page ') || doctor.toLowerCase().includes('gems reo')) continue;
@@ -1241,10 +1262,10 @@ function loadActiveList() {
     document.getElementById('noListState').style.display = 'block';
     document.getElementById('contactListEl').innerHTML = '';
     updateContactStats();
+    renderActivityStats();
     return;
   }
 
-  // Load saved statuses
   const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
   contactData = active.contacts.map(c => ({ ...c, status: statuses[c.id] || 'none' }));
 
@@ -1252,6 +1273,7 @@ function loadActiveList() {
   document.getElementById('listSub').textContent = `${active.count} contacts · Tap to mark call outcome`;
   document.getElementById('noListState').style.display = 'none';
   renderContacts();
+  renderActivityStats();
 }
 
 // ── RENDER CONTACTS ──
@@ -1304,12 +1326,13 @@ function updateContactStats() {
   document.getElementById('dCalls').textContent = green + blue;
 }
 
+// ── STATUS UPDATE — LOCAL ONLY, NO SHEETS ──
 function setStatus(id, status) {
   const contact = contactData.find(c=>c.id===id);
   if (!contact) return;
   contact.status = status;
 
-  // Save statuses
+  // Save status locally
   const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
   const active = lists.find(l=>l.active);
   if (active) {
@@ -1319,30 +1342,86 @@ function setStatus(id, status) {
   }
 
   renderContacts();
-
-  // Log to Google Sheets
-  if (status !== 'none') logOutcomeToSheets(contact, status);
+  renderActivityStats();
+  // 🚫 NOTHING is sent to Google Sheets from here — the Call Guide handles all Sheet logging
 }
 
-async function logOutcomeToSheets(contact, status) {
-  const webhook = localStorage.getItem('be_webhook');
-  if (!webhook) return;
-  const outcomes = { green:'CONNECTED — Spoke to Doctor', blue:'NO ANSWER', red:'INVALID NUMBER' };
-  try {
-    await fetch(webhook, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        type: 'CALL_LIST_OUTCOME',
-        doctor: contact.doctor,
-        practice: contact.practice,
-        phone: contact.phone,
-        outcome: outcomes[status] || status,
-        salesperson: currentUser?.name || '',
-        timestamp: new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})
-      })
-    });
-  } catch(e) { /* silent */ }
+// ── ADMIN: CALL ACTIVITY STATS ──
+function renderActivityStats() {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const active = lists.find(l => l.active);
+  const noteEl = document.getElementById('activityNote');
+  if (!noteEl) return;
+
+  if (!active) {
+    document.getElementById('actTotal').textContent  = 0;
+    document.getElementById('actGreen').textContent  = 0;
+    document.getElementById('actBlue').textContent   = 0;
+    document.getElementById('actRed').textContent    = 0;
+    document.getElementById('actRemain').textContent = 0;
+    noteEl.textContent = 'No active list to track.';
+    return;
+  }
+
+  const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
+  const total = active.contacts.length;
+  let green=0, blue=0, red=0;
+  active.contacts.forEach(c => {
+    const s = statuses[c.id];
+    if (s === 'green') green++;
+    else if (s === 'blue') blue++;
+    else if (s === 'red')  red++;
+  });
+  const done = green + blue + red;
+  const remain = total - done;
+
+  document.getElementById('actTotal').textContent  = total;
+  document.getElementById('actGreen').textContent  = green;
+  document.getElementById('actBlue').textContent   = blue;
+  document.getElementById('actRed').textContent    = red;
+  document.getElementById('actRemain').textContent = remain;
+
+  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+  noteEl.innerHTML = `Active list: <strong>${active.name}</strong> · ${done} of ${total} worked through (<strong>${pct}%</strong>) · ${remain} remaining`;
+}
+
+// ── ADMIN: EXPORT INVALID NUMBERS AS CSV ──
+function exportActivity() {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const active = lists.find(l => l.active);
+  if (!active) { showToast('No active list'); return; }
+
+  const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
+  const invalid = active.contacts.filter(c => statuses[c.id] === 'red');
+
+  if (invalid.length === 0) { showToast('No invalid numbers flagged yet'); return; }
+
+  const rows = [['Doctor / Practice','Location','Phone','Status','Date Exported']];
+  const today = new Date().toLocaleDateString('en-ZA');
+  invalid.forEach(c => {
+    rows.push([c.doctor, c.practice||'', c.phone||'', 'Invalid Number', today]);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `invalid-numbers-${active.name.replace(/[^a-z0-9]/gi,'-')}-${today.replace(/\//g,'-')}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`📥 Exported ${invalid.length} invalid numbers`);
+}
+
+// ── ADMIN: RESET LIST PROGRESS ──
+function resetListProgress() {
+  const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
+  const active = lists.find(l => l.active);
+  if (!active) { showToast('No active list'); return; }
+  if (!confirm(`Reset all call progress for "${active.name}"? Noya will start over — but nothing in the Google Sheet is affected.`)) return;
+  localStorage.removeItem('be_statuses_' + active.id);
+  loadActiveList();
+  renderActivityStats();
+  showToast('↺ List progress reset');
 }
 
 // ── LIST MANAGER ──
