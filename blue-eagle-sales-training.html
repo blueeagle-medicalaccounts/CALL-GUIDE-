@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Eagle — Sales Training Programme</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #04080f;
+  --bg2: #07111f;
+  --bg3: #0a1828;
+  --card: #0c1f35;
+  --card2: #102540;
+  --blue: #1565c0;
+  --blue2: #1976d2;
+  --blue3: #42a5f5;
+  --blue4: #90caf9;
+  --gold: #f5a623;
+  --gold2: #ffd07a;
+  --green: #2ecc71;
+  --green2: #27ae60;
+  --red: #e74c3c;
+  --red2: #ff6b6b;
+  --white: #e8f0fe;
+  --silver: #6b8cad;
+  --muted: #2d4a6b;
+  --border: rgba(21,101,192,0.15);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ── SIDEBAR NAV ── */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;
+  width:260px;background:var(--bg2);
+  border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;
+  display:flex;flex-direction:column;
+}
+
+.sidebar-logo{
+  padding:20px 20px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+
+.sidebar-logo img{
+  width:38px;height:38px;
+  border-radius:8px;background:#fff;
+  padding:3px;object-fit:contain;flex-shrink:0;
+}
+
+.sidebar-logo .brand{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;letter-spacing:1px;color:var(--white);line-height:1;
+}
+.sidebar-logo .sub{
+  font-size:9px;color:var(--silver);
+  letter-spacing:2px;text-transform:uppercase;margin-top:2px;
+}
+
+.sidebar-progress{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+}
+.sp-label{font-size:10px;color:var(--silver);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.sp-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue3));border-radius:2px;transition:width 0.4s ease;width:0%;}
+.sp-text{font-size:11px;color:var(--silver);margin-top:6px;font-family:'DM Mono',monospace;}
+
+.nav-section{padding:14px 20px 6px;}
+.nav-section-label{
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--muted);font-weight:700;margin-bottom:8px;
+}
+
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:8px;cursor:pointer;
+  font-size:13px;color:var(--silver);font-weight:500;
+  transition:all 0.18s;margin-bottom:3px;
+  border:1px solid transparent;
+  text-decoration:none;
+}
+.nav-item:hover{background:rgba(21,101,192,0.1);color:var(--white);}
+.nav-item.active{
+  background:rgba(21,101,192,0.15);
+  border-color:rgba(21,101,192,0.3);
+  color:var(--blue3);
+}
+.nav-item.done{color:var(--green);}
+.nav-item.done .nav-dot{background:var(--green)!important;border-color:var(--green)!important;}
+.nav-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1.5px solid var(--muted);
+  flex-shrink:0;transition:all 0.2s;
+}
+.nav-item.active .nav-dot{background:var(--blue3);border-color:var(--blue3);}
+.nav-num{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--muted);margin-left:auto;
+}
+
+.sidebar-footer{
+  margin-top:auto;padding:16px 20px;
+  border-top:1px solid var(--border);
+}
+.trainer-card{
+  background:rgba(21,101,192,0.08);
+  border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;
+}
+.trainer-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--silver);margin-bottom:4px;}
+.trainer-name{font-size:14px;font-weight:700;color:var(--white);}
+.trainer-sub{font-size:11px;color:var(--silver);}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:260px;min-height:100vh;}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:rgba(4,8,15,0.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:90;
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.section-badge{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 14px;border-radius:100px;
+}
+.sb-gold{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3);}
+.sb-blue{background:rgba(21,101,192,0.15);color:var(--blue3);border:1px solid rgba(21,101,192,0.3);}
+.sb-green{background:rgba(46,204,113,0.15);color:var(--green);border:1px solid rgba(46,204,113,0.3);}
+.sb-red{background:rgba(231,76,60,0.15);color:var(--red2);border:1px solid rgba(231,76,60,0.3);}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:var(--white);}
+.time-badge{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--gold);background:rgba(245,166,35,0.08);
+  border:1px solid rgba(245,166,35,0.2);
+  padding:5px 14px;border-radius:100px;
+}
+
+/* ── SECTIONS ── */
+.section{display:none;padding:40px 40px 80px;}
+.section.active{display:block;}
+
+/* ── HERO BANNER ── */
+.hero-banner{
+  background:linear-gradient(135deg,var(--bg3) 0%,#071828 100%);
+  border:1px solid var(--border);border-radius:16px;
+  padding:36px 40px;margin-bottom:32px;
+  position:relative;overflow:hidden;
+}
+.hero-banner::before{
+  content:'';position:absolute;
+  top:-60px;right:-60px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(21,101,192,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--blue3);margin-bottom:10px;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,4vw,56px);
+  letter-spacing:2px;line-height:1.05;
+  color:var(--white);margin-bottom:10px;
+}
+.hero-title em{font-style:normal;color:var(--gold);}
+.hero-desc{color:var(--silver);font-size:15px;max-width:560px;font-weight:300;line-height:1.75;}
+.hero-meta{display:flex;gap:32px;margin-top:24px;flex-wrap:wrap;}
+.hm-item{display:flex;flex-direction:column;gap:3px;}
+.hm-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px;line-height:1;}
+.hm-key{font-size:10px;color:var(--silver);text-transform:uppercase;letter-spacing:1.5px;}
+
+/* ── SECTION HEADING ── */
+.sec-head{margin-bottom:28px;}
+.sec-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--blue3);margin-bottom:6px;
+}
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:32px;letter-spacing:2px;line-height:1.1;margin-bottom:6px;
+}
+.sec-sub{font-size:14px;color:var(--silver);font-weight:300;}
+
+/* ── CARDS ── */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:24px 26px;margin-bottom:18px;
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:rgba(21,101,192,0.3);}
+.card-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;}
+.card-icon{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.ic-blue{background:rgba(21,101,192,0.15);}
+.ic-gold{background:rgba(245,166,35,0.12);}
+.ic-green{background:rgba(46,204,113,0.12);}
+.ic-red{background:rgba(231,76,60,0.12);}
+.ic-purple{background:rgba(155,89,182,0.12);}
+.card-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--silver);margin-bottom:4px;}
+.card h3{font-size:17px;font-weight:700;margin-bottom:8px;}
+.card p{font-size:14px;color:var(--silver);line-height:1.75;}
+
+.card.bl{border-left:3px solid var(--blue2);}
+.card.gd{border-left:3px solid var(--gold);}
+.card.gn{border-left:3px solid var(--green);}
+.card.rd{border-left:3px solid var(--red);}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px;}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;}
+
+/* ── SCRIPT BOX ── */
+.script-box{
+  background:linear-gradient(135deg,rgba(21,101,192,0.08),rgba(4,8,15,0.9));
+  border:1px solid rgba(21,101,192,0.25);
+  border-left:3px solid var(--blue2);
+  border-radius:0 12px 12px 0;
+  padding:20px 24px;margin:16px 0;
+}
+.script-lbl{
+  font-size:9px;letter-spacing:2.5px;font-weight:700;
+  text-transform:uppercase;color:var(--blue3);
+  margin-bottom:12px;display:block;
+}
+.script-text{
+  font-size:15px;color:var(--white);line-height:1.85;
+  font-family:'DM Mono',monospace;
+}
+.script-text .b{font-weight:500;color:#fff;}
+.script-text .hl{color:var(--gold2);}
+.pause{
+  display:inline-block;
+  background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);
+  color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:2px 10px;border-radius:4px;margin:2px 1px;
+  font-family:'DM Sans',sans-serif;
+}
+
+/* ── VOSS TIP ── */
+.voss{
+  background:rgba(46,204,113,0.05);
+  border:1px solid rgba(46,204,113,0.18);
+  border-left:3px solid var(--green);
+  border-radius:0 10px 10px 0;
+  padding:14px 18px;margin:14px 0;
+}
+.voss-lbl{
+  font-size:9px;letter-spacing:2.5px;font-weight:700;
+  text-transform:uppercase;color:var(--green);
+  margin-bottom:6px;display:block;
+}
+.voss-text{font-size:13px;color:#a0e8b8;line-height:1.7;}
+
+/* ── TRAINER NOTE ── */
+.trainer-note{
+  background:rgba(245,166,35,0.06);
+  border:1px solid rgba(245,166,35,0.2);
+  border-radius:10px;padding:14px 18px;margin:14px 0;
+}
+.tn-lbl{
+  font-size:9px;letter-spacing:2.5px;font-weight:700;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:6px;display:block;
+}
+.tn-text{font-size:13px;color:var(--gold2);line-height:1.7;}
+
+/* ── ROLE PLAY ── */
+.roleplay{
+  background:var(--card2);
+  border:1px solid rgba(231,76,60,0.2);
+  border-radius:12px;overflow:hidden;margin:20px 0;
+}
+.rp-header{
+  background:rgba(231,76,60,0.1);
+  border-bottom:1px solid rgba(231,76,60,0.2);
+  padding:14px 20px;display:flex;align-items:center;gap:10px;
+}
+.rp-icon{font-size:18px;}
+.rp-title{font-size:14px;font-weight:700;color:var(--red2);}
+.rp-sub{font-size:11px;color:var(--silver);margin-top:1px;}
+.rp-body{padding:20px;}
+.rp-scenario{
+  font-size:14px;color:var(--white);
+  background:rgba(255,255,255,0.04);
+  border-radius:8px;padding:14px 16px;
+  margin-bottom:16px;line-height:1.7;
+}
+.rp-row{display:flex;gap:12px;margin-bottom:14px;}
+.rp-speaker{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;padding:3px 10px;border-radius:4px;
+  white-space:nowrap;flex-shrink:0;margin-top:2px;height:fit-content;
+}
+.sp-trainer{background:rgba(21,101,192,0.2);color:var(--blue3);}
+.sp-sales{background:rgba(46,204,113,0.2);color:var(--green);}
+.sp-doctor{background:rgba(245,166,35,0.2);color:var(--gold);}
+.sp-recept{background:rgba(155,89,182,0.2);color:#c39bd3;}
+.rp-line{font-size:14px;color:var(--white);line-height:1.75;}
+.rp-tip{
+  font-size:12px;color:var(--silver);font-style:italic;
+  margin-top:4px;line-height:1.6;
+}
+
+/* ── OBJECTION ACCORDION ── */
+.obj-item{
+  border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;margin-bottom:12px;
+}
+.obj-head{
+  padding:16px 20px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--card);transition:background 0.2s;
+}
+.obj-head:hover{background:var(--card2);}
+.obj-head.open{border-bottom:1px solid var(--border);}
+.obj-q{font-size:14px;font-weight:600;color:var(--red2);}
+.obj-tag{font-size:10px;letter-spacing:1.5px;color:var(--red2);text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.obj-chev{color:var(--silver);font-size:12px;transition:transform 0.3s;}
+.obj-head.open .obj-chev{transform:rotate(180deg);}
+.obj-body{display:none;padding:20px;background:rgba(0,0,0,0.2);}
+.obj-body.open{display:block;}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;margin:20px 0;}
+.timeline::before{
+  content:'';position:absolute;left:20px;top:44px;bottom:0;
+  width:1px;background:linear-gradient(180deg,var(--blue),transparent);
+}
+.tl-item{display:flex;gap:18px;padding-bottom:24px;}
+.tl-dot{
+  width:42px;height:42px;border-radius:50%;
+  border:2px solid var(--blue);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--blue3);
+  flex-shrink:0;z-index:1;
+}
+.tl-content{flex:1;padding-top:8px;}
+.tl-content h4{font-weight:700;font-size:15px;margin-bottom:4px;}
+.tl-content p{font-size:13px;color:var(--silver);line-height:1.65;}
+.tl-time{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:4px;
+  font-family:'DM Mono',monospace;
+}
+
+/* ── CALLOUT ── */
+.callout{border-radius:10px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.75;}
+.ca-gold{background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.22);color:var(--gold2);}
+.ca-blue{background:rgba(21,101,192,0.07);border:1px solid rgba(21,101,192,0.22);color:var(--blue4);}
+.ca-green{background:rgba(46,204,113,0.07);border:1px solid rgba(46,204,113,0.22);color:#a0e8b8;}
+.ca-red{background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.22);color:var(--red2);}
+.callout strong{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;opacity:0.75;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;}
+.tbl th{
+  background:rgba(21,101,192,0.12);color:var(--silver);
+  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-weight:700;
+}
+.tbl td{
+  padding:11px 14px;border-bottom:1px solid rgba(255,255,255,0.04);
+  color:var(--white);vertical-align:top;line-height:1.65;
+}
+.tbl tr:hover td{background:rgba(255,255,255,0.02);}
+.good{color:var(--green);}
+.bad{color:var(--red2);}
+.warn{color:var(--gold);}
+
+/* ── QUIZ ── */
+.quiz-block{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:24px;margin-bottom:18px;
+}
+.quiz-q{font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:10px;}
+.quiz-opt{
+  padding:13px 18px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:8px;
+  cursor:pointer;font-size:14px;color:var(--white);
+  transition:all 0.18s;text-align:left;
+  font-family:'DM Sans',sans-serif;
+}
+.quiz-opt:hover:not(:disabled){
+  background:rgba(21,101,192,0.12);
+  border-color:rgba(21,101,192,0.4);
+}
+.quiz-opt.correct{background:rgba(46,204,113,0.15);border-color:var(--green);color:#a0e8b8;}
+.quiz-opt.wrong{background:rgba(231,76,60,0.12);border-color:var(--red);color:var(--red2);}
+.quiz-fb{
+  margin-top:12px;padding:12px 16px;border-radius:8px;
+  font-size:13px;display:none;line-height:1.65;
+}
+.quiz-fb.show{display:block;}
+.quiz-fb.correct{background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.25);color:#a0e8b8;}
+.quiz-fb.wrong{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.25);color:var(--red2);}
+
+/* ── NAV BUTTONS ── */
+.section-nav{
+  display:flex;gap:12px;margin-top:40px;
+  padding-top:24px;border-top:1px solid var(--border);
+}
+.btn-prev{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:13px 28px;
+  font-size:14px;font-weight:600;color:var(--silver);
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;
+}
+.btn-prev:hover{border-color:rgba(21,101,192,0.3);color:var(--white);}
+.btn-next-sec{
+  background:var(--blue2);border:none;border-radius:10px;
+  padding:13px 32px;font-size:15px;font-weight:700;
+  color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.2s;margin-left:auto;
+}
+.btn-next-sec:hover{background:var(--blue3);transform:translateY(-1px);}
+
+hr.div{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .section{padding:24px 20px 80px;}
+  .topbar{padding:12px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img src="https://lirp.cdn-website.com/07efeb14/dms3rep/multi/opt/Blue+Eagle+logo-1920w.JPG" alt="Blue Eagle">
+    <div>
+      <div class="brand">Blue Eagle</div>
+      <div class="sub">Sales Training</div>
+    </div>
+  </div>
+
+  <div class="sidebar-progress">
+    <div class="sp-label">Training Progress</div>
+    <div class="sp-bar"><div class="sp-fill" id="progFill"></div></div>
+    <div class="sp-text" id="progText">0 / 7 modules</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Programme</div>
+    <a class="nav-item active" onclick="goSec(0)" href="#">
+      <div class="nav-dot"></div>Welcome & Overview
+      <span class="nav-num">15m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(1)" href="#">
+      <div class="nav-dot"></div>Medical Billing Basics
+      <span class="nav-num">15m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(2)" href="#">
+      <div class="nav-dot"></div>The Telephonic Sales Call
+      <span class="nav-num">20m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(3)" href="#">
+      <div class="nav-dot"></div>Getting Past the Gatekeeper
+      <span class="nav-num">15m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(4)" href="#">
+      <div class="nav-dot"></div>Objection Handling
+      <span class="nav-num">20m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(5)" href="#">
+      <div class="nav-dot"></div>Closing & Booking Meetings
+      <span class="nav-num">20m</span>
+    </a>
+    <a class="nav-item" onclick="goSec(6)" href="#">
+      <div class="nav-dot"></div>Role Plays & Assessment
+      <span class="nav-num">15m</span>
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="trainer-card">
+      <div class="trainer-label">Trainer</div>
+      <div class="trainer-name">Owen Blauw</div>
+      <div class="trainer-sub">Blue Eagle Medical Accounts</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="section-badge sb-gold" id="topBadge">Module 1</div>
+    <div class="topbar-title" id="topTitle">Welcome & Overview</div>
+  </div>
+  <div class="time-badge" id="topTime">⏱ 15 min</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 0: WELCOME
+═══════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+  <div class="hero-banner">
+    <div class="hero-eyebrow">🦅 Blue Eagle Medical Accounts — Sales Training Programme</div>
+    <div class="hero-title">Welcome to Your<br><em>2-Hour Sales</em> Training</div>
+    <div class="hero-desc">This programme will take you from understanding medical billing to confidently closing meetings with doctors. By the end you'll have a complete call system you can use from day one.</div>
+    <div class="hero-meta">
+      <div class="hm-item"><div class="hm-val">7</div><div class="hm-key">Modules</div></div>
+      <div class="hm-item"><div class="hm-val">2h</div><div class="hm-key">Total Time</div></div>
+      <div class="hm-item"><div class="hm-val">12+</div><div class="hm-key">Role Plays</div></div>
+      <div class="hm-item"><div class="hm-val">SA</div><div class="hm-key">Medical Market</div></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card bl">
+      <div class="card-head">
+        <div class="card-icon ic-blue">🎯</div>
+        <div><div class="card-label">Your Goal</div><div class="card h3" style="font-size:16px;font-weight:700;margin:0;">Book meetings with doctors</div></div>
+      </div>
+      <p>Your job is not to sell on the first call. Your job is to get a 15-minute meeting booked. The meeting sells the service. The call sells the meeting.</p>
+    </div>
+    <div class="card gd">
+      <div class="card-head">
+        <div class="card-icon ic-gold">💡</div>
+        <div><div class="card-label">Your Advantage</div><div class="card h3" style="font-size:16px;font-weight:700;margin:0;">You have sales experience</div></div>
+      </div>
+      <p>You already know how to talk to people and handle pressure. Today we add the medical billing knowledge and specific scripts to that foundation.</p>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:32px;">
+    <div class="sec-eyebrow">Today's Programme</div>
+    <div class="sec-title">What We Cover in 2 Hours</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <div class="tl-time">0:00 — 0:15</div>
+        <h4>Welcome & Overview</h4>
+        <p>Your role, your target, the medical billing industry in South Africa, and what makes Blue Eagle different.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <div class="tl-time">0:15 — 0:30</div>
+        <h4>Medical Billing Basics</h4>
+        <p>What Elixir Live does, why practices need a bureau, what problems you solve, and how to talk about the product with confidence.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <div class="tl-time">0:30 — 0:50</div>
+        <h4>The Telephonic Sales Call</h4>
+        <p>The full call structure from dial to outcome — tone, pace, opening, discovery, and how to read the conversation.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <div class="tl-time">0:50 — 1:05</div>
+        <h4>Getting Past the Gatekeeper</h4>
+        <p>Receptionists screen every call. We'll cover exactly what to say in the first 10 seconds and how to get warm transfer to the doctor.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">5</div>
+      <div class="tl-content">
+        <div class="tl-time">1:05 — 1:25</div>
+        <h4>Objection Handling</h4>
+        <p>The 8 most common objections in medical billing sales — with word-for-word responses that keep the conversation alive.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">6</div>
+      <div class="tl-content">
+        <div class="tl-time">1:25 — 1:45</div>
+        <h4>Closing & Booking Meetings</h4>
+        <p>The exact close that works. Why most salespeople fail at this step, and the one technique that fixes it every time.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">7</div>
+      <div class="tl-content">
+        <div class="tl-time">1:45 — 2:00</div>
+        <h4>Role Plays & Assessment</h4>
+        <p>Live practice scenarios. Trainer plays doctor and receptionist. Salesperson runs full calls from opening to close.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout ca-gold">
+    <strong>Trainer Note — Before You Begin</strong>
+    Share your screen showing this training programme on Google Meet. Go through each module together. Use the Role Play sections for live practice — the trainer plays the doctor/receptionist, the salesperson responds in real time. Pause at every Trainer Note box for discussion.
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-next-sec" onclick="goSec(1)">Start Training → Module 2</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 1: MEDICAL BILLING BASICS
+═══════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 2 — Foundation</div>
+    <div class="sec-title">Medical Billing Basics</div>
+    <div class="sec-sub">You can't sell what you don't understand. This module gives you the product knowledge to sound like an expert.</div>
+  </div>
+
+  <div class="callout ca-blue">
+    <strong>Why This Matters</strong>
+    Doctors will ask you technical questions. If you hesitate or say "I'll have to get back to you on that" — you lose credibility instantly. Know these fundamentals cold.
+  </div>
+
+  <div class="g2">
+    <div class="card bl">
+      <div class="card-head"><div class="card-icon ic-blue">🏥</div><div><h3>What is a Medical Bureau?</h3></div></div>
+      <p>A medical bureau handles the entire billing process on behalf of a doctor's practice — submitting claims to medical aids, following up on rejections, collecting patient payments, and managing the debtor book. We are the practice's external billing and collections department.</p>
+    </div>
+    <div class="card gd">
+      <div class="card-head"><div class="card-icon ic-gold">💻</div><div><h3>What is Elixir Live?</h3></div></div>
+      <p>Elixir Live is a cloud-based medical billing system used by thousands of practices across South Africa. It handles claim submission, electronic remittance advice (eRA), medical aid switching, debtor management, and reporting. Blue Eagle specialises exclusively in this system.</p>
+    </div>
+    <div class="card gn">
+      <div class="card-head"><div class="card-icon ic-green">💰</div><div><h3>How Does the Practice Make Money?</h3></div></div>
+      <p>A doctor sees patients, generates invoices, and submits claims to medical aids. The medical aid pays a portion. The patient pays the rest (co-payment). If claims aren't submitted correctly or followed up — that money never arrives. We make sure it does.</p>
+    </div>
+    <div class="card rd">
+      <div class="card-head"><div class="card-icon ic-red">❌</div><div><h3>What is a Rejected Claim?</h3></div></div>
+      <p>A rejected claim is one the medical aid refuses to pay — wrong ICD-10 code, incorrect tariff, expired membership, wrong modifier. If nobody follows up and resubmits, the practice loses that revenue permanently. We catch and recover these rejections.</p>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">Key Terms to Know</div>
+    <div class="sec-title">Speak the Language</div>
+    <div class="sec-sub">Use these naturally in conversation. Don't over-explain them — just use them.</div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>Term</th><th>What It Means</th><th>How to Use It</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Medical Aid</strong></td><td>Private health insurance (Discovery, Momentum, etc.)</td><td>"We follow up directly with medical aids on rejected claims"</td></tr>
+      <tr><td><strong>ICD-10 Code</strong></td><td>The diagnosis code attached to every claim</td><td>"Wrong ICD-10 codes are the number one reason claims get rejected"</td></tr>
+      <tr><td><strong>Tariff</strong></td><td>The fee charged for a medical procedure</td><td>"Our smart billing flags when the wrong tariff is used"</td></tr>
+      <tr><td><strong>eRA</strong></td><td>Electronic Remittance Advice — payment confirmation from medical aid</td><td>"We process eRA automatically so you always know what's been paid"</td></tr>
+      <tr><td><strong>Debtor Ageing</strong></td><td>Report showing outstanding balances by how long they've been unpaid</td><td>"Most practices have R30K–R100K sitting in their ageing debtors"</td></tr>
+      <tr><td><strong>Credit Control</strong></td><td>The process of chasing and collecting outstanding money</td><td>"We handle full credit control — medical aid and patient balances"</td></tr>
+      <tr><td><strong>Switching</strong></td><td>Electronic claims submission network (SwitchOn)</td><td>"We submit claims electronically through the switching network"</td></tr>
+    </tbody>
+  </table>
+
+  <div class="trainer-note">
+    <span class="tn-lbl">🎓 Trainer — Quiz Break (5 min)</span>
+    <div class="tn-text">Ask the salesperson these questions verbally:<br>
+    1. "What is a rejected claim and what happens if nobody follows it up?"<br>
+    2. "What does Elixir Live do that helps us as a bureau?"<br>
+    3. "If a doctor asks what ICD-10 means, what would you say?"<br><br>
+    They don't need to recite definitions — they need to explain it in their own words naturally. If they struggle, go back through the key terms together.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(0)">← Previous</button>
+    <button class="btn-next-sec" onclick="goSec(2)">Next: The Sales Call →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 2: THE TELEPHONIC SALES CALL
+═══════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 3 — Core Skills</div>
+    <div class="sec-title">The Telephonic Sales Call</div>
+    <div class="sec-sub">Structure, tone, pace, and psychology — everything that happens from the moment you dial.</div>
+  </div>
+
+  <div class="callout ca-gold">
+    <strong>The Most Important Rule in Telephonic Sales</strong>
+    Your voice is your only tool. The doctor cannot see you, your logo, your office, or your confidence. They only hear your tone, your pace, and your words. A calm, measured voice signals competence. A rushed, nervous voice signals desperation.
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="card-head"><div class="card-icon ic-blue">😌</div><div><h3>Tone</h3></div></div>
+      <p>Calm. Warm. Certain. Not excited, not nervous, not robotic. Sound like a professional who calls practices every day — because you do.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon ic-gold">🐢</div><div><h3>Pace</h3></div></div>
+      <p>Slower than you think. Most new salespeople rush. Slow down by 30%. Pauses are powerful — don't fill them.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon ic-green">👂</div><div><h3>Listening</h3></div></div>
+      <p>The best salespeople talk less. Ask one good question, then listen completely. What they say tells you exactly what to say next.</p>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">The Call Structure</div>
+    <div class="sec-title">5 Stages of Every Call</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <div class="tl-time">Stage 1 — 0:00 to 0:20</div>
+        <h4>The Opening</h4>
+        <p>Establish who you are and why you're calling in 2 sentences. End immediately with a question. Never pitch in the opening.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <div class="tl-time">Stage 2 — 0:20 to 1:30</div>
+        <h4>Discovery</h4>
+        <p>Ask one calibrated question and listen. Their answer tells you everything about their pain and what matters to them. Don't rush past this stage.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <div class="tl-time">Stage 3 — 1:30 to 2:30</div>
+        <h4>Value Statement</h4>
+        <p>Based on what they said — connect their pain to your solution. One specific, relevant benefit. Not a list of features. One thing that solves their problem.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <div class="tl-time">Stage 4 — 2:30 to 3:30</div>
+        <h4>Handle Resistance</h4>
+        <p>They will push back. That's normal. Every objection is a request for more information. Never argue — acknowledge, empathise, redirect.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">5</div>
+      <div class="tl-content">
+        <div class="tl-time">Stage 5 — 3:30 to 4:00</div>
+        <h4>The Close</h4>
+        <p>Ask for the specific next step — a meeting, a callback, an email. Never end a call without agreeing on what happens next. Even a follow-up date is a win.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">The Full Opening Script</div>
+    <div class="sec-title">Word for Word — Memorise This</div>
+  </div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Your Opening — Say This Exactly</span>
+    <div class="script-text">
+Good morning — this is <span class="hl">[your name]</span> from <span class="hl">Blue Eagle Medical Accounts</span>.<br><br>
+We specialise in medical billing and credit control, working with practices across South Africa.<br><br>
+I'll keep it brief — I just wanted to ask quickly:<br><br>
+<span class="b">How are you currently managing your billing and credit control —</span><br>
+<span class="b">in-house, outsourced, or a mix of both?</span><br><br>
+<span class="pause">⏸ STOP — Say nothing. Wait for their answer.</span>
+    </div>
+  </div>
+
+  <div class="voss">
+    <span class="voss-lbl">🧠 Why This Opening Works</span>
+    <div class="voss-text">
+      <strong>Line 1:</strong> Name + company establishes who you are fast.<br>
+      <strong>Line 2:</strong> Simple and direct — "we specialise in medical billing and credit control" tells them immediately what you do without overcomplicating it.<br>
+      <strong>Line 3:</strong> "I'll keep it brief" signals respect for their time — doctors respond to this.<br>
+      <strong>Line 4:</strong> End with a question, not a pitch. The listener controls the conversation. Their answer tells you which path to follow.
+    </div>
+  </div>
+
+  <div class="trainer-note">
+    <span class="tn-lbl">🎓 Trainer — Practice Drill (5 min)</span>
+    <div class="tn-text">Have the salesperson read the opening script aloud 3 times. Then close the screen and say it from memory. Focus on:<br>
+    • Does it sound natural or read?<br>
+    • Are they rushing the last line (the question)?<br>
+    • Are they pausing after the question?<br><br>
+    The pause after the question is critical. Most new salespeople immediately add "so basically what we do is..." — this kills it. Train the pause.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(1)">← Previous</button>
+    <button class="btn-next-sec" onclick="goSec(3)">Next: The Gatekeeper →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 3: GATEKEEPER
+═══════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 4 — Access</div>
+    <div class="sec-title">Getting Past the Gatekeeper</div>
+    <div class="sec-sub">The receptionist is not your enemy. They are your first sale. Win them and they'll put you through. Lose them and the call ends in 10 seconds.</div>
+  </div>
+
+  <div class="callout ca-blue">
+    <strong>The Gatekeeper Mindset</strong>
+    Treat the receptionist like a person, not an obstacle. They have influence. They tell the doctor "there's someone on the phone who sounds different from the usual cold callers." That recommendation is worth more than anything you can say to the doctor directly.
+  </div>
+
+  <div class="g2">
+    <div class="card bl">
+      <div class="card-head"><div class="card-icon ic-blue">✅</div><div><h3>What Works</h3></div></div>
+      <p>Warmth. Calm confidence. Treating them with respect. Asking their name. Saying please and thank you genuinely. Sounding like you call practices every day — because you do.</p>
+    </div>
+    <div class="card rd">
+      <div class="card-head"><div class="card-icon ic-red">❌</div><div><h3>What Kills It</h3></div></div>
+      <p>Sounding like you're reading a script. Being pushy when they say the doctor is busy. Using corporate jargon. Asking "is the doctor available?" as the very first thing you say.</p>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">Gatekeeper Scenarios</div>
+    <div class="sec-title">Every Situation with the Right Response</div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Scenario 1</div><div class="obj-q">"The doctor is busy / with a patient."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0;">
+        <span class="script-lbl">🎙 Say This</span>
+        <div class="script-text">I completely understand — I'll be quick.<br><br>I'm not here to take up the doctor's time right now. I just wanted to ask — <span class="b">would it be easier if I sent a short email through for the doctor to look at when convenient?</span><br><br>What would be the best email address to use?</div>
+      </div>
+      <div class="voss" style="margin-top:12px;">
+        <span class="voss-lbl">🧠 Why It Works</span>
+        <div class="voss-text">You've removed the pressure completely. You're not asking for the doctor's time — you're asking for an email address. Almost no one refuses that. Now you have a warm email going to the right inbox.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Scenario 2</div><div class="obj-q">"We're not interested."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0;">
+        <span class="script-lbl">🎙 Say This</span>
+        <div class="script-text">No problem at all.<br><br>Out of curiosity — <span class="b">is that because you're happy with the current billing setup, or simply not the right time right now?</span><br><br><span class="pause">⏸ Listen</span></div>
+      </div>
+      <div class="voss" style="margin-top:12px;">
+        <span class="voss-lbl">🧠 Why It Works</span>
+        <div class="voss-text">Never accept "not interested" without asking why. Either answer gives you information. "Happy with setup" → offer to keep details on file. "Not the right time" → ask when would be better. The no is just the start.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Scenario 3</div><div class="obj-q">"Who is this regarding?" / "What is it about?"</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0;">
+        <span class="script-lbl">🎙 Say This</span>
+        <div class="script-text">Of course — this is <span class="b">[your name]</span> from <span class="b">Blue Eagle Medical Accounts</span>.<br><br>We specialise in medical billing on Elixir Live and I just wanted to ask the doctor a quick question about <span class="b">how billing and collections are currently being handled</span> at the practice.<br><br>Is the doctor available for just two minutes?</div>
+      </div>
+      <div class="voss" style="margin-top:12px;">
+        <span class="voss-lbl">🧠 Why It Works</span>
+        <div class="voss-text">"A quick question" sounds low commitment. You're not selling — you're asking. Receptionists are more likely to put through someone who sounds genuinely curious than someone who sounds like they have a pitch prepared.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Scenario 4</div><div class="obj-q">"Send an email and we'll look at it."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0;">
+        <span class="script-lbl">🎙 Say This</span>
+        <div class="script-text">Perfect — happy to do that.<br><br>What would be the best email address to use?<br><br><span class="pause">⏸ Get the email immediately</span><br><br>And just so I know I'm sending the most relevant information — <span class="b">does the practice currently handle billing in-house or through an outside bureau?</span></div>
+      </div>
+      <div class="voss" style="margin-top:12px;">
+        <span class="voss-lbl">🧠 Why It Works</span>
+        <div class="voss-text">Get the email first — don't let them change the subject. Then the follow-up question gives you the information you need to personalise the email. That one answer determines which template you send.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trainer-note">
+    <span class="tn-lbl">🎓 Trainer — Role Play (5 min)</span>
+    <div class="tn-text">Play the receptionist. Use these lines on the salesperson:<br>
+    • "She's with a patient right now"<br>
+    • "We're not really interested"<br>
+    • "Can you send an email?"<br>
+    • "What's it regarding?"<br><br>
+    The salesperson must respond naturally from memory — not reading. Do each one twice. Correct tone, not just words.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(2)">← Previous</button>
+    <button class="btn-next-sec" onclick="goSec(4)">Next: Objection Handling →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 4: OBJECTION HANDLING
+═══════════════════════════════════════ -->
+<div class="section" id="sec-4">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 5 — Resilience</div>
+    <div class="sec-title">Objection Handling</div>
+    <div class="sec-sub">Every objection is a question in disguise. Your job is to understand what they're really asking — and answer that.</div>
+  </div>
+
+  <div class="callout ca-red">
+    <strong>The Golden Rule of Objections</strong>
+    Never argue. Never defend. Never explain at length. The formula is always: Acknowledge → Empathise → Redirect. Three steps, every time. An objection means they're still on the phone — that's actually a good sign.
+  </div>
+
+  <div class="card gd" style="margin-bottom:24px;">
+    <div class="card-head"><div class="card-icon ic-gold">🔁</div><div><h3>The AER Formula</h3></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;">
+      <div style="background:rgba(245,166,35,0.08);border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:2px;">A</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Acknowledge</div>
+        <div style="font-size:12px;color:var(--silver);">Show you heard them. Don't dismiss. Don't immediately counter.</div>
+      </div>
+      <div style="background:rgba(21,101,192,0.08);border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--blue3);letter-spacing:2px;">E</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Empathise</div>
+        <div style="font-size:12px;color:var(--silver);">Validate their concern. Make them feel understood before redirecting.</div>
+      </div>
+      <div style="background:rgba(46,204,113,0.08);border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);letter-spacing:2px;">R</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Redirect</div>
+        <div style="font-size:12px;color:var(--silver);">Ask a question that moves the conversation forward. Never a statement.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">The 8 Objections</div>
+    <div class="sec-title">Complete Response Guide</div>
+    <div class="sec-sub">Click each to reveal the full response. Practice until these feel automatic.</div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 1</div><div class="obj-q">"We already have a billing company."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">No problem at all — most practices we work with actually had another service provider before speaking to us.<br><br>Out of curiosity, <span class="b">are you completely happy with the communication and reporting you're currently getting?</span><br><br><span class="pause">⏸ Wait — don't add anything</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Never attack the current provider. Validate their choice first. The calibrated question almost always reveals a crack — communication, reporting, or follow-up. If they say completely happy → offer to keep details on file. If they hesitate → dig deeper.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 2</div><div class="obj-q">"We're happy with our current setup."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">That's great — sounds like they're doing something right.<br><br><span class="pause">⏸ 2 second pause</span><br><br>Do you currently receive a <span class="b">monthly report showing your total rejected claims and outstanding debt?</span><br><br><span class="pause">⏸ Listen</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">The reporting question is a Black Swan probe. Most practices don't get proper monthly reports. If they hesitate or say no — that's your opening. "That's actually where most of the money gets missed — we build that into every client from day one."</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 3</div><div class="obj-q">"We don't use Elixir Live."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">That's fine — a number of practices we've onboarded have moved across from other systems.<br><br>We handle the migration completely — <span class="b">no disruption to the practice at all.</span><br><br>The reason we specialise exclusively in Elixir Live is that we can operate at a much deeper level on one platform than a bureau juggling five different systems.<br><br><span class="b">What's your biggest frustration with your current billing setup?</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Handle the system objection quickly — don't dwell on it. Immediately pivot to their pain. The question at the end is your discovery question — their answer tells you exactly what matters to them.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 4</div><div class="obj-q">"How much do you charge?"</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">Our pricing depends on the practice setup.<br><br>Most practices fall into one of two structures — either a <span class="b">5% on collections model</span>, so if nothing is collected there's no fee, or a <span class="b">fixed monthly arrangement</span> depending on volume.<br><br>What we prefer doing first is understanding the practice properly and then proposing something fair for both sides.<br><br><span class="b">Would a short 15-minute review make sense as a starting point?</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Don't give a hard number immediately — you haven't seen their practice yet. The 5% alignment frame is powerful: "if nothing is collected, there's no fee" removes their financial risk perception. End with the meeting close — this is the moment to ask.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 5</div><div class="obj-q">"Too expensive / your fee is too high."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">I hear you — but think of it this way. If we recover <span class="b">R30,000 to R80,000 a month</span> that you're currently not collecting, you're actually making money, not spending it. <span class="b">The fee covers itself.</span><br><br>How much is currently sitting outstanding in your accounts right now?<br><br><span class="pause">⏸ Wait for their answer</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Reframe the fee as an investment with a specific return. The R30K–R80K figure is a loss anchor — they're now thinking about money they're already losing. The final question forces them to imagine the benefit in their own reality. That's where decisions get made.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 6</div><div class="obj-q">"I don't have time right now."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">I completely understand and I'll respect your time.<br><br>When would genuinely be a better moment — <span class="b">later this week, or early next week?</span><br><br><span class="pause">⏸ Wait for a day</span><br><br><em style="color:var(--silver);font-size:13px;">If they still push back:</em><br><br>No problem at all — <span class="b">can I at least send through a short overview email for when you have two minutes?</span></div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Never end a call without a next step. The binary choice (this week / next week) assumes the conversation continues and only asks when. The email fallback keeps the door open even if they won't commit to a call.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 7</div><div class="obj-q">"Switching would be too much hassle."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">It sounds like the transition itself is the main concern — and honestly, that's the most common thing we hear.<br><br>We handle the entire onboarding process. <span class="b">Most practices are fully set up within 5 to 7 working days with zero disruption to their workflow.</span><br><br>What would the transition need to look like for it to feel manageable for your practice?</div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Label their fear ("the transition itself is the main concern") then immediately neutralise it with specifics. The final calibrated question invites them to design the solution — when people design it themselves, they own it and resist it less.</div></div>
+    </div>
+  </div>
+
+  <div class="obj-item">
+    <div class="obj-head" onclick="tog(this)">
+      <div><div class="obj-tag">Objection 8</div><div class="obj-q">"Send me info and I'll think about it."</div></div>
+      <div class="obj-chev">▼</div>
+    </div>
+    <div class="obj-body">
+      <div class="script-box" style="margin:0 0 12px;">
+        <span class="script-lbl">🎙 Response</span>
+        <div class="script-text">Of course — <span class="b">what's the best email address?</span><br><br><span class="pause">⏸ Get email immediately</span><br><br>And just so I send the most relevant information — <span class="b">what would be most useful: the collections and follow-up process, the reporting, or the rejected claims recovery side?</span><br><br><span class="pause">⏸ Their answer = their hot button</span><br><br>Perfect. And <span class="b">would it be a bad idea if I followed up later this week</span> once you've had a chance to glance at it?</div>
+      </div>
+      <div class="voss"><span class="voss-lbl">🧠 The Move</span><div class="voss-text">Get the email before anything else. Then find their priority — use it as your follow-up hook. The final No-Oriented question ("would it be a bad idea...") gets permission for a follow-up call without them feeling pressured.</div></div>
+    </div>
+  </div>
+
+  <div class="trainer-note">
+    <span class="tn-lbl">🎓 Trainer — Objection Drill (5 min)</span>
+    <div class="tn-text">Fire these objections at the salesperson in random order. They must respond immediately — no pausing to think. If they hesitate or get it wrong, repeat that objection until it's automatic.<br><br>
+    Speed is the goal. In a real call there's no time to think. The response must be muscle memory.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(3)">← Previous</button>
+    <button class="btn-next-sec" onclick="goSec(5)">Next: Closing →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 5: CLOSING
+═══════════════════════════════════════ -->
+<div class="section" id="sec-5">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 6 — The Critical Skill</div>
+    <div class="sec-title">Closing & Booking Meetings</div>
+    <div class="sec-sub">This is where most salespeople fail. Not because the doctor said no — but because the salesperson never actually asked.</div>
+  </div>
+
+  <div class="callout ca-red">
+    <strong>The Biggest Mistake in Medical Billing Sales</strong>
+    Having a great conversation, building rapport, finding the pain — and then ending the call with "I'll send you some info." That's not a close. That's a polite goodbye. A close means asking for a specific commitment. Every time.
+  </div>
+
+  <div class="g2">
+    <div class="card rd">
+      <div class="card-head"><div class="card-icon ic-red">❌</div><div><h3>Weak Close</h3></div></div>
+      <p style="color:var(--red2);font-style:italic;">"I'll send you some information and you can have a look when you get a chance."</p>
+      <p style="margin-top:10px;">This puts them in control with no commitment. 90% of these never respond.</p>
+    </div>
+    <div class="card gn">
+      <div class="card-head"><div class="card-icon ic-green">✅</div><div><h3>Strong Close</h3></div></div>
+      <p style="color:var(--green);font-style:italic;">"What works better — earlier in the week or towards the end of the week?"</p>
+      <p style="margin-top:10px;">This assumes the meeting is happening. They're choosing when, not whether.</p>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">The Close That Works</div>
+    <div class="sec-title">The Ageing Report Review Close</div>
+    <div class="sec-sub">Your most powerful close. Offer something of real value with zero risk to them.</div>
+  </div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 The Full Close — Memorise This</span>
+    <div class="script-text">
+Doctor, based on what you've mentioned —<br>
+<span class="hl">[reflect their specific pain back]</span><br><br>
+— it sounds like there may be room to recover some revenue that's currently slipping through.<br><br>
+What would make the most sense is a short <span class="b">15–20 minute review</span> where we look at your current billing position together on Elixir Live.<br><br>
+We'll look at your ageing report, identify any obvious collection gaps, and you'll walk away with a clearer picture — <span class="b">no obligation at all.</span><br><br>
+<span class="b">What works better — earlier in the week, or towards the end of the week?</span><br><br>
+<span class="pause">⏸ STOP. Say nothing. Let them pick a day.</span>
+    </div>
+  </div>
+
+  <div class="voss">
+    <span class="voss-lbl">🧠 Why Every Line Matters</span>
+    <div class="voss-text">
+      <strong>"Based on what you've mentioned"</strong> — This creates the "That's right" moment. Summarising their pain back to them makes them feel heard and understood. They almost always agree.<br><br>
+      <strong>"No obligation at all"</strong> — Removes the fear. They're not committing to anything by saying yes to a meeting.<br><br>
+      <strong>"Earlier in the week or towards the end?"</strong> — The binary choice. Never ask "would you like to meet?" — that's an easy no. The binary assumes yes and just asks when. This is the single most effective close in consultative sales.
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">After the Meeting is Booked</div>
+    <div class="sec-title">What to Do in the Next 60 Minutes</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <div class="tl-time">Within 30 minutes</div>
+        <h4>Send the Confirmation Email</h4>
+        <p>Email confirming the meeting date, time, format (online/phone), and a one-line reminder of what you'll cover: "We'll do a quick review of your current billing position and ageing report." This cements it in their diary.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <div class="tl-time">Same day</div>
+        <h4>Log It in the Call Guide</h4>
+        <p>Mark as HOT in the Blue Eagle call guide app. It will log to the sheet and trigger the right next action.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <div class="tl-time">Day before the meeting</div>
+        <h4>Send a Reminder</h4>
+        <p>"Just a reminder about our 15-minute chat tomorrow at [time]. Looking forward to it." Short, warm, professional.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <div class="tl-time">Before the meeting</div>
+        <h4>Prepare the Ageing Report Question</h4>
+        <p>The first thing you ask in the meeting is: "Can you share your current ageing report with me?" What it shows will close the deal for you.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div class="sec-head">
+    <div class="sec-eyebrow">When They Don't Close</div>
+    <div class="sec-title">The Follow-Up Close</div>
+  </div>
+
+  <div class="script-box">
+    <span class="script-lbl">🎙 Follow-Up Call — Day 5</span>
+    <div class="script-text">
+Good morning Doctor — <span class="b">[your name]</span> from Blue Eagle Medical Accounts.<br><br>
+I'm just following up on the overview I sent earlier this week —<br>
+<span class="b">did you get a chance to have a quick look at it?</span><br><br>
+<span class="pause">⏸ Listen</span><br><br>
+<em style="color:var(--silver);">IF YES:</em><br>
+<span class="b">What stood out most — the collections side, the reporting, or the rejected claims recovery?</span><br><br>
+<em style="color:var(--silver);">IF NO:</em><br>
+No problem at all. Would it be better if I followed up <span class="b">later this week or early next week?</span>
+    </div>
+  </div>
+
+  <div class="trainer-note">
+    <span class="tn-lbl">🎓 Trainer — Close Drill (5 min)</span>
+    <div class="tn-text">Run this scenario with the salesperson:<br><br>
+    You play the doctor. Say: "Things have been a bit of an issue with our current bureau actually — communication is really poor."<br><br>
+    The salesperson must:<br>
+    1. Label the pain ("It sounds like...")<br>
+    2. Validate ("That's actually very common...")<br>
+    3. Deliver the full close script from memory<br>
+    4. Say nothing after the binary question<br><br>
+    Common mistake: They add "or I can send you information instead" after the binary question. This gives the doctor an easy exit. Train them to stop talking the moment the question is out.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(4)">← Previous</button>
+    <button class="btn-next-sec" onclick="goSec(6)">Next: Role Plays →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 6: ROLE PLAYS
+═══════════════════════════════════════ -->
+<div class="section" id="sec-6">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Module 7 — Live Practice</div>
+    <div class="sec-title">Role Plays & Assessment</div>
+    <div class="sec-sub">The only way to be ready for real calls is to practice under pressure first. These scenarios mirror what will happen on real calls.</div>
+  </div>
+
+  <div class="callout ca-gold">
+    <strong>How to Run These Role Plays on Google Meet</strong>
+    Trainer plays the receptionist/doctor. Salesperson responds in real time. No notes, no reading. After each scenario, pause and debrief: what worked, what to tighten. Run each scenario at least twice before moving on.
+  </div>
+
+  <!-- ROLE PLAY 1 -->
+  <div class="roleplay">
+    <div class="rp-header">
+      <div class="rp-icon">🎭</div>
+      <div>
+        <div class="rp-title">Role Play 1 — The Warm GP</div>
+        <div class="rp-sub">In-house billing, some issues, ready to hear more</div>
+      </div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-scenario">GP practice in Pretoria. Receptionist puts you through. Doctor handles billing in-house with a part-time admin person. Collections are becoming a problem. They're open but cautious.</div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Opens with full opening script</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-doctor">Doctor</div><div><div class="rp-line">"We do it in-house with our admin lady."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Discovery question — collections probe</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-doctor">Doctor</div><div><div class="rp-line">"Ja it's actually becoming a problem. We've got a lot of outstanding accounts."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Label the pain → value statement → full close</div><div class="rp-tip">🎯 Target outcome: Meeting booked. Doctor says "okay let's say Wednesday morning."</div></div></div>
+    </div>
+  </div>
+
+  <!-- ROLE PLAY 2 -->
+  <div class="roleplay">
+    <div class="rp-header">
+      <div class="rp-icon">🎭</div>
+      <div>
+        <div class="rp-title">Role Play 2 — The Resistant Receptionist</div>
+        <div class="rp-sub">Can't get through — must navigate gracefully</div>
+      </div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-scenario">Specialist practice. The receptionist is defensive and screens every call. Doctor is "always busy." Must get an email address and a follow-up commitment without sounding pushy.</div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Opening to receptionist</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-recept">Receptionist</div><div><div class="rp-line">"The doctor doesn't take sales calls. You can send an email."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Email response → get address → ask one discovery question</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-recept">Receptionist</div><div><div class="rp-line">"I'm not sure what system we use actually."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Handle gracefully → lock follow-up date → close the call warmly</div><div class="rp-tip">🎯 Target outcome: Email address + agreed follow-up call in 5 days.</div></div></div>
+    </div>
+  </div>
+
+  <!-- ROLE PLAY 3 -->
+  <div class="roleplay">
+    <div class="rp-header">
+      <div class="rp-icon">🎭</div>
+      <div>
+        <div class="rp-title">Role Play 3 — The Happy Doctor</div>
+        <div class="rp-sub">Already has a bureau, claims to be satisfied — find the crack</div>
+      </div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-scenario">Physio practice in Johannesburg. Already outsourced to another bureau. Thinks everything is fine. The salesperson must plant a seed and stay in the game without being pushy.</div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Full opening script</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-doctor">Doctor</div><div><div class="rp-line">"We already use a bureau and we're fairly happy with them."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Validate → reporting probe question</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-doctor">Doctor</div><div><div class="rp-line">"Actually no — we don't really get detailed reports from them."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Plant the seed → No-Oriented close for email/meeting</div><div class="rp-tip">🎯 Target outcome: Permission to send overview + follow-up booked.</div></div></div>
+    </div>
+  </div>
+
+  <!-- ROLE PLAY 4 -->
+  <div class="roleplay">
+    <div class="rp-header">
+      <div class="rp-icon">🎭</div>
+      <div>
+        <div class="rp-title">Role Play 4 — The Price Objection</div>
+        <div class="rp-sub">Interested but thinks the fee is too high</div>
+      </div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-scenario">GP practice. Good conversation. Doctor is interested but pushes back hard on the 5% fee. Must reframe without giving a discount and still close for the meeting.</div>
+      <div class="rp-row"><div class="rp-speaker sp-doctor">Doctor</div><div><div class="rp-line">"5% sounds like a lot honestly. Our current bureau charges less."</div></div></div>
+      <div class="rp-row"><div class="rp-speaker sp-sales">Salesperson</div><div><div class="rp-line">Acknowledge → loss reframe → recovery value statement → close</div><div class="rp-tip">🎯 Target outcome: Doctor agrees to a 15-minute review to "see if it makes sense."</div></div></div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ASSESSMENT -->
+  <div class="sec-head">
+    <div class="sec-eyebrow">Final Assessment</div>
+    <div class="sec-title">Knowledge Check</div>
+    <div class="sec-sub">Complete this quiz to confirm the key principles have landed.</div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-q">1. A doctor says "We're happy with our current bureau." What is your first response?</div>
+    <div class="quiz-opts" id="q1">
+      <button class="quiz-opt" onclick="ans('q1',0,1)">A) Explain why Blue Eagle is better than their current bureau</button>
+      <button class="quiz-opt" onclick="ans('q1',1,1)">B) "That's great — sounds like they're doing something right." Then pause and ask about their monthly reporting</button>
+      <button class="quiz-opt" onclick="ans('q1',2,1)">C) Immediately ask when you can book a meeting</button>
+      <button class="quiz-opt" onclick="ans('q1',3,1)">D) Thank them and end the call</button>
+    </div>
+    <div class="quiz-fb" id="q1-fb"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-q">2. After presenting your service, what is the strongest way to close for a meeting?</div>
+    <div class="quiz-opts" id="q2">
+      <button class="quiz-opt" onclick="ans('q2',0,2)">A) "Would you like me to send you some information to think about?"</button>
+      <button class="quiz-opt" onclick="ans('q2',1,2)">B) "Let me know when you're ready to move forward."</button>
+      <button class="quiz-opt" onclick="ans('q2',2,2)">C) "What works better — earlier in the week or towards the end of the week?"</button>
+      <button class="quiz-opt" onclick="ans('q2',3,2)">D) "Can I book a meeting with you?"</button>
+    </div>
+    <div class="quiz-fb" id="q2-fb"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-q">3. A doctor says "Your 5% fee is too expensive." What is the correct reframe?</div>
+    <div class="quiz-opts" id="q3">
+      <button class="quiz-opt" onclick="ans('q3',0,3)">A) Offer to lower the fee immediately</button>
+      <button class="quiz-opt" onclick="ans('q3',1,3)">B) Explain that the fee is industry standard</button>
+      <button class="quiz-opt" onclick="ans('q3',2,3)">C) Show that if stronger collections recover R30K–R80K monthly, the fee pays for itself many times over</button>
+      <button class="quiz-opt" onclick="ans('q3',3,3)">D) Ask what fee they would prefer</button>
+    </div>
+    <div class="quiz-fb" id="q3-fb"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-q">4. The receptionist says "The doctor doesn't take sales calls." What do you do?</div>
+    <div class="quiz-opts" id="q4">
+      <button class="quiz-opt" onclick="ans('q4',0,4)">A) Argue that this isn't a sales call</button>
+      <button class="quiz-opt" onclick="ans('q4',1,4)">B) Ask for the best email address and request a follow-up time once the doctor has seen the overview</button>
+      <button class="quiz-opt" onclick="ans('q4',2,4)">C) Ask to speak to the practice manager instead</button>
+      <button class="quiz-opt" onclick="ans('q4',3,4)">D) Call back at a different time without saying anything</button>
+    </div>
+    <div class="quiz-fb" id="q4-fb"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-q">5. After saying the binary close question, the doctor is silent. What do you do?</div>
+    <div class="quiz-opts" id="q5">
+      <button class="quiz-opt" onclick="ans('q5',0,5)">A) Fill the silence by offering an alternative like "or I can just send you info"</button>
+      <button class="quiz-opt" onclick="ans('q5',1,5)">B) Repeat the question in a different way</button>
+      <button class="quiz-opt" onclick="ans('q5',2,5)">C) Say nothing. Wait. The silence is working for you.</button>
+      <button class="quiz-opt" onclick="ans('q5',3,5)">D) Apologise for taking their time</button>
+    </div>
+    <div class="quiz-fb" id="q5-fb"></div>
+  </div>
+
+  <div id="final-score" style="display:none;">
+    <hr class="div">
+    <div style="background:linear-gradient(135deg,rgba(21,101,192,0.15),rgba(4,8,15,0.8));border:1px solid var(--border);border-radius:14px;padding:32px;text-align:center;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--gold);letter-spacing:3px;" id="score-num">0/5</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;" id="score-title">Assessment Complete</div>
+      <div style="font-size:14px;color:var(--silver);max-width:400px;margin:0 auto;" id="score-msg"></div>
+    </div>
+  </div>
+
+  <div class="callout ca-green" style="margin-top:28px;">
+    <strong>🎓 Training Complete — Next Steps</strong>
+    1. Salesperson bookmarks the call guide: <strong>blueeagle-medicalaccounts.github.io/CALL-GUIDE-/</strong><br>
+    2. Daily morning drill: 20 minutes of objection role play before calls start<br>
+    3. First 30 calls: manager listens in on 5 per day and debriefs<br>
+    4. Weekly: review call recordings together and identify one thing to improve<br>
+    5. Target: first signed client within 3 weeks
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-prev" onclick="goSec(5)">← Previous</button>
+    <button class="btn-next-sec" onclick="resetProg()" style="background:var(--green);">✓ Complete Training</button>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+const SECTIONS = [
+  {title:'Welcome & Overview', badge:'Module 1', time:'15 min', color:'sb-gold'},
+  {title:'Medical Billing Basics', badge:'Module 2', time:'15 min', color:'sb-blue'},
+  {title:'The Telephonic Sales Call', badge:'Module 3', time:'20 min', color:'sb-blue'},
+  {title:'Getting Past the Gatekeeper', badge:'Module 4', time:'15 min', color:'sb-blue'},
+  {title:'Objection Handling', badge:'Module 5', time:'20 min', color:'sb-red'},
+  {title:'Closing & Booking Meetings', badge:'Module 6', time:'20 min', color:'sb-red'},
+  {title:'Role Plays & Assessment', badge:'Module 7', time:'15 min', color:'sb-green'},
+];
+
+let completed = new Array(7).fill(false);
+let cur = 0;
+
+function goSec(n){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+n).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach((el,i)=>{
+    el.classList.remove('active');
+    if(i===n) el.classList.add('active');
+  });
+  const s = SECTIONS[n];
+  document.getElementById('topBadge').className = 'section-badge '+s.color;
+  document.getElementById('topBadge').textContent = s.badge;
+  document.getElementById('topTitle').textContent = s.title;
+  document.getElementById('topTime').textContent = '⏱ '+s.time;
+  completed[cur] = true;
+  cur = n;
+  updateProg();
+  window.scrollTo(0,0);
+}
+
+function updateProg(){
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done/7)*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progText').textContent = done+' / 7 modules';
+  document.querySelectorAll('.nav-item').forEach((el,i)=>{
+    if(completed[i]) el.classList.add('done');
+  });
+}
+
+function tog(head){
+  const body = head.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  head.closest('.obj-item').parentElement.querySelectorAll('.obj-body').forEach(b=>b.classList.remove('open'));
+  head.closest('.obj-item').parentElement.querySelectorAll('.obj-head').forEach(h=>h.classList.remove('open'));
+  if(!isOpen){ body.classList.add('open'); head.classList.add('open'); }
+}
+
+const ANSWERS = {1:1, 2:2, 3:2, 4:1, 5:2};
+const FEEDBACK = {
+  correct: [
+    "Correct. Validate first, then probe for the crack. Never attack their current provider.",
+    "Exactly right. The binary close assumes the meeting is happening and only asks when — never whether.",
+    "Correct. Reframe the fee as an investment with a specific return. Loss aversion is your most powerful tool.",
+    "Right. Get the email immediately, find their priority, book the follow-up. Always a next step.",
+    "Perfect. Silence after the close is golden. The first person to speak loses. Say nothing and wait."
+  ],
+  wrong: [
+    "Not quite. Attacking their current bureau or immediately asking for a meeting creates resistance. Validate first, then probe gently.",
+    "Not the strongest move. Sending info or 'let me know' puts all control with them. The binary close assumes the meeting is happening.",
+    "Never reduce your fee before understanding their full situation. Reframe the value first — show what recovery looks like.",
+    "Don't argue or try to bypass the gatekeeper. The email path is your best route — it's professional and keeps the door open.",
+    "Filling the silence is the most common close-killing mistake. The pause is doing the work for you. Trust it."
+  ]
+};
+
+let quizDone = {};
+let quizScore = 0;
+
+function ans(qId, chosen, qNum){
+  if(quizDone[qNum]) return;
+  quizDone[qNum] = true;
+  const correct = ANSWERS[qNum];
+  const btns = document.querySelectorAll('#'+qId+' .quiz-opt');
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correct) b.classList.add('correct');
+    else if(i===chosen&&chosen!==correct) b.classList.add('wrong');
+  });
+  const isCorrect = chosen===correct;
+  if(isCorrect) quizScore++;
+  const fb = document.getElementById(qId+'-fb');
+  fb.textContent = (isCorrect?'✓ ':'✗ ')+(isCorrect?FEEDBACK.correct[qNum-1]:FEEDBACK.wrong[qNum-1]);
+  fb.className = 'quiz-fb show '+(isCorrect?'correct':'wrong');
+  if(Object.keys(quizDone).length===5) showFinalScore();
+}
+
+function showFinalScore(){
+  const el = document.getElementById('final-score');
+  el.style.display='block';
+  document.getElementById('score-num').textContent = quizScore+'/5';
+  const msgs = [
+    "Review the training modules again — focus on objection handling and the close.",
+    "Getting there. Revisit the closing and objection sections.",
+    "Solid foundation. Review the two you missed and practise them in role plays.",
+    "Strong performance. One more review of the missed question and you're ready.",
+    "Outstanding — full marks. You're ready to start calling. Let's go. 🦅"
+  ];
+  document.getElementById('score-title').textContent = quizScore>=4 ? '🦅 Ready to Start Calling!' : 'Keep Practising';
+  document.getElementById('score-msg').textContent = msgs[Math.min(quizScore,4)];
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function resetProg(){
+  completed.fill(true);
+  updateProg();
+  alert('✅ Training complete! Your salesperson is ready to start calling. Bookmark the call guide and begin tomorrow morning.');
+}
+</script>
+</body>
+</html>
