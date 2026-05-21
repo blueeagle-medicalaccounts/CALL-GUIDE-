@@ -1270,7 +1270,7 @@ function cancelUpload() {
 }
 
 // ── SAVE LIST ──
-async function saveList() {
+function saveList() {
   const name = document.getElementById('listNameInput').value.trim();
   if (!name) { showToast('Please enter a list name'); return; }
   if (parsedCSV.length === 0) return;
@@ -1282,45 +1282,15 @@ async function saveList() {
     contacts: parsedCSV, active: true
   };
 
-  // Save to localStorage always
   const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
   lists.forEach(l => l.active = false);
   lists.push(newList);
   localStorage.setItem('be_lists', JSON.stringify(lists));
 
-  showToast(`⏳ Uploading ${parsedCSV.length} contacts to server...`);
   cancelUpload();
   renderListManager();
-
-  // Save to Google Sheets
-  const webhook = localStorage.getItem('be_webhook');
-  if (webhook) {
-    try {
-      // Send in chunks of 500 to avoid payload limits
-      const chunkSize = 500;
-      for (let i = 0; i < parsedCSV.length; i += chunkSize) {
-        const chunk = parsedCSV.slice(i, i + chunkSize);
-        await fetch(webhook, {
-          method: 'POST', mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'SAVE_CONTACT_LIST',
-            list_id: listId, name, count: parsedCSV.length,
-            date: new Date().toLocaleDateString('en-ZA'),
-            active: true,
-            contacts: chunk
-          })
-        });
-      }
-      showToast(`✅ "${name}" saved — ${parsedCSV.length} contacts visible to all staff`);
-    } catch(err) {
-      showToast(`✅ "${name}" saved locally — set webhook to sync across devices`);
-    }
-  } else {
-    showToast(`✅ "${name}" saved. Add webhook URL in settings to sync across devices.`);
-  }
-
   loadActiveList();
+  showToast(`✅ "${name}" uploaded — ${parsedCSV.length} contacts loaded`);
 }
 
 function setActiveList(listId) {
@@ -1340,40 +1310,7 @@ function deleteList(listId) {
   showToast('List deleted');
 }
 
-async function loadActiveList() {
-  const webhook = localStorage.getItem('be_webhook');
-  if (!webhook) {
-    // Fallback to localStorage if no webhook set
-    loadActiveListLocal();
-    return;
-  }
-
-  // Show loading state
-  document.getElementById('noListState').style.display = 'none';
-  document.getElementById('contactListEl').innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-title">Loading contacts...</div><div class="empty-sub">Fetching from server</div></div>';
-
-  try {
-    const getUrl = webhook.replace('/exec', '/exec') + '?action=get_contacts';
-    const resp = await fetch(getUrl);
-    const json = await resp.json();
-
-    if (json.success && json.contacts && json.contacts.length > 0) {
-      contactData = json.contacts;
-      document.getElementById('listTitle').textContent = json.listName || 'Contact List';
-      document.getElementById('listSub').textContent = `${json.contacts.length} contacts · Tap to mark call outcome`;
-      document.getElementById('noListState').style.display = 'none';
-      renderContacts();
-    } else {
-      // No list on server — try local
-      loadActiveListLocal();
-    }
-  } catch(err) {
-    console.log('Sheet fetch failed, falling back to local:', err);
-    loadActiveListLocal();
-  }
-}
-
-function loadActiveListLocal() {
+function loadActiveList() {
   const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
   const active = lists.find(l => l.active);
   if (!active) {
@@ -1446,7 +1383,6 @@ function setStatus(id, status) {
   if (!contact) return;
   contact.status = status;
 
-  // Save locally
   const lists = JSON.parse(localStorage.getItem('be_lists') || '[]');
   const active = lists.find(l=>l.active);
   if (active) {
@@ -1456,23 +1392,6 @@ function setStatus(id, status) {
   }
 
   renderContacts();
-
-  // Sync status to Sheets so other devices see it
-  const webhook = localStorage.getItem('be_webhook');
-  if (webhook && active) {
-    const statuses = JSON.parse(localStorage.getItem('be_statuses_' + active.id) || '{}');
-    fetch(webhook, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'SAVE_STATUSES',
-        list_id: active.id,
-        statuses: { [id]: status }
-      })
-    }).catch(()=>{});
-  }
-
-  if (status !== 'none') logOutcomeToSheets(contact, status);
 }
 
 async function logOutcomeToSheets(contact, status) {
